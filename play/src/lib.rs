@@ -1,91 +1,70 @@
-pub fn reverse(input: &str) -> String {
-    let s = input.chars().rev();
-    let mut r = String::new();
-    for c in s {
-        r.push(c);
-    }
-    r
+use time::PrimitiveDateTime as DateTime;
+
+// Returns a DateTime one billion seconds after start.
+pub fn after(start: DateTime) -> DateTime {
+    // todo!("What time is a  later than {start}");
+    let mut end = &start;
+    
+    *end
 }
 
-#[test]
-fn an_empty_string() {
-    let input = "";
-    let output = reverse(input);
-    let expected = "";
-    assert_eq!(output, expected);
-}
 
 #[test]
-// #[ignore]
-fn a_word() {
-    let input = "robot";
-    let output = reverse(input);
-    let expected = "tobor";
-    assert_eq!(output, expected);
+fn date_only_specification_of_time() {
+    let start = datetime(2011, 4, 25, 0, 0, 0);
+    let actual = after(start);
+    let expected = datetime(2043, 1, 1, 1, 46, 40);
+    assert_eq!(actual, expected);
 }
 
 #[test]
 #[ignore]
-fn a_capitalized_word() {
-    let input = "Ramen";
-    let output = reverse(input);
-    let expected = "nemaR";
-    assert_eq!(output, expected);
+fn second_test_for_date_only_specification_of_time() {
+    let start = datetime(1977, 6, 13, 0, 0, 0);
+    let actual = after(start);
+    let expected = datetime(2009, 2, 19, 1, 46, 40);
+    assert_eq!(actual, expected);
 }
 
 #[test]
 #[ignore]
-fn a_sentence_with_punctuation() {
-    let input = "I'm hungry!";
-    let output = reverse(input);
-    let expected = "!yrgnuh m'I";
-    assert_eq!(output, expected);
+fn third_test_for_date_only_specification_of_time() {
+    let start = datetime(1959, 7, 19, 0, 0, 0);
+    let actual = after(start);
+    let expected = datetime(1991, 3, 27, 1, 46, 40);
+    assert_eq!(actual, expected);
 }
 
 #[test]
 #[ignore]
-fn a_palindrome() {
-    let input = "racecar";
-    let output = reverse(input);
-    let expected = "racecar";
-    assert_eq!(output, expected);
+fn full_time_specified() {
+    let start = datetime(2015, 1, 24, 22, 0, 0);
+    let actual = after(start);
+    let expected = datetime(2046, 10, 2, 23, 46, 40);
+    assert_eq!(actual, expected);
 }
 
 #[test]
 #[ignore]
-fn an_even_sized_word() {
-    let input = "drawer";
-    let output = reverse(input);
-    let expected = "reward";
-    assert_eq!(output, expected);
+fn full_time_with_day_roll_over() {
+    let start = datetime(2015, 1, 24, 23, 59, 59);
+    let actual = after(start);
+    let expected = datetime(2046, 10, 3, 1, 46, 39);
+    assert_eq!(actual, expected);
 }
 
-#[test]
-#[ignore]
-fn wide_characters() {
-    let input = "子猫";
-    let output = reverse(input);
-    let expected = "猫子";
-    assert_eq!(output, expected);
-}
+fn datetime(
+    year: i32,
+    month: u8,
+    day: u8,
+    hour: u8,
+    minute: u8,
+    second: u8,
+) -> time::PrimitiveDateTime {
+    use time::{Date, PrimitiveDateTime, Time};
 
-#[test]
-#[ignore]
-#[cfg(feature = "grapheme")]
-fn grapheme_cluster_with_pre_combined_form() {
-    let input = "Würstchenstand";
-    let output = reverse(input);
-    let expected = "dnatsnehctsrüW";
-    assert_eq!(output, expected);
+    PrimitiveDateTime::new(
+        Date::from_calendar_date(year, month.try_into().unwrap(), day).unwrap(),
+        Time::from_hms(hour, minute, second).unwrap(),
+    )
 }
-
-#[test]
-#[ignore]
-#[cfg(feature = "grapheme")]
-fn grapheme_clusters() {
-    let input = "ผู้เขียนโปรแกรม";
-    let output = reverse(input);
-    let expected = "มรกแรปโนยขีเผู้";
-    assert_eq!(output, expected);
-}
-
