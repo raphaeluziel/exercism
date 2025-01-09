@@ -1,29 +1,63 @@
 use std::fmt;
-pub struct Clock;
+
+#[derive(Debug)]
+pub struct Clock {
+    hours: i32,
+    minutes: i32,
+}
 
 impl Clock {
     pub fn new(hours: i32, minutes: i32) -> Self {
         // todo!("Construct a new Clock from {hours} hours and {minutes} minutes");
-        self.hours = hours;
-        self.minutes = minutes;
-        self
+        let time_in_minutes = hours * 60 + minutes;
+        // let mut time_in_minutes = -105;
+        let mut h;
+        let mut m;
+        if time_in_minutes < 0 {
+            h = (time_in_minutes / 60) % (-24);
+            m = time_in_minutes % (-60);
+        }
+        else {
+            h = (time_in_minutes / 60) % 24;
+            m = time_in_minutes % 60;
+        }
+        //let mut h = (time_in_minutes / 60) % 24;
+        //let mut m = time_in_minutes % 60;
+        println!("TIMEAAA {:02}:{:02}", h, m);
+        // if h < 0 { h += 24; }
+        // if m < 0 { m += 60; }
+        println!("TIMEBBB {:02}:{:02}", h, m);
+        Clock {
+            hours: h,
+            minutes: m,
+        }
     }
 
     pub fn add_minutes(&self, minutes: i32) -> Self {
-        todo!("Add {minutes} minutes to existing Clock time");
+        //todo!("Add {minutes} minutes to existing Clock time");
+        let time_in_minutes = self.hours * 60 + self.minutes + minutes;
+        Self {
+            hours: (time_in_minutes / 60) % 24,
+            minutes: time_in_minutes % 60,
+        }
     }
 }
 
 impl fmt::Display for Clock {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "I'm a clock");
+        write!(f, "{:02}:{:02}", self.hours, self.minutes)
     }
 }
 
-////////////////////////////////////////////////////
-////////////////////////////////////////////////////
+impl PartialEq for Clock {
+    fn eq(&self, other: &Self) -> bool {
+        self.hours == other.hours && self.minutes == other.minutes
+    }
+}
 
-use clock::*;
+/////////////////////////////////////////////////////////////////////////////////////
+// use clock::*;
+/////////////////////////////////////////////////////////////////////////////////////
 
 //
 // Clock Creation
@@ -95,7 +129,7 @@ fn hour_and_minutes_roll_over_to_exactly_midnight() {
 }
 
 #[test]
-#[ignore]
+////////////////////////////////////////////////////////////////////
 fn negative_hour() {
     assert_eq!(Clock::new(-1, 15).to_string(), "23:15");
 }
