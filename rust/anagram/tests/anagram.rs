@@ -1,15 +1,6 @@
+use anagram::*;
 use std::collections::HashSet;
 
-pub fn anagrams_for<'a>(word: &str, possible_anagrams: &[&str]) -> HashSet<&'a str> {
-    // todo!("For the '{word}' word find anagrams among the following words: {possible_anagrams:?}");
-    println!("HEY {}", word);
-    println!("BBB {:?}", possible_anagrams);
-    HashSet::new()
-}
-
-
-//////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////
 #[test]
 fn no_matches() {
     let word = "diaper";
