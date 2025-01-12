@@ -1,12 +1,16 @@
 use std::collections::HashSet;
 
 pub fn anagrams_for<'a>(word: &str, possible_anagrams: &[&str]) -> HashSet<&'a str> {
-    // todo!("For the '{word}' word find anagrams among the following words: {possible_anagrams:?}");
-    println!("HEY {}", word);
-    println!("BBB {:?}", possible_anagrams);
-    HashSet::new()
+    let mut result_set = HashSet::new();
+    for w in possible_anagrams {
+        if *w == word { break; }
+        else if w.len() == word.len() { break; }
+        else { 
+            result_set.insert(w);
+         }
+    }
+    result_set
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -40,10 +44,10 @@ fn does_not_detect_anagram_subsets() {
 }
 
 #[test]
-#[ignore]
+
 fn detects_anagram() {
-    let word = "listen";
-    let inputs = &["enlists", "google", "inlets", "banana"];
+    let word = "listenlllllll";
+    let inputs = &["enlists", "google", "inlets", "banana", "listen", "banana"];
     let output = anagrams_for(word, inputs);
     let expected = HashSet::from_iter(["inlets"]);
     assert_eq!(output, expected);
@@ -177,10 +181,10 @@ fn words_other_than_themselves_can_be_anagrams() {
 }
 
 #[test]
-#[ignore]
+
 fn handles_case_of_greek_letters() {
     let word = "ΑΒΓ";
-    let inputs = &["ΒΓΑ", "ΒΓΔ", "γβα", "αβγ"];
+    let inputs = &["ΒΓΑ", "ΒΓΔ", "γβα", "αβγ", "ΑΒΓ"];
     let output = anagrams_for(word, inputs);
     let expected = HashSet::from_iter(["ΒΓΑ", "γβα"]);
     assert_eq!(output, expected);
