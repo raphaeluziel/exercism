@@ -1,17 +1,5 @@
-pub fn verse(n: u32) -> String {
-    todo!("emit verse {n}")
-}
-
-pub fn sing(start: u32, end: u32) -> String {
-    todo!("sing verses {start} to {end}, inclusive")
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////
-
 mod single_verse {
+    use beer_song::*;
 
     #[test]
     fn first_generic_verse() {
@@ -59,6 +47,7 @@ mod single_verse {
 }
 
 mod multiple_verses {
+    use beer_song::*;
 
     #[test]
     #[ignore]
