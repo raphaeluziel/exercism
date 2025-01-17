@@ -1,22 +1,28 @@
 // The code below is a stub. Just enough to satisfy the compiler.
 // In order to pass the tests you can add-to or change any of this code.
 
+const EARTH_YEAR_IN_SECONDS: f64 = 365.25 * 24.0 * 60.0 * 60.0;
+
 #[derive(Debug)]
-pub struct Duration;
+pub struct Duration {
+    duration: u64,
+}
 
 impl From<u64> for Duration {
     fn from(s: u64) -> Self {
-        todo!("s, measured in seconds: {s}")
+        // todo!("s, measured in seconds: {s}")
+        Duration { duration: s }
     }
 }
 
 pub trait Planet {
     fn years_during(d: &Duration) -> f64 {
         todo!("convert a duration ({d:?}) to the number of years on this planet for that duration");
+
     }
 }
 
-pub struct Mercury;
+pub struct Mercury { orbital_period: f64 }
 pub struct Venus;
 pub struct Earth;
 pub struct Mars;
@@ -25,7 +31,9 @@ pub struct Saturn;
 pub struct Uranus;
 pub struct Neptune;
 
-impl Planet for Mercury {}
+impl Planet for Mercury {
+    
+}
 impl Planet for Venus {}
 impl Planet for Earth {}
 impl Planet for Mars {}
@@ -33,8 +41,6 @@ impl Planet for Jupiter {}
 impl Planet for Saturn {}
 impl Planet for Uranus {}
 impl Planet for Neptune {}
-
-
 
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
