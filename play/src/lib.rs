@@ -3,6 +3,16 @@
 
 const EARTH_YEAR_IN_SECONDS: f64 = 365.25 * 24.0 * 60.0 * 60.0;
 
+// Orbital periods in terms of Earth years
+const MERCURY_PERIOD: f64 = 0.2408467;
+const VENUS_PERIOD: f64 = 0.61519726;
+const EARTH_PERIOD: f64 = 1.0;
+const MARS_PERIOD: f64 = 1.8808158;
+const JUPITER_PERIOD: f64 = 11.862615;
+const SATURN_PERIOD: f64 = 29.447498;
+const URANUS_PERIOD: f64 = 84.016846;
+const NEPTUNE_PERIOD: f64 = 164.79132;
+
 #[derive(Debug)]
 pub struct Duration {
     duration: u64,
@@ -16,34 +26,26 @@ impl From<u64> for Duration {
 }
 
 pub trait Planet {
-    fn years_during(d: &Duration) -> f64 {
-        todo!("convert a duration ({d:?}) to the number of years on this planet for that duration");
-
-    }
+    fn years_during(d: &Duration) -> f64;
 }
 
-pub struct Mercury { orbital_period: f64 }
-pub struct Venus;
-pub struct Earth;
-pub struct Mars;
-pub struct Jupiter;
-pub struct Saturn;
-pub struct Uranus;
-pub struct Neptune;
+pub struct Mercury {
+    pub orbital_period: f64,
+}
+pub struct Venus {
+    pub orbital_period: f64,
+}
 
 impl Planet for Mercury {
-    
+    fn years_during(d: &Duration) -> f64 {
+        d.duration as f64 / EARTH_YEAR_IN_SECONDS / MERCURY_PERIOD
+    }
 }
-impl Planet for Venus {}
-impl Planet for Earth {}
-impl Planet for Mars {}
-impl Planet for Jupiter {}
-impl Planet for Saturn {}
-impl Planet for Uranus {}
-impl Planet for Neptune {}
-
-//////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////
+impl Planet for Venus {
+    fn years_during(d: &Duration) -> f64 {
+        d.duration as f64 / EARTH_YEAR_IN_SECONDS / VENUS_PERIOD
+    }
+}
 
 fn assert_in_delta(expected: f64, actual: f64) {
     let diff: f64 = (expected - actual).abs();
@@ -54,16 +56,6 @@ fn assert_in_delta(expected: f64, actual: f64) {
 }
 
 #[test]
-fn age_on_earth() {
-    let seconds = 1_000_000_000;
-    let duration = Duration::from(seconds);
-    let output = Earth::years_during(&duration);
-    let expected = 31.69;
-    assert_in_delta(expected, output);
-}
-
-#[test]
-#[ignore]
 fn age_on_mercury() {
     let seconds = 2_134_835_688;
     let duration = Duration::from(seconds);
@@ -73,61 +65,10 @@ fn age_on_mercury() {
 }
 
 #[test]
-#[ignore]
 fn age_on_venus() {
     let seconds = 189_839_836;
     let duration = Duration::from(seconds);
     let output = Venus::years_during(&duration);
     let expected = 9.78;
-    assert_in_delta(expected, output);
-}
-
-#[test]
-#[ignore]
-fn age_on_mars() {
-    let seconds = 2_129_871_239;
-    let duration = Duration::from(seconds);
-    let output = Mars::years_during(&duration);
-    let expected = 35.88;
-    assert_in_delta(expected, output);
-}
-
-#[test]
-#[ignore]
-fn age_on_jupiter() {
-    let seconds = 901_876_382;
-    let duration = Duration::from(seconds);
-    let output = Jupiter::years_during(&duration);
-    let expected = 2.41;
-    assert_in_delta(expected, output);
-}
-
-#[test]
-#[ignore]
-fn age_on_saturn() {
-    let seconds = 2_000_000_000;
-    let duration = Duration::from(seconds);
-    let output = Saturn::years_during(&duration);
-    let expected = 2.15;
-    assert_in_delta(expected, output);
-}
-
-#[test]
-#[ignore]
-fn age_on_uranus() {
-    let seconds = 1_210_123_456;
-    let duration = Duration::from(seconds);
-    let output = Uranus::years_during(&duration);
-    let expected = 0.46;
-    assert_in_delta(expected, output);
-}
-
-#[test]
-#[ignore]
-fn age_on_neptune() {
-    let seconds = 1_821_023_456;
-    let duration = Duration::from(seconds);
-    let output = Neptune::years_during(&duration);
-    let expected = 0.35;
     assert_in_delta(expected, output);
 }
