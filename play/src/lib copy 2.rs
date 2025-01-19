@@ -12,32 +12,15 @@ const SATURN_PERIOD: f64 = 29.447498;
 const URANUS_PERIOD: f64 = 84.016846;
 const NEPTUNE_PERIOD: f64 = 164.79132;
 
-enum PlanetEnum {
-    MERCURY,
-    VENUS,
-    EARTH,
-    MARS,
-    JUPITER,
-    SATURN,
-    URANUS,
-    NEPTUNE,
-}
-
 macro_rules! implement_Planet {
-    ( for $( $p:ty ),+ ) => {
-        $(impl Planet for <$p> {
-            let orbital_period: f64 = match <$p> {
-                Mercury => MERCURY_PERIOD,
-                Venus => VENUS_PERIOD,
-                Earth => EARTH_PERIOD,
-                Mars => MARS_PERIOD,
-                Jupiter => JUPITER_PERIOD,
-                Saturn => SATURN_PERIOD,
-                Uranus => URANUS_PERIOD,
-                Neptune => NEPTUNE_PERIOD,
-                _ => 0.0
-            }
+    ( for $( $t:ty ),+ ) => {
+        $(impl Planet for $t {
             fn years_during(d: &Duration) -> f64 {
+                let x = <$t>::pn;
+                let ooo = match x {
+                    1 => MERCURY_PERIOD,
+                    _ => 0.0
+                };
                 d.duration as f64 / EARTH_YEAR_IN_SECONDS / MERCURY_PERIOD
             }
         })*
@@ -55,27 +38,6 @@ macro_rules! vec {
     };
 }
 
-// macro_rules! implement_Planet {
-//     ( for $( $p:ty ),+ ) => {
-//         const orbital_period: f64 = match $p {
-//             Mercury => MERCURY_PERIOD,
-//             Venus => VENUS_PERIOD,
-//             Earth => EARTH_PERIOD,
-//             Mars => MARS_PERIOD,
-//             Jupiter => JUPITER_PERIOD,
-//             Saturn => SATURN_PERIOD,
-//             Uranus => URANUS_PERIOD,
-//             Neptune => NEPTUNE_PERIOD,
-//             _ => 0.0
-//         }
-//         $(impl Planet for $p {
-//             fn years_during(d: &Duration) -> f64 {
-//                 d.duration as f64 / EARTH_YEAR_IN_SECONDS / orbital_period
-//             }
-//         })*
-//     }
-// }
-
 #[derive(Debug)]
 pub struct Duration {
     duration: u64,
@@ -91,16 +53,16 @@ pub trait Planet {
     fn years_during(d: &Duration) -> f64;
 }
 
-pub struct Mercury;
-pub struct Venus;
-pub struct Earth;
-pub struct Mars;
-pub struct Jupiter;
-pub struct Saturn;
-pub struct Uranus;
-pub struct Neptune;
+pub struct Mercury { pn: u8, }
+// pub struct Venus;
+// pub struct Earth;
+// pub struct Mars;
+// pub struct Jupiter;
+// pub struct Saturn;
+// pub struct Uranus;
+// pub struct Neptune;
 
-implement_Planet!(Mercury, Venus);
+implement_Planet!(for Mercury);
 
 ////////////////////////////////////////////////////////////////
 
