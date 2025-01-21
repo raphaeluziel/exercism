@@ -8,55 +8,27 @@ pub enum Comparison {
 
 pub fn sublist<T: PartialEq>(_first_list: &[T], _second_list: &[T]) -> Comparison {
     let a = [1, 2, 3, 9];
-    let b = [0, 0, 1, 2, 3, 9, 7, 6];
+    let b = [990, 880, 1, 2, 32, 9, 110, 220, 330, 440];
 
-    // let small_index = if a.len() <= b.len() { a.len() } else { b.len() };
-    let mut start = 0;
-    let mut end = a.len() - 1;
+    let sm: &[i32] = if a.len() <= b.len() { &a } else { &b };
+    let lg: &[i32] = if a.len() > b.len() { &a } else { &b };
 
-    println!("Start {} End {}", start, end);
+    if sm == lg { return Comparison::Equal; }
 
-    while (&b[start..end] != a) && (end < b.len()) {
-        start += 1;
-        end += 1;
+    let smi = sm.len();
+    let lgi = lg.len();
+
+    println!("SMALL {} {:?}", smi, sm);
+    println!("LARGE {} {:?}", lgi, lg);
+
+    println!("HEYYYYYYY {}", sm == lg);
+
+    for i in 0..=(lgi - smi) {
+        println!("{i}");
+        let lg_slice: &[i32] = &lg[i..(i + smi)];
+        println!("SLICE = {:?}", lg_slice);
+        if sm == lg_slice { println!("\n\nSUBSET!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n"); }
     }
-    println!("Start {} End {}", start, end);
-
-    // let small_vec = if a.len() <= b.len() {
-    //     Vec::from(a)
-    // } else {
-    //     Vec::from(b)
-    // };
-    // let big_vec = if a.len() > b.len() {
-    //     Vec::from(a)
-    // } else {
-    //     Vec::from(b)
-    // };
-
-    // let mut start = 0;
-    // let mut end = 0;
-
-    // for (i, n) in big_vec.iter().enumerate() {
-    //     if small_vec.get(start) == Some(n) {
-    //         start = i;
-    //         big_vec = Vec::from(&b[start..]);
-    //         break;
-    //     }
-    // }
-
-    // println!("Start {start}");
-    // println!("BIG = {:?}", big_vec);
-    // println!("End {end}");
-
-    // let mut start: usize = 0;
-    // let end: usize = big_vec.len();
-
-    // let mut slice_of_big = &big_vec;
-
-    // while (&slice_of_big[start..(start + a.len())] != a) && (start + a.len() < slice_of_big.len()){
-    //     println!("HEY");
-    //     start += 1;
-    // }
 
     Comparison::Unequal
 }
