@@ -7,16 +7,24 @@ pub enum Comparison {
 }
 
 pub fn sublist<T: PartialEq>(_first_list: &[T], _second_list: &[T]) -> Comparison {
-    let a = [1, 2, 3, 9];
-    let b = [990, 880, 1, 2, 32, 9, 110, 220, 330, 440];
+    let a = [1, 2, 3, 9 ];
+    let b = [990, 880, 1, 2, 3, 9, 110, 220, 330, 440];
 
     let sm: &[i32] = if a.len() <= b.len() { &a } else { &b };
     let lg: &[i32] = if a.len() > b.len() { &a } else { &b };
 
-    if sm == lg { return Comparison::Equal; }
+    if sm == lg {
+        return Comparison::Equal;
+    }
 
     let smi = sm.len();
     let lgi = lg.len();
+
+    let mut cp = if a.len() > b.len() { Comparison::Superlist } 
+    else if a.len() < b.len() { Comparison::Sublist }
+    else { Comparison::Unequal };
+
+    println!("CP = {:?}", cp);
 
     println!("SMALL {} {:?}", smi, sm);
     println!("LARGE {} {:?}", lgi, lg);
@@ -27,7 +35,10 @@ pub fn sublist<T: PartialEq>(_first_list: &[T], _second_list: &[T]) -> Compariso
         println!("{i}");
         let lg_slice: &[i32] = &lg[i..(i + smi)];
         println!("SLICE = {:?}", lg_slice);
-        if sm == lg_slice { println!("\n\nSUBSET!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n"); }
+        if sm == lg_slice {
+            println!("\n\nSUBSET!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n");
+            return cp;
+        }
     }
 
     Comparison::Unequal
