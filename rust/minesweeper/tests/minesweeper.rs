@@ -1,4 +1,4 @@
-use play::*;
+use minesweeper::*;
 
 #[test]
 fn no_rows() {

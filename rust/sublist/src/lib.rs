@@ -1,3 +1,6 @@
+// Check out https://doc.rust-lang.org/std/slice/struct.Windows.html
+// This I found through community solutions, after submitting the one here.
+
 use std::cmp::Ordering;
 
 #[derive(Debug, PartialEq, Eq)]
@@ -9,24 +12,23 @@ pub enum Comparison {
 }
 
 pub fn sublist<T: PartialEq>(_first_list: &[T], _second_list: &[T]) -> Comparison {
-    let sm: &[T] = if _first_list.len() <= _second_list.len() { _first_list } else { _second_list };
-    let lg: &[T] = if _first_list.len()  > _second_list.len() { _first_list } else { _second_list };
 
-    if sm == lg { return Comparison::Equal; }
-
-    let smi = sm.len();
-    let lgi = lg.len();
-
-    let cp = match _first_list.len().cmp(&_second_list.len()) {
-        Ordering::Greater => Comparison::Superlist,
-        Ordering::Less => Comparison::Sublist,
-        Ordering::Equal => Comparison::Unequal
-    };
-
-    for i in 0..=(lgi - smi) {
-        let lg_slice: &[T] = &lg[i..(i + smi)];
-        if sm == lg_slice { return cp; }
+    fn is_set<T: PartialEq>(large: &[T], small: &[T], set: Comparison) -> Comparison {
+        for i in 0..=(large.len() - small.len()) {
+            let large_slice: &[T] = &large[i..(i + small.len())];
+            if small == large_slice {
+                return set;
+            }
+        }
+        Comparison::Unequal
     }
 
-    Comparison::Unequal
+    match _first_list.len().cmp(&_second_list.len()) {
+        Ordering::Greater => is_set(_first_list, _second_list, Comparison::Superlist),
+        Ordering::Less => is_set(_second_list, _first_list, Comparison::Sublist),
+        Ordering::Equal => {
+            if _first_list == _second_list { Comparison::Equal } 
+            else { Comparison::Unequal }
+        }
+    }
 }
