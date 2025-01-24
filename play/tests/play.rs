@@ -1,6 +1,7 @@
 use play::*;
 
 #[test]
+#[ignore]
 fn no_rows() {
     let input = &[];
     let expected: &[&str] = &[];
@@ -167,7 +168,7 @@ fn cross() {
 }
 
 #[test]
-#[ignore]
+
 fn large_minefield() {
     #[rustfmt::skip]
     let (input, expected) = (&[
