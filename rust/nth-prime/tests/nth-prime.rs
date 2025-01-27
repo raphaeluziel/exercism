@@ -1,4 +1,4 @@
-use play::*;
+use nth_prime::*;
 
 #[test]
 fn first_prime() {

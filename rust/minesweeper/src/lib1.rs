@@ -3,7 +3,7 @@ use core::str;
 pub fn annotate(minefield: &[&str]) -> Vec<String> {
     let mut minemap: Vec<String> = Vec::new();
 
-    if minefield.is_empty() { return minemap; }
+    if minefield.len() == 0 { return minemap; }
 
     let rows = minefield.len();
     let cols = minefield[0].len();
@@ -19,7 +19,7 @@ pub fn annotate(minefield: &[&str]) -> Vec<String> {
 
     for r in 0..rows {
         let row = minefield[r].as_bytes();
-        vvv[r + 1][1..(cols + 1)].copy_from_slice(&row[..cols]);
+        for c in 0..cols { vvv[r + 1][c + 1] = row[c]; }
     }
 
     for r in 0..rows {
@@ -41,8 +41,8 @@ pub fn annotate(minefield: &[&str]) -> Vec<String> {
         }
     }
 
-    for row in www {
-        minemap.push(str::from_utf8(&row).unwrap().to_string());
+    for row in 0..rows {
+        minemap.push(str::from_utf8(&www[row]).unwrap().to_string());
     }
 
     minemap
