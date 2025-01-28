@@ -1,26 +1,37 @@
+pub fn is_prime(num: u32) -> bool {
+
+    if num < 2 { return false; }
+    if num == 2 { return true; }
+
+    let mut x = 3;
+
+    let limit = (num as f32).sqrt() as u32;
+
+    while x < limit {
+        if num % x == 0 { return false; }
+        x += 2;
+    }
+
+    true
+}
+
+
 pub fn nth(n: u32) -> u32 {
-    // const FIRST_FEW: [u32; 13] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41];
-    // if n < 13 {
-    //     FIRST_FEW[n as usize]
-    // }
-    // else {
-    //     n
-    // }
 
-    fn is_prime(num: u32) -> bool {
-        
-        true
+    if n == 0 { return 2; }
+    else if n == 1 { return 3; }
+    
+    let mut count = 1;
+    let mut num = 5;
+
+    while count < n {
+        if is_prime(num) {
+            count += 1;
+        }
+        num += 2;
     }
 
-    let count: u32 = 0;
-    while count <= n {
+    println!("COUNT {count}");
 
-    }
-
-
-    for num in (3..).into_iter().take_while(|x| x < (n as f64).sqrt() as u32) {
-        println!("HEY {num}");
-    }
-
-    n
+    num
 }

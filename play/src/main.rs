@@ -1,7 +1,6 @@
 use play::*;
 
 fn main() {
-    for n in 0..25 {
-        println!("HEY {n} is {}", nth(n));
-    }
+    let n:u32 = 10381;
+    println!("Number {} prime? {}", n, is_prime(n));
 }
