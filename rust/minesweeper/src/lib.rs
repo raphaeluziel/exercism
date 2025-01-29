@@ -8,42 +8,40 @@ pub fn annotate(minefield: &[&str]) -> Vec<String> {
     let rows = minefield.len();
     let cols = minefield[0].len();
 
-    // Matrix with an extra "border" of blank spaces
-    let mut vvv = vec![vec![32u8; cols + 2]; rows + 2];
-    // Matrix that will hold the values before being turned into strings
-    let mut www = vec![vec![0u8; cols]; rows];
+    let mut matrix_with_border = vec![vec![32u8; cols + 2]; rows + 2];
+    let mut matrix_of_values = vec![vec![0u8; cols]; rows];
 
-    // (1, 1) is the center; the location we are trying to find how many mines are around it
-    // The locations cover the 8 positions aound the central (1, 1)
-    let locations = [(0, 0), (0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1), (2, 2)];
+    // the location (1,1) is the central one, the one we are looking at
+    let locations = [(0, 0), (0, 1), (0, 2), 
+                     (1, 0),         (1, 2), 
+                     (2, 0), (2, 1), (2, 2)];
 
     for r in 0..rows {
         let row = minefield[r].as_bytes();
-        vvv[r + 1][1..(cols + 1)].copy_from_slice(&row[..cols]);
+        matrix_with_border[r + 1][1..(cols + 1)].copy_from_slice(&row[..cols]);
     }
 
     for r in 0..rows {
         for c in 0..cols {
 
-            if vvv[r + 1][c + 1] == 42 {
-                www[r][c] = 42;
+            if matrix_with_border[r + 1][c + 1] == 42 {
+                matrix_of_values[r][c] = 42;
                 continue;
             }
 
             for loc in locations {
-                if vvv[r + loc.0][c + loc.1] == 42 { www[r][c] += 1; }
+                if matrix_with_border[r + loc.0][c + loc.1] == 42 { matrix_of_values[r][c] += 1; }
             }
 
             // If there are no mines around it, make it a blank space
-            if www[r][c] == 0 { www[r][c] = 32; } 
+            if matrix_of_values[r][c] == 0 { matrix_of_values[r][c] = 32; } 
             // Otherwise, add 48 to make it an ASCII character for the number
-            else { www[r][c] += 48; } 
+            else { matrix_of_values[r][c] += 48; } 
         }
     }
 
-    for row in www {
+    for row in matrix_of_values {
         minemap.push(str::from_utf8(&row).unwrap().to_string());
     }
-
     minemap
 }

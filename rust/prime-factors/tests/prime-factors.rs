@@ -1,4 +1,4 @@
-use play::*;
+use prime_factors::*;
 
 #[test]
 fn no_factors() {
