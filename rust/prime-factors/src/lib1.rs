@@ -11,7 +11,7 @@ pub fn factors(n: u64) -> Vec<u64> {
         prime_factor = nth(prime_count);
         while left % prime_factor == 0 {
             factors.push(prime_factor);
-            left /= prime_factor;
+            left = left / prime_factor;
         }
         prime_count += 1;
         
