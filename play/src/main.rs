@@ -1,5 +1,6 @@
 use play::*;
 
 fn main() {
-    is_valid("777");
+    let x = "HHH059";
+    println!("{}  {}", x, is_valid(x));
 }
