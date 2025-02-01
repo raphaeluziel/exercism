@@ -1,22 +1,18 @@
-mod prime;
-use prime::*;
-
 pub fn factors(n: u64) -> Vec<u64> {
     let mut factors = Vec::new();
-    let mut prime_count: u64 = 0;
-    let mut prime_factor;
-    let mut left = n;
+    let mut leftover = n;
+    let mut divider = 2;
+    let limit = (n as f64).sqrt() as u64;
 
-    while !is_prime(left) && left != 1 {
-        prime_factor = nth(prime_count);
-        while left % prime_factor == 0 {
-            factors.push(prime_factor);
-            left /= prime_factor;
+    while divider <= limit {
+        while leftover % divider == 0 {
+            factors.push(divider);
+            leftover /= divider;
         }
-        prime_count += 1;
-        
+        divider += 1;
     }
-    if left != 1 { factors.push(left); }
+
+    if leftover > 1 { factors.push(leftover); }
 
     factors
 }

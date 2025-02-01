@@ -1,4 +1,4 @@
-use play::*;
+use luhn::*;
 
 #[test]
 fn single_digit_strings_can_not_be_valid() {
