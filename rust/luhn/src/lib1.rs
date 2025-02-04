@@ -20,17 +20,16 @@ pub fn is_valid(code: &str) -> bool {
 
     digits.reverse();
 
-    for (i, digit) in digits.iter().enumerate() {
+    for i in 0..digits.len() {
         if i % 2 != 0 {
-            checksum += if *digit < 5 {
-                *digit as u64 * 2
+            checksum += if digits[i] < 5 {
+                digits[i] as u64 * 2
             } else {
-                *digit as u64 * 2 - 9
+                digits[i] as u64 * 2 - 9
             };
         } else {
-            checksum += *digit as u64;
+            checksum += digits[i] as u64;
         }
     }
-
     checksum % 10 == 0
 }

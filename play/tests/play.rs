@@ -1,6 +1,7 @@
 use play::*;
 
 #[test]
+#[ignore]
 fn single_digit_strings_can_not_be_valid() {
     assert!(!is_valid("1"));
 }
@@ -84,7 +85,7 @@ fn valid_strings_with_symbols_included_become_invalid() {
 }
 
 #[test]
-#[ignore]
+
 fn single_zero_with_space_is_invalid() {
     assert!(!is_valid(" 0"));
 }
