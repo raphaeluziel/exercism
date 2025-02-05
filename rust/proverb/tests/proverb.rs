@@ -1,4 +1,4 @@
-use play::*;
+use proverb::*;
 
 #[test]
 fn zero_pieces() {

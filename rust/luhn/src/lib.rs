@@ -1,15 +1,11 @@
 pub fn is_valid(code: &str) -> bool {
-    if code.len() < 2 || !code.is_ascii() {
-        return false;
-    }
+    if code.len() < 2 || !code.is_ascii() { return false; }
 
     let mut checksum: u64 = 0;
     let mut digits: Vec<u8> = Vec::new();
     let bytes = code.as_bytes();
 
-    if bytes.len() < 2 {
-        return false;
-    }
+    if bytes.len() < 2 { return false; }
 
     for byte in bytes {
         match byte {
@@ -19,9 +15,7 @@ pub fn is_valid(code: &str) -> bool {
         }
     }
 
-    if digits.len() < 2 {
-        return false;
-    }
+    if digits.len() < 2 { return false; }
 
     digits.reverse();
 
