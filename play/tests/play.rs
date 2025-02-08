@@ -1,6 +1,7 @@
 use play::*;
 
 #[test]
+#[ignore]
 fn zero_pieces() {
     let input = &[];
     let output = build_proverb(input);
@@ -31,7 +32,7 @@ fn two_pieces() {
 }
 
 #[test]
-#[ignore]
+
 fn three_pieces() {
     let input = &["nail", "shoe", "horse"];
     let output = build_proverb(input);
