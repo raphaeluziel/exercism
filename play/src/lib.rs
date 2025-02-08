@@ -3,12 +3,16 @@ pub fn build_proverb(list: &[&str]) -> String {
     
     println!("\n\nLIST = {:?}", list);
 
+    let mut list_iter = list.iter().peekable();
 
-    for (index, thing) in list.iter().enumerate() {
-        println!("TTT {} - {}", index, thing);
+    while list_iter.peek() != None {
+        proverb.push_str(list_iter.next().unwrap());
     }
 
+    list_iter.map(|x| )
+
     println!("PROVERB\n{proverb}\n\n");
+    println!("LIST ITER {:?}", list_iter);
 
     proverb
 }
