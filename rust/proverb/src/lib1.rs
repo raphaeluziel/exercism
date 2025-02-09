@@ -1,4 +1,4 @@
-// 
+// First try.  I think I can do better, so look for my next iteration to come!
 
 pub fn build_proverb(list: &[&str]) -> String {
     let mut proverb = String::new();
@@ -17,7 +17,7 @@ pub fn build_proverb(list: &[&str]) -> String {
         else {
             proverb.push_str("And all for the want of a ");
             proverb.push_str(list[0]);
-            proverb.push('.');
+            proverb.push_str(".");
         }
     }
     proverb

@@ -1,4 +1,4 @@
-// 
+// Second iteration, just changing what the auto suggestion recommended.
 
 pub fn build_proverb(list: &[&str]) -> String {
     let mut proverb = String::new();
