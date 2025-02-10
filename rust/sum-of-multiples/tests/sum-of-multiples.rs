@@ -1,4 +1,4 @@
-use play::*;
+use sum_of_multiples::*;
 
 #[test]
 fn no_multiples_within_limit() {
