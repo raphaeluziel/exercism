@@ -1,24 +1,16 @@
-// 
+// Third iteration using format!
 
 pub fn build_proverb(list: &[&str]) -> String {
     let mut proverb = String::new();
-    let starting = "For want of a ";
-    let the = " the ";
-    let ending = " was lost.\n";
 
     for i in 0..list.len() {
-        if i + 1 < list.len() {
-            proverb.push_str(starting);
-            proverb.push_str(list[i]);
-            proverb.push_str(the);
-            proverb.push_str(list[i + 1]);
-            proverb.push_str(ending);
+        proverb = if i + 1 < list.len() {
+            format!("{}For want of a {} the {} was lost.\n", proverb, list[i], list[i+1])
         }
         else {
-            proverb.push_str("And all for the want of a ");
-            proverb.push_str(list[0]);
-            proverb.push('.');
+            format!("{}And all for the want of a {}.", proverb, list[0])
         }
     }
+    
     proverb
 }
