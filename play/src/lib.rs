@@ -1,14 +1,21 @@
-use std::collections::HashSet;
-
-pub fn sum_of_multiples(limit: u32, factors: &[u32]) -> u32 {
-    let mut set: HashSet<u32> = HashSet::new();
-    for n in factors {
-        if *n == 0 { continue; }
-        let mut i = 1;
-        while n * i < limit {
-            set.insert(n * i);
-            i += 1;
-        }
+pub fn reply(message: &str) -> &str {
+    let trimmed_message = message.trim();
+    if trimmed_message.chars().any(|c| !matches!(c, 'A'..='z')) {
+        "Whatever."
     }
-    set.iter().sum()
+    else if trimmed_message.split_whitespace().next() == None {
+        "Fine. Be that way!"
+    }
+    else if trimmed_message.ends_with("?") && message.to_uppercase() == message {
+        "Calm down, I know what I'm doing!"
+    }
+    else if trimmed_message.ends_with("?") { 
+        "Sure." 
+    }
+    else if trimmed_message.to_uppercase() == message { 
+        "Whoa, chill out!" 
+    }
+    else { 
+        "Whatever." 
+    }
 }

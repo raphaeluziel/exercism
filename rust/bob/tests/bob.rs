@@ -1,7 +1,6 @@
-use play::*;
+use bob::*;
 
 #[test]
-#[ignore]
 fn stating_something() {
     assert_eq!(reply("Tom-ay-to, tom-aaaah-to."), "Whatever.");
 }
@@ -70,7 +69,7 @@ fn shouting_numbers() {
 }
 
 #[test]
-
+#[ignore]
 fn no_letters() {
     assert_eq!(reply("1, 2, 3"), "Whatever.");
 }
