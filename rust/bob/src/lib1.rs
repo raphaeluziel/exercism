@@ -1,3 +1,5 @@
+// First try.  Too many conditions. There has to be a simpler way
+
 pub fn reply(message: &str) -> &str {
     match message.trim() {
         x if x.split_whitespace().next() == None => "Fine. Be that way!",
