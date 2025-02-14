@@ -1,13 +1,9 @@
 #[derive(Debug)]
-pub struct HighScores{
-    scrs: Vec<u32>
-}
+pub struct HighScores;
 
 impl HighScores {
     pub fn new(scores: &[u32]) -> Self {
-        println!("SCORES = {:?}", scores);
-        println!("HIGHSCORES = {:?}", HighScores { scrs: Vec::from(scores) });
-        HighScores { scrs: Vec::from(scores) }
+        todo!("Construct a HighScores struct, given the scores: {scores:?}")
     }
 
     pub fn scores(&self) -> &[u32] {

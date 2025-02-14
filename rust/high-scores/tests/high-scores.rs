@@ -1,4 +1,4 @@
-use play::HighScores;
+use high_scores::HighScores;
 
 #[test]
 fn list_of_scores() {
