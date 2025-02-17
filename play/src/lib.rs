@@ -5,22 +5,23 @@ pub struct HighScores{
 
 impl HighScores {
     pub fn new(scores: &[u32]) -> Self {
-        println!("SCORES = {:?}", scores);
-        println!("HIGHSCORES = {:?}", HighScores { scrs: Vec::from(scores) });
         HighScores { scrs: Vec::from(scores) }
     }
 
     pub fn scores(&self) -> &[u32] {
-        println!("SELF {:?}", &self.scrs);
-        //todo!("Return all the scores as a slice")
         &self.scrs
     }
 
     pub fn latest(&self) -> Option<u32> {
-        todo!("Return the latest (last) score")
+        self.scrs.last().copied()
     }
 
     pub fn personal_best(&self) -> Option<u32> {
+        println!("HEY {:?}", self.scrs);
+        let mut x = [];
+        x.clone_from_slice(&self.scrs);
+        
+        println!("XXX {:?}", x);
         todo!("Return the highest score")
     }
 
