@@ -11,7 +11,9 @@ impl HighScores {
     }
 
     pub fn scores(&self) -> &[u32] {
-        todo!("Return all the scores as a slice")
+        println!("SELF {:?}", &self.scrs);
+        //todo!("Return all the scores as a slice")
+        &self.scrs
     }
 
     pub fn latest(&self) -> Option<u32> {
