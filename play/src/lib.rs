@@ -17,12 +17,9 @@ impl HighScores {
     }
 
     pub fn personal_best(&self) -> Option<u32> {
-        println!("HEY {:?}", self.scrs);
-        let mut x = [];
-        x.clone_from_slice(&self.scrs);
-        
-        println!("XXX {:?}", x);
-        todo!("Return the highest score")
+        let mut sorted_scores = self.scrs.to_vec();
+        sorted_scores.sort();
+        sorted_scores.last().copied()
     }
 
     pub fn personal_top_three(&self) -> Vec<u32> {
