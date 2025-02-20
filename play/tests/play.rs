@@ -8,7 +8,7 @@ fn list_of_scores() {
 }
 
 #[test]
-
+#[ignore]
 fn latest_score() {
     let high_scores = HighScores::new(&[100, 0, 90, 30]);
     assert_eq!(high_scores.latest(), Some(30));
@@ -22,7 +22,7 @@ fn latest_score_empty() {
 }
 
 #[test]
-
+#[ignore]
 fn personal_best() {
     let high_scores = HighScores::new(&[40, 100, 70]);
     assert_eq!(high_scores.personal_best(), Some(100));

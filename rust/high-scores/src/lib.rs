@@ -1,24 +1,31 @@
 #[derive(Debug)]
-pub struct HighScores;
+pub struct HighScores{
+    scrs: Vec<u32>
+}
 
 impl HighScores {
     pub fn new(scores: &[u32]) -> Self {
-        todo!("Construct a HighScores struct, given the scores: {scores:?}")
+        HighScores { scrs: Vec::from(scores) }
     }
 
     pub fn scores(&self) -> &[u32] {
-        todo!("Return all the scores as a slice")
+        &self.scrs
     }
 
     pub fn latest(&self) -> Option<u32> {
-        todo!("Return the latest (last) score")
+        self.scrs.last().copied()
     }
 
     pub fn personal_best(&self) -> Option<u32> {
-        todo!("Return the highest score")
+        let mut sorted_scores = self.scrs.to_vec();
+        sorted_scores.sort();
+        sorted_scores.last().copied()
     }
 
     pub fn personal_top_three(&self) -> Vec<u32> {
-        todo!("Return 3 highest scores")
+        let mut top_three = self.scrs.to_vec();
+        top_three.sort();
+        top_three.reverse();
+        top_three.iter().enumerate().filter(|x| x.0 < 3).map(|x| *x.1).collect()
     }
 }

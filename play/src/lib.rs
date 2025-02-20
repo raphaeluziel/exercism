@@ -1,11 +1,11 @@
 #[derive(Debug)]
-pub struct HighScores{
-    scrs: Vec<u32>
+pub struct HighScores<'a>{
+    scrs: &'a [u32]
 }
 
-impl HighScores {
-    pub fn new(scores: &[u32]) -> Self {
-        HighScores { scrs: Vec::from(scores) }
+impl <'a> HighScores<'a> {
+    pub fn new(scores: &'a[u32]) -> Self {
+        HighScores { scrs: scores }
     }
 
     pub fn scores(&self) -> &[u32] {
@@ -23,6 +23,9 @@ impl HighScores {
     }
 
     pub fn personal_top_three(&self) -> Vec<u32> {
-        todo!("Return 3 highest scores")
+        let mut top_three = self.scrs.to_vec();
+        top_three.sort();
+        top_three.reverse();
+        top_three.iter().enumerate().filter(|x| x.0 < 3).map(|x| *x.1).collect()
     }
 }
