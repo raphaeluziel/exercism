@@ -1,15 +1,15 @@
 #[derive(Debug)]
-pub struct HighScores<'a>{
-    scrs: &'a [u32]
+pub struct HighScores<'a> {
+    scrs: &'a [u32],
 }
 
-impl <'a> HighScores<'a> {
-    pub fn new(scores: &'a[u32]) -> Self {
+impl<'a> HighScores<'a> {
+    pub fn new(scores: &'a [u32]) -> Self {
         HighScores { scrs: scores }
     }
 
     pub fn scores(&self) -> &[u32] {
-        &self.scrs
+        self.scrs
     }
 
     pub fn latest(&self) -> Option<u32> {
@@ -17,9 +17,7 @@ impl <'a> HighScores<'a> {
     }
 
     pub fn personal_best(&self) -> Option<u32> {
-        let mut sorted_scores = self.scrs.to_vec();
-        sorted_scores.sort();
-        sorted_scores.last().copied()
+        self.scrs.iter().max().copied()
     }
 
     pub fn personal_top_three(&self) -> Vec<u32> {
