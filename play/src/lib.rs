@@ -1,29 +1,38 @@
-#[derive(Debug)]
-pub struct HighScores<'a> {
-    scrs: &'a [u32],
-}
+use std::mem::take;
 
-impl<'a> HighScores<'a> {
-    pub fn new(scores: &'a [u32]) -> Self {
-        HighScores { scrs: scores }
-    }
+pub fn recite(start_bottles: u32, take_down: u32) -> String {
+    let mut song = String::new();
+    let bottles = ["bottle", "bottles"];
 
-    pub fn scores(&self) -> &[u32] {
-        self.scrs
-    }
+    let num = [
+        "Ten", 
+        "Nine", 
+        "Eight", 
+        "Seven", 
+        "Six", 
+        "Five", 
+        "Four", 
+        "Three", 
+        "Two", 
+        "One", 
+        "Zero"
+        ];
 
-    pub fn latest(&self) -> Option<u32> {
-        self.scrs.last().copied()
-    }
+    let last_bottle = start_bottles - take_down;
+    println!("Start     {start_bottles}\nTakedown  {take_down}\nLast      {last_bottle}");
 
-    pub fn personal_best(&self) -> Option<u32> {
-        self.scrs.iter().max().copied()
-    }
+    let x = format!("{} green {} hanging on the wall,\n", start_bottles, bottles[1]);
+    for _ in 0..2 { song.push_str(&x); }
+    song.push_str("And if one green bottle should happen to fall,\n");
+    song.push_str();
 
-    pub fn personal_top_three(&self) -> Vec<u32> {
-        let mut top_three = self.scrs.to_vec();
-        top_three.sort();
-        top_three.reverse();
-        top_three.iter().enumerate().filter(|x| x.0 < 3).map(|x| *x.1).collect()
-    }
+
+    println!("SONG\n{}", song);
+
+    // Four green bottles hanging on the wall,
+    // Four green bottles hanging on the wall,
+    // And if one green bottle should accidentally fall,
+    // There'll be three green bottles hanging on the wall.
+
+    song
 }

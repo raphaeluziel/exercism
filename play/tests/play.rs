@@ -1,78 +1,159 @@
-use play::HighScores;
+use play::*;
 
 #[test]
-fn list_of_scores() {
-    let expected = [30, 50, 20, 70];
-    let high_scores = HighScores::new(&expected);
-    assert_eq!(high_scores.scores(), &expected);
+#[ignore]
+fn first_generic_verse() {
+    assert_eq!(
+        recite(10, 1).trim(),
+        concat!(
+            "Ten green bottles hanging on the wall,\n",
+            "Ten green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be nine green bottles hanging on the wall.",
+        )
+    );
 }
 
 #[test]
 #[ignore]
-fn latest_score() {
-    let high_scores = HighScores::new(&[100, 0, 90, 30]);
-    assert_eq!(high_scores.latest(), Some(30));
+fn last_generic_verse() {
+    assert_eq!(
+        recite(3, 1).trim(),
+        concat!(
+            "Three green bottles hanging on the wall,\n",
+            "Three green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be two green bottles hanging on the wall.",
+        )
+    );
 }
 
 #[test]
 #[ignore]
-fn latest_score_empty() {
-    let high_scores = HighScores::new(&[]);
-    assert_eq!(high_scores.latest(), None);
+fn verse_with_2_bottles() {
+    assert_eq!(
+        recite(2, 1).trim(),
+        concat!(
+            "Two green bottles hanging on the wall,\n",
+            "Two green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be one green bottle hanging on the wall.",
+        )
+    );
 }
 
 #[test]
 #[ignore]
-fn personal_best() {
-    let high_scores = HighScores::new(&[40, 100, 70]);
-    assert_eq!(high_scores.personal_best(), Some(100));
+fn verse_with_1_bottle() {
+    assert_eq!(
+        recite(1, 1).trim(),
+        concat!(
+            "One green bottle hanging on the wall,\n",
+            "One green bottle hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be no green bottles hanging on the wall.",
+        )
+    );
+}
+
+#[test]
+
+fn first_two_verses() {
+    assert_eq!(
+        recite(10, 2).trim(),
+        concat!(
+            "Ten green bottles hanging on the wall,\n",
+            "Ten green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be nine green bottles hanging on the wall.\n",
+            "\n",
+            "Nine green bottles hanging on the wall,\n",
+            "Nine green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be eight green bottles hanging on the wall.",
+        )
+    );
 }
 
 #[test]
 #[ignore]
-fn personal_best_empty() {
-    let high_scores = HighScores::new(&[]);
-    assert_eq!(high_scores.personal_best(), None);
+fn last_three_verses() {
+    assert_eq!(
+        recite(3, 3).trim(),
+        concat!(
+            "Three green bottles hanging on the wall,\n",
+            "Three green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be two green bottles hanging on the wall.\n",
+            "\n",
+            "Two green bottles hanging on the wall,\n",
+            "Two green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be one green bottle hanging on the wall.\n",
+            "\n",
+            "One green bottle hanging on the wall,\n",
+            "One green bottle hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be no green bottles hanging on the wall.",
+        )
+    );
 }
 
 #[test]
 #[ignore]
-fn personal_top_three() {
-    let high_scores = HighScores::new(&[10, 30, 90, 30, 100, 20, 10, 0, 30, 40, 40, 70, 70]);
-    assert_eq!(high_scores.personal_top_three(), vec![100, 90, 70]);
-}
-
-#[test]
-#[ignore]
-fn personal_top_three_highest_to_lowest() {
-    let high_scores = HighScores::new(&[20, 10, 30]);
-    assert_eq!(high_scores.personal_top_three(), vec![30, 20, 10]);
-}
-
-#[test]
-#[ignore]
-fn personal_top_three_with_tie() {
-    let high_scores = HighScores::new(&[40, 20, 40, 30]);
-    assert_eq!(high_scores.personal_top_three(), vec![40, 40, 30]);
-}
-
-#[test]
-#[ignore]
-fn personal_top_three_with_less_than_three_scores() {
-    let high_scores = HighScores::new(&[30, 70]);
-    assert_eq!(high_scores.personal_top_three(), vec![70, 30]);
-}
-
-#[test]
-#[ignore]
-fn personal_top_three_only_one_score() {
-    let high_scores = HighScores::new(&[40]);
-    assert_eq!(high_scores.personal_top_three(), vec![40]);
-}
-
-#[test]
-#[ignore]
-fn personal_top_three_empty() {
-    let high_scores = HighScores::new(&[]);
-    assert!(high_scores.personal_top_three().is_empty());
+fn all_verses() {
+    assert_eq!(
+        recite(10, 10).trim(),
+        concat!(
+            "Ten green bottles hanging on the wall,\n",
+            "Ten green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be nine green bottles hanging on the wall.\n",
+            "\n",
+            "Nine green bottles hanging on the wall,\n",
+            "Nine green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be eight green bottles hanging on the wall.\n",
+            "\n",
+            "Eight green bottles hanging on the wall,\n",
+            "Eight green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be seven green bottles hanging on the wall.\n",
+            "\n",
+            "Seven green bottles hanging on the wall,\n",
+            "Seven green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be six green bottles hanging on the wall.\n",
+            "\n",
+            "Six green bottles hanging on the wall,\n",
+            "Six green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be five green bottles hanging on the wall.\n",
+            "\n",
+            "Five green bottles hanging on the wall,\n",
+            "Five green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be four green bottles hanging on the wall.\n",
+            "\n",
+            "Four green bottles hanging on the wall,\n",
+            "Four green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be three green bottles hanging on the wall.\n",
+            "\n",
+            "Three green bottles hanging on the wall,\n",
+            "Three green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be two green bottles hanging on the wall.\n",
+            "\n",
+            "Two green bottles hanging on the wall,\n",
+            "Two green bottles hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be one green bottle hanging on the wall.\n",
+            "\n",
+            "One green bottle hanging on the wall,\n",
+            "One green bottle hanging on the wall,\n",
+            "And if one green bottle should accidentally fall,\n",
+            "There'll be no green bottles hanging on the wall.",
+        )
+    );
 }
