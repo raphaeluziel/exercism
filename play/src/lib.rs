@@ -1,10 +1,10 @@
 pub fn brackets_are_balanced(string: &str) -> bool {
-    let st = ")()";
+    //let st = "())()";
     let mut p = Vec::new();
     let mut c = Vec::new();
     let mut b = Vec::new();
 
-    for ch in st.char_indices() {
+    for ch in string.char_indices() {
         //println!("{:?}", ch);
         match ch.1 {
             '(' => p.push(ch.0),
@@ -12,12 +12,15 @@ pub fn brackets_are_balanced(string: &str) -> bool {
             '[' => b.push(ch.0),
             _ => ()
         }
-        if ch.1 == ')' { 
-            let pp = p.pop().unwrap_or(0);
+        if ch.1 == ')' {
+            println!("PARENAAA = {:?}", p);
+            let pp = p.pop();
+            if pp.is_none() { return false; }
             println!("PP = {:?}", pp);
+            println!("PARENBBB = {:?}", p);
             let cc = c.last().unwrap_or(&0);
             let bb = b.last().unwrap_or(&0);
-            if pp < *cc || pp < *bb { return false; } 
+            //if pp < *cc || pp < *bb { return false; } 
         }
         if ch.1 == '}' {
             let cc = c.pop().unwrap_or(0);
@@ -33,9 +36,9 @@ pub fn brackets_are_balanced(string: &str) -> bool {
         }
     }
 
-    println!("PAREN = {:?}", p.iter().max().unwrap_or(&0));
-    println!("CURLY = {:?}", c.iter().max().unwrap_or(&0));
-    println!("BRACK = {:?}", b.iter().max().unwrap_or(&0));
+    // println!("PAREN = {:?}", p);
+    // println!("CURLY = {:?}", c);
+    // println!("BRACK = {:?}", b);
 
     todo!("HEY")
 }

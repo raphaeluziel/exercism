@@ -91,7 +91,7 @@ fn too_many_closing_brackets() {
 }
 
 #[test]
-
+#[ignore]
 fn early_incomplete_brackets() {
     assert!(!brackets_are_balanced(")()"));
 }
