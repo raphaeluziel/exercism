@@ -1,6 +1,6 @@
-// Fourth attempt incorporating auto suggestion
+// Third try using functions to implement DRY
 
-fn check_passed(c: char, bracket: char, v0: &mut Vec<usize>, v1: &[usize], v2: &[usize]) -> bool {
+fn check_passed(c: char, bracket: char, v0: &mut Vec<usize>, v1: &Vec<usize>, v2: &Vec<usize>) -> bool {
     if c == bracket {
         let x = match v0.pop() {
             Some(val) => val,
