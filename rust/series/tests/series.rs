@@ -1,7 +1,6 @@
-use play::*;
+use series::*;
 
 #[test]
-#[ignore]
 fn slices_of_one_from_one() {
     let input = "1";
     let length = 1;
@@ -51,7 +50,7 @@ fn slices_can_include_duplicates() {
 }
 
 #[test]
-
+#[ignore]
 fn slices_of_a_long_series() {
     let input = "918493904243";
     let length = 5;
