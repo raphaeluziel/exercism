@@ -1,4 +1,4 @@
-use play::*;
+use kindergarten_garden::*;
 
 #[test]
 fn garden_with_single_student() {

@@ -1,11 +1,9 @@
+// Trying to get used to iterators, after looking at other solutions
+
 pub fn series(digits: &str, len: usize) -> Vec<String> {
-    let mut subs: Vec<String> = Vec::new();
-    let mut start = 0;
-
-    while start + len <= digits.len() {
-        subs.push(digits.get(start..(start + len)).unwrap().to_string());
-        start += 1;
-    }
-
-    subs
+    digits
+        .as_bytes()
+        .windows(len)
+        .map(|x| String::from_utf8(x.to_vec()).unwrap())
+        .collect()
 }
