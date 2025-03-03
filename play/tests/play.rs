@@ -1,6 +1,7 @@
 use play::*;
 
 #[test]
+
 fn garden_with_single_student() {
     let diagram = "RC
 GG";
