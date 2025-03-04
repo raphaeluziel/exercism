@@ -1,4 +1,4 @@
-use play::*;
+use eliuds_eggs::*;
 
 #[test]
 fn test_0_eggs() {
