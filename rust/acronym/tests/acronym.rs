@@ -1,4 +1,4 @@
-use play::*;
+use acronym::*;
 
 #[test]
 fn basic() {

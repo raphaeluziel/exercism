@@ -1,11 +1,9 @@
-pub fn egg_count(display_value: u32) -> usize {
-    let mut x = display_value;
-    let mut count = 0;
-
-    while x > 0 {
-        if x % 2 == 1 { count += 1; }
-        x = x / 2;
+pub fn abbreviate(phrase: &str) -> String {
+    let mut acronym = String::new();
+    let phrase = "Something - I made up from thin air";
+    for c in phrase.chars() {
+        if c.is_uppercase() { acronym.push(c); }
     }
-
-    count
+    println!("Acronym = {acronym}");
+    acronym
 }

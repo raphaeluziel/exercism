@@ -4,7 +4,7 @@ pub fn egg_count(display_value: u32) -> usize {
 
     while x > 0 {
         if x % 2 == 1 { count += 1; }
-        x /= 2;
+        x = x / 2;
     }
 
     count
