@@ -1,26 +1,20 @@
 pub fn abbreviate(phrase: &str) -> String {
-    let mut acronym = String::new();
-    let letters = phrase.char_indices();
-    let mut white_before = false;
-    let mut lower_before = false;
+    let trimmed_phrase_bytes = phrase.trim().as_bytes();
+    
+    let mut acronym: Vec<u8> = vec![trimmed_phrase_bytes[0]];
 
-    for letter in letters {
-        if letter.0 == 0 { acronym.push_str(&letter.1.to_uppercase().to_string()); }
-        if letter.1 == ' ' || letter.1 == '-' {
-            white_before = true;
-        } else if letter.1.is_lowercase() {
-            lower_before = true;
-            if white_before {
-                acronym.push_str(&letter.1.to_uppercase().to_string());
-            }
-            white_before = false;
-        } else if letter.1.is_uppercase() {
-            if white_before || lower_before {
-                acronym.push_str(&letter.1.to_uppercase().to_string());
-            }
-            white_before = false;
-            lower_before = false;
-        }
-    }
-    acronym
+    let mut acronym_end:Vec<u8> = trimmed_phrase_bytes
+        .windows(2)
+        .enumerate()
+        .filter(|x| 
+            (x.1[1].is_ascii_uppercase() && !x.1[0].is_ascii_uppercase()) ||
+            (x.1[1].is_ascii_lowercase() && (x.1[0] == b' ' || x.1[0] == b'-')) &&
+            (x.1[1] != b' ' && x.1[1] != b'-')
+        )
+        .map(|x| x.1[1])
+        .collect();
+
+    acronym.append(&mut acronym_end);
+
+    std::str::from_utf8(&acronym).unwrap_or_default().to_ascii_uppercase()
 }
