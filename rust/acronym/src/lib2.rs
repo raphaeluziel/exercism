@@ -1,5 +1,3 @@
-// Second iteration using iterators
-
 pub fn abbreviate(phrase: &str) -> String {
     let trimmed_phrase_bytes = phrase.trim().as_bytes();
     

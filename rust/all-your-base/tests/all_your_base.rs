@@ -1,4 +1,4 @@
-use play as ayb;
+use allyourbase as ayb;
 
 #[test]
 fn single_bit_one_to_decimal() {
