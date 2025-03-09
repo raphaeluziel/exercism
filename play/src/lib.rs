@@ -6,6 +6,10 @@ pub enum Error {
 }
 
 pub fn convert(number: &[u32], from_base: u32, to_base: u32) -> Result<Vec<u32>, Error> {
+
+    if from_base < 2 { return Err(Error::InvalidInputBase); }
+    if to_base < 2 { return Err(Error::InvalidOutputBase); }
+
     // let number = &[2, 10];
     let mut numvec = number.to_vec();
     numvec.reverse();
@@ -17,11 +21,12 @@ pub fn convert(number: &[u32], from_base: u32, to_base: u32) -> Result<Vec<u32>,
 
     for digit in numvec.iter().enumerate() {
         println!("digit = {:?}", digit);
+        if digit.1 >= &from_base { return Err(Error::InvalidDigit(*digit.1))};
         decimal += digit.1 * from_base.pow(digit.0 as u32);
     }
 
     let mut ooo:Vec<u32> = Vec::new();
-    if number.is_empty() { ooo.push(0); }
+    if number.is_empty() || decimal == 0 { ooo.push(0); }
 
     let mut i = 0;
     let mut num = decimal;
