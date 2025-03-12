@@ -12,6 +12,7 @@ pub fn convert(number: &[u32], from_base: u32, to_base: u32) -> Result<Vec<u32>,
     let mut decimal = 0;
     let mut output_vec:Vec<u32> = Vec::new();
     let mut numvec = number.to_vec();
+    
     numvec.reverse();
 
     for digit in numvec.iter().enumerate() {

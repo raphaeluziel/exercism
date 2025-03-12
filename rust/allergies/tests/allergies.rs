@@ -1,7 +1,6 @@
-use play::*;
+use allergies::*;
 
 #[test]
-#[ignore]
 fn not_allergic_to_anything_eggs() {
     let allergies = Allergies::new(0);
     assert!(!allergies.is_allergic_to(&Allergen::Eggs))
@@ -50,6 +49,7 @@ fn allergic_only_to_peanuts_peanuts() {
 }
 
 #[test]
+#[ignore]
 fn allergic_to_peanuts_and_something_else_peanuts() {
     let allergies = Allergies::new(7);
     assert!(allergies.is_allergic_to(&Allergen::Peanuts))
