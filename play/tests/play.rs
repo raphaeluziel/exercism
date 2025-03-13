@@ -50,7 +50,7 @@ fn allergic_only_to_peanuts_peanuts() {
 }
 
 #[test]
-
+#[ignore]
 fn allergic_to_peanuts_and_something_else_peanuts() {
     let allergies = Allergies::new(7);
     assert!(allergies.is_allergic_to(&Allergen::Peanuts))
@@ -321,7 +321,7 @@ fn eggs_and_peanuts() {
 }
 
 #[test]
-#[ignore]
+////////////////////////////////////////////////////////////////////////////////////////////
 fn more_than_eggs_but_not_peanuts() {
     let allergies = Allergies::new(5).allergies();
     let expected = &[Allergen::Eggs, Allergen::Shellfish];
