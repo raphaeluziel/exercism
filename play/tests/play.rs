@@ -50,6 +50,7 @@ fn allergic_only_to_peanuts_peanuts() {
 }
 
 #[test]
+
 fn allergic_to_peanuts_and_something_else_peanuts() {
     let allergies = Allergies::new(7);
     assert!(allergies.is_allergic_to(&Allergen::Peanuts))
