@@ -45,6 +45,6 @@ impl Allergies {
     }
 
     pub fn allergies(&self) -> Vec<Allergen> {
-        self.allergies.to_vec()
+        self.allergies.iter().copied().collect()
     }
 }

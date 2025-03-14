@@ -1,4 +1,4 @@
-use play::*;
+use alphametics::*;
 
 #[test]
 fn puzzle_with_three_letters() {

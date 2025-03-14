@@ -1,50 +1,25 @@
-#[derive(Debug)]
-pub struct Allergies {
-    allergies: Vec<Allergen>,
-}
+use std::collections::HashMap;
 
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub enum Allergen {
-    Eggs,
-    Peanuts,
-    Shellfish,
-    Strawberries,
-    Tomatoes,
-    Chocolate,
-    Pollen,
-    Cats,
-}
+pub fn solve(input: &str) -> Option<HashMap<char, u8>> {
+    let input = "HE + SEES + THE == LIGHT";
+    let xx = input.replace(" ", "").replace("==", "=");
+    let mut hh:HashMap<char, u8> = HashMap::new();
 
-const ALLERGIES: [Allergen; 8] = [
-    Allergen::Eggs,
-    Allergen::Peanuts,
-    Allergen::Shellfish,
-    Allergen::Strawberries,
-    Allergen::Tomatoes,
-    Allergen::Chocolate,
-    Allergen::Pollen,
-    Allergen::Cats,
-];
+    // let mut hh: HashMap<char, u8> = xx
+    //     .char_indices()
+    //     .filter(|x| x.1 != '+' && x.1 != '=')
+    //     .map(|x| (x.1, 0u8))
+    //     .collect();
 
-impl Allergies {
-    pub fn new(score: u32) -> Self {
-        let allergies: Vec<Allergen> = format!("{score:b}")
-            .chars()
-            .rev()
-            .enumerate()
-            .filter(|x| x.1 == '1')
-            .map(|x| &ALLERGIES[x.0])
-            .copied()
-            .collect();
-
-        Allergies { allergies }
+    for x in xx.char_indices() {
+        if x.1 != '+' && x.1 != '=' { hh.insert(x.1, 0); }
     }
 
-    pub fn is_allergic_to(&self, allergen: &Allergen) -> bool {
-        self.allergies.contains(allergen)
-    }
+    hh.insert(input.chars().next().unwrap_or_default(), 1);
 
-    pub fn allergies(&self) -> Vec<Allergen> {
-        self.allergies.iter().copied().collect()
-    }
+    println!("Hash = {:?}", hh.len());
+
+
+
+    todo!("Solve the alphametic {input:?}")
 }
