@@ -1,25 +1,30 @@
-use std::collections::HashMap;
+use rand::Rng;
+use std::collections::{HashMap, HashSet};
 
 pub fn solve(input: &str) -> Option<HashMap<char, u8>> {
     let input = "HE + SEES + THE == LIGHT";
     let xx = input.replace(" ", "").replace("==", "=");
-    let mut hh:HashMap<char, u8> = HashMap::new();
+    let mut hm: HashMap<char, u8> = HashMap::new();
 
-    // let mut hh: HashMap<char, u8> = xx
-    //     .char_indices()
-    //     .filter(|x| x.1 != '+' && x.1 != '=')
-    //     .map(|x| (x.1, 0u8))
-    //     .collect();
-
-    for x in xx.char_indices() {
-        if x.1 != '+' && x.1 != '=' { hh.insert(x.1, 0); }
+    let mut hs = HashSet::new();
+    let mut r = 0;
+    println!("R = {r}");
+    for x in xx.char_indices().filter(|x| x.1 != '+' && x.1 != '=') {
+        r = rand::rng().random_range(0..10);
+        println!("R = {r}");
+        while !hs.contains(&r) {
+            println!("R = {r}");
+            hm.insert(x.1, r);
+            r = rand::rng().random_range(0..10);
+            
+        }
+        hs.insert(r);
     }
 
-    hh.insert(input.chars().next().unwrap_or_default(), 1);
+    hm.insert(input.chars().next().unwrap_or_default(), 1);
 
-    println!("Hash = {:?}", hh.len());
-
-
+    println!("Hash = {:#?}", hm);
+    println!("Hash = {:#?}", hs);
 
     todo!("Solve the alphametic {input:?}")
 }
