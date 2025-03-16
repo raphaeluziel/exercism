@@ -2,6 +2,6 @@ use play::*;
 
 fn main() {
     println!("MAIN");
-    let answer = solve("HE + SEES + THE == LIGHT");
+    let answer = solve("I + BB == ILL");
     println!("{:?}", answer);
 }

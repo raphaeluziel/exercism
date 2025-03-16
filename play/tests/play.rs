@@ -1,6 +1,7 @@
 use play::*;
 
 #[test]
+
 fn puzzle_with_three_letters() {
     let answer = solve("I + BB == ILL");
     let expected = [('I', 1), ('B', 9), ('L', 0)].into_iter().collect();
@@ -8,7 +9,7 @@ fn puzzle_with_three_letters() {
 }
 
 #[test]
-#[ignore]
+
 fn solution_must_have_unique_value_for_each_letter() {
     let answer = solve("A == B");
     assert_eq!(answer, None);
@@ -22,7 +23,7 @@ fn leading_zero_solution_is_invalid() {
 }
 
 #[test]
-#[ignore]
+
 fn puzzle_with_two_digits_final_carry() {
     let answer = solve("A + A + A + A + A + A + A + A + A + A + A + B == BCC");
     let expected = [('A', 9), ('B', 1), ('C', 0)].into_iter().collect();
@@ -30,7 +31,7 @@ fn puzzle_with_two_digits_final_carry() {
 }
 
 #[test]
-#[ignore]
+
 fn puzzle_with_four_letters() {
     let answer = solve("AS + A == MOM");
     let expected = [('A', 9), ('S', 2), ('M', 1), ('O', 0)]
