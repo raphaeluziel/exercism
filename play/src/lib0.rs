@@ -6,7 +6,6 @@ pub fn solve(input: &str) -> Option<HashMap<char, u8>> {
     let mut decoded: Vec<u64> = Vec::new();
     // let mut trials: Vec<HashMap<char, u8>> = Vec::new();
 
-
     for x in input.chars().filter(|&x| x != '+' && x != '=') {
         hm.insert(x, 1);
     }
@@ -21,7 +20,9 @@ pub fn solve(input: &str) -> Option<HashMap<char, u8>> {
     'outer: loop {
         decoded.clear();
 
-        let mut vs: Vec<u8> = HashSet::from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).into_iter().collect();
+        let mut vs: Vec<u8> = HashSet::from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+            .into_iter()
+            .collect();
 
         for (key, val) in hm.iter_mut() {
             let n = vs.pop().unwrap_or_default();
