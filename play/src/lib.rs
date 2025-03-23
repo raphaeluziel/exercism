@@ -1,38 +1,26 @@
-use std::collections::{BTreeMap, HashMap, HashSet};
-
-pub fn permutations(n: usize, permutation: &mut [u8; 10], bm: &mut BTreeMap<char, u8>) {
-    if n == 1 {
-        //bm.iter_mut().enumerate().map(|(i, (k, v))| *v = 9).into_iter().collect::<BTreeMap<char, u8>>();
-        for x in bm.iter_mut().enumerate() {
-            *x.1.1 = permutation[x.0];
-        }
-        return;
-    } else {
-        permutations(n - 1, permutation, bm);
-
-        for i in 0..(n - 1) {
-            if i % 2 == 0 {
-                permutation.swap(i, n - 1);
-            } else {
-                permutation.swap(0, n - 1);
-            }
-            permutations(n - 1, permutation, bm);
-        }
-    }
-}
+use itertools::{Itertools, Permutations};
+use std::collections::{BTreeMap, HashMap, HashSet, btree_set::Range};
 
 pub fn solve(input: &str) -> Option<HashMap<char, u8>> {
     let input = input.replace(" ", "").replace("==", "=");
-    let mut permutation = [0u8, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    let coded_nums: Vec<&str> = input.split(['+', '=']).collect();
-    let first_letters: HashSet<char> = coded_nums.iter().map(|x| x.chars().next().unwrap()).collect();
-    let mut decoded: Vec<u64> = Vec::new();
+    let input: Vec<(char, u8)> = input
+        .char_indices()
+        .filter(|&x| x.1 != '+' && x.1 != '=')
+        .map(|x| (x.1, (x.0 as u8)))
+        .collect();
 
-    let mut bm:BTreeMap<char, u8> = input.chars().filter(|&x| x != '+' && x != '=').map(|k| (k, 2u8)).collect();
-    //println!("BM1 = {:?}", bm);
-    permutations(bm.len(), &mut permutation, &mut bm);
-    //println!("BM2 = {:?}", bm);
-    
+    let mut bm: BTreeMap<char, u8> = BTreeMap::from_iter(input);
 
-    Some(bm.clone().into_iter().map(|(k, v)| (k, v)).collect())
+    let mut iterations = 0;
+    let perms: Permutations<std::ops::Range<u8>> = (0..10).permutations(bm.len());
+    for perm in perms {
+        for b in bm.iter_mut().enumerate() {
+            *b.1.1 = perm[b.0];
+        }
+        iterations += 1;
+    }
+    println!("Iterations = {iterations}");
+
+    //Some(bm.clone().into_iter().map(|(k, v)| (k, v)).collect())
+    todo!("HEY")
 }

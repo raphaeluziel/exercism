@@ -31,7 +31,7 @@ fn puzzle_with_two_digits_final_carry() {
 }
 
 #[test]
-#[ignore]
+
 fn puzzle_with_four_letters() {
     let answer = solve("AS + A == MOM");
     let expected = [('A', 9), ('S', 2), ('M', 1), ('O', 0)]
@@ -51,7 +51,7 @@ fn puzzle_with_six_letters() {
 }
 
 #[test]
-
+#[ignore]
 fn puzzle_with_seven_letters() {
     let answer = solve("HE + SEES + THE == LIGHT");
     let expected = [
