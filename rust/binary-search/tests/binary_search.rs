@@ -1,4 +1,4 @@
-use play::*;
+use binary_search::*;
 
 #[test]
 fn finds_a_value_in_an_array_with_one_element() {

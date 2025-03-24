@@ -1,5 +1,9 @@
-// This sort of works.  It uses brute force.  Takes a long time, and
-// sometimes fails (due to limits on iterations I think)
+// This probably won't pass. (And it did NOT) 
+// It uses brute force for one.  
+// I'm also not checking for repeating trials
+// I'm limiting it to 10_000_000 iterations, which may not cover
+// all possibilities due to repetitions.
+// I plan to try other solutions!!!!!!
 
 use std::collections::{HashMap, HashSet};
 
