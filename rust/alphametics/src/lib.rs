@@ -12,7 +12,7 @@ pub fn solve(input: &str) -> Option<HashMap<char, u8>> {
     // Remove all extraneous characters from the input
     let input = input.replace(" ", "").replace("==", "=");
 
-    // Collect first letters into a set to make sure these don't get a 0
+    // Collect first letters into a set to make sure these don't get a 0n
     let firsts: HashSet<char> = input
         .split(['+', '='])
         .map(|x| x.chars().next().unwrap_or_default())
