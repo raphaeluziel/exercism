@@ -1,7 +1,7 @@
 use std::cmp::Ordering;
 
-pub fn find<T: std::cmp::PartialEq + Ord>(array: &[T], key: T) -> Option<usize> {
-    if array.is_empty() { return None; }
+pub fn find(array: &[i32], key: i32) -> Option<usize> {
+    if array.len() == 0 { return None; }
     if array.len() == 1 {
         if key == array[0] { return Some(0); }
         else { return None; }
