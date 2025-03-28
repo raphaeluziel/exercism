@@ -1,7 +1,11 @@
-use std::cmp::Ordering;
+use std::{borrow::Borrow, cmp::Ordering, ops::Index, process::Output, slice::SliceIndex, usize};
 
-pub fn find<T: std::cmp::PartialEq + Ord>(array: &[T], key: T) -> Option<usize> {
-    if array.is_empty() { return None; }
+pub fn find<U, T>(array: U, key: T) -> Option<usize> 
+    where T: std::cmp::PartialEq + Ord, 
+          U: Borrow<[T]> + ExactSizeIterator + Index<usize>
+
+{
+    if array.len() == 0 { return None; }
     if array.len() == 1 {
         if key == array[0] { return Some(0); }
         else { return None; }
