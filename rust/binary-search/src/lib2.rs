@@ -1,11 +1,17 @@
-// This is my initial attempt with just the basics
+// This is the generic version of the same
+// Run the following to test out the optional generic function tests:
+// cargo test --features generic
 
-use std::cmp::Ordering;
+use std::{cmp::Ordering, ops::Index};
 
-pub fn find(array: &[i32], key: i32) -> Option<usize> {
-    if array.len() == 0 { return None; }
+pub fn find<U: AsRef<[T]>, T>(array: U, key: T) -> Option<usize>
+    where T: PartialEq + Ord,
+{
+    let array = array.as_ref();
+    
+    if array.is_empty() { return None; }
     if array.len() == 1 {
-        if key == array[0] { return Some(0); }
+        if key == *array.as_ref().index(0) { return Some(0); }
         else { return None; }
     }
 
