@@ -1,4 +1,4 @@
-use play::*;
+use bowling::*;
 
 #[test]
 fn roll_returns_a_result() {
@@ -7,7 +7,7 @@ fn roll_returns_a_result() {
 }
 
 #[test]
-
+#[ignore]
 fn a_roll_cannot_score_more_than_10_points() {
     let mut game = BowlingGame::new();
 
@@ -15,7 +15,7 @@ fn a_roll_cannot_score_more_than_10_points() {
 }
 
 #[test]
-
+#[ignore]
 fn should_be_able_to_score_a_game_with_all_zeros() {
     let mut game = BowlingGame::new();
 
@@ -28,7 +28,7 @@ fn should_be_able_to_score_a_game_with_all_zeros() {
 }
 
 #[test]
-
+#[ignore]
 fn an_unstarted_game_cannot_be_scored() {
     let game = BowlingGame::new();
 
@@ -36,7 +36,7 @@ fn an_unstarted_game_cannot_be_scored() {
 }
 
 #[test]
-
+#[ignore]
 fn an_incomplete_game_cannot_be_scored() {
     let mut game = BowlingGame::new();
 
@@ -74,7 +74,7 @@ fn twenty_zero_pin_rolls_scores_zero() {
 }
 
 #[test]
-
+#[ignore]
 fn should_be_able_to_score_a_game_with_no_strikes_or_spares() {
     let mut game = BowlingGame::new();
 

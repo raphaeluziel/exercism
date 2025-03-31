@@ -1,46 +1,69 @@
-// Final iteration.  
-// Passes all tests including the generic tests using:
-// cargo test --features generic
+#[derive(Debug, PartialEq, Eq)]
+pub enum Error {
+    NotEnoughPinsLeft,
+    GameComplete,
+}
 
-use std::cmp::Ordering;
+//REmove the derive debug
+#[derive(Debug)]
+pub struct BowlingGame {
+    score: u16,
+    half_frame: u8,
+    pins: Vec<u16>
+}
 
-// The U: AsRef<[T]> allows the function to accept references, or owned items
-// The T: PartialEq + Ord is needed to only allow keys that can be ordered / compared
-pub fn find<U: AsRef<[T]>, T: PartialEq + Ord>(array: U, key: T) -> Option<usize>
-{
-    // This converts an owned to a reference, but does nothing if already
-    // a reference.  At least this is what I think it does.
-    let array = array.as_ref();
-    
-    // An empty array cannot contain the key
-    if array.is_empty() { return None; }
-
-    // These three indices will keep moving to narrow down
-    // the part of the slice that must contain the key
-    let mut start:usize = 0;
-    let mut end:usize = array.len() - 1;
-    let mut mid:usize = (end - start) / 2;
-
-    // Check if the key can be found at the start or end of the slice
-    if key == array[start] { return Some(start); }
-    if key == array[end] { return  Some(end); }
-
-    // This loop incorporates the binary search algorithm
-    // as described in the instructions
-    while mid != start && mid != end {
-        match key.cmp(&array[mid]) {
-            Ordering::Equal => return Some(mid),
-            Ordering::Less => { 
-                end = mid;
-                mid -= (end - start) / 2;
-            },
-            Ordering::Greater => {
-                start = mid;
-                mid += (end - start) / 2;
-            }
-        };
+impl BowlingGame {
+    pub fn new() -> Self {
+        BowlingGame {
+            score: 0,
+            half_frame: 0,
+            pins: Vec::with_capacity(21)
+        }
     }
 
-    // If the loop above doesn't find the key, then it aint there!
-    None
+    pub fn roll(&mut self, pins: u16) -> Result<(), Error> {
+        if pins > 10 { return Err(Error::NotEnoughPinsLeft); }
+
+        self.half_frame += 1;
+
+        self.pins.push(pins);
+        //self.score += pins;
+
+        Ok(())
+    }
+
+    pub fn score(&self) -> Option<u16> {
+        // 6, 2, 10, 3, 5, 2, 2, 10, 10, 7, 3, 1, 1, 6, 4, 7, 3, 2
+
+        if self.pins.len() < 20 { return None; }
+
+        let mut sc = 0;
+        let mut i = 0;
+
+        while i < (self.pins.len() - 2) {
+            println!("{}", self.pins[i]);
+
+            let fr = self.pins[i] + self.pins[i+1];
+            if fr < 10 { 
+                sc += fr;
+                i += 2;
+            }
+            else if fr == 10 { 
+                sc += fr + self.pins[i+2];
+                i += 2
+            }
+            else if self.pins[i] == 10 {
+                sc += 10 + self.pins[i+1] + self.pins[i+2];
+                i += 1;
+            }
+        }
+
+        // let sc = self.pins.windows(3
+        //                       .inspect(|x| println!("{:?}", x))
+        //                       .fold(0, |acc, x| acc + x[0]);
+        
+        println!("SC = {:?}", sc);
+
+        if self.half_frame < 20 { None } else { Some(sc) }
+    }
 }
