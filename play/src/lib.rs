@@ -7,7 +7,6 @@ pub enum Error {
 //REmove the derive debug
 #[derive(Debug)]
 pub struct BowlingGame {
-    score: u16,
     half_frame: u8,
     pins: Vec<u16>
 }
@@ -15,7 +14,6 @@ pub struct BowlingGame {
 impl BowlingGame {
     pub fn new() -> Self {
         BowlingGame {
-            score: 0,
             half_frame: 0,
             pins: Vec::with_capacity(21)
         }
@@ -33,15 +31,17 @@ impl BowlingGame {
     }
 
     pub fn score(&self) -> Option<u16> {
-        // 6, 2, 10, 3, 5, 2, 2, 10, 10, 7, 3, 1, 1, 6, 4, 7, 3, 2
+        println!("WHAT's Going on, raphael?");
+        // 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 7
 
-        if self.pins.len() < 20 { return None; }
+        if self.half_frame < 10 { return None; }
 
         let mut sc = 0;
         let mut i = 0;
+        println!("WHAT");
 
-        while i < (self.pins.len() - 2) {
-            println!("{}", self.pins[i]);
+        while i < (self.pins.len() - 1) {
+            println!("{} = {}, len = {}", i, self.pins[i], self.pins.len());
 
             let fr = self.pins[i] + self.pins[i+1];
             if fr < 10 { 
@@ -58,11 +58,16 @@ impl BowlingGame {
             }
         }
 
+        for j in i..self.pins.len() {
+            println!("HEY = {j}");
+        }
+
         // let sc = self.pins.windows(3
         //                       .inspect(|x| println!("{:?}", x))
         //                       .fold(0, |acc, x| acc + x[0]);
         
-        println!("SC = {:?}", sc);
+        //println!("SC = {:?}", sc);
+        println!("FRAMES = {}", self.half_frame);
 
         if self.half_frame < 20 { None } else { Some(sc) }
     }

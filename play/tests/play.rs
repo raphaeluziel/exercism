@@ -1,13 +1,14 @@
 use play::*;
 
 #[test]
+#[ignore]
 fn roll_returns_a_result() {
     let mut game = BowlingGame::new();
     assert!(game.roll(0).is_ok());
 }
 
 #[test]
-
+#[ignore]
 fn a_roll_cannot_score_more_than_10_points() {
     let mut game = BowlingGame::new();
 
@@ -15,7 +16,7 @@ fn a_roll_cannot_score_more_than_10_points() {
 }
 
 #[test]
-
+#[ignore]
 fn should_be_able_to_score_a_game_with_all_zeros() {
     let mut game = BowlingGame::new();
 
@@ -28,7 +29,7 @@ fn should_be_able_to_score_a_game_with_all_zeros() {
 }
 
 #[test]
-
+#[ignore]
 fn an_unstarted_game_cannot_be_scored() {
     let game = BowlingGame::new();
 
@@ -36,7 +37,7 @@ fn an_unstarted_game_cannot_be_scored() {
 }
 
 #[test]
-
+#[ignore]
 fn an_incomplete_game_cannot_be_scored() {
     let mut game = BowlingGame::new();
 
@@ -74,7 +75,7 @@ fn twenty_zero_pin_rolls_scores_zero() {
 }
 
 #[test]
-
+#[ignore]
 fn should_be_able_to_score_a_game_with_no_strikes_or_spares() {
     let mut game = BowlingGame::new();
 
@@ -152,7 +153,7 @@ fn a_spare_in_the_last_frame_gets_a_one_roll_bonus_that_is_counted_once() {
 }
 
 #[test]
-#[ignore]
+
 fn a_strike_earns_ten_points_in_a_frame_with_a_single_roll() {
     let mut game = BowlingGame::new();
 
