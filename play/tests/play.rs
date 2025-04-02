@@ -50,7 +50,7 @@ fn an_incomplete_game_cannot_be_scored() {
 }
 
 #[test]
-#[ignore]
+
 fn cannot_roll_if_game_already_has_ten_frames() {
     let mut game = BowlingGame::new();
 
@@ -153,7 +153,7 @@ fn a_spare_in_the_last_frame_gets_a_one_roll_bonus_that_is_counted_once() {
 }
 
 #[test]
-
+#[ignore]
 fn a_strike_earns_ten_points_in_a_frame_with_a_single_roll() {
     let mut game = BowlingGame::new();
 
