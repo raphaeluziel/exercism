@@ -1,3 +1,5 @@
+use std::pin;
+
 #[derive(Debug, PartialEq, Eq)]
 pub enum Error {
     NotEnoughPinsLeft,
@@ -24,6 +26,13 @@ impl BowlingGame {
     pub fn roll(&mut self, pins: u16) -> Result<(), Error> {
         if pins > 10 {
             return Err(Error::NotEnoughPinsLeft);
+        }
+        if pins = 10 {
+            self.strike = true;
+            self.frame.push(pins);
+        }
+        if pins < 10 {
+            self.spare = true;
         }
         Ok(())
     }
