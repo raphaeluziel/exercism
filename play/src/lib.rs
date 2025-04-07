@@ -8,6 +8,7 @@ pub enum Error {
 
 pub struct BowlingGame {
     score: u16,
+    bonus: u16,
     spare: bool,
     strike: bool,
     frame: Vec<u16>,
@@ -15,11 +16,12 @@ pub struct BowlingGame {
 
 impl BowlingGame {
     pub fn new() -> Self {
-        BowlingGame {
-            score: 0,
+        BowlingGame { 
+            score: 0, 
+            bonus: 0, 
             spare: false,
             strike: false,
-            frame: Vec::with_capacity(10),
+            frame: Vec::with_capacity(10)
         }
     }
 
@@ -27,13 +29,11 @@ impl BowlingGame {
         if pins > 10 {
             return Err(Error::NotEnoughPinsLeft);
         }
-        if pins = 10 {
+        if pins == 10 {
             self.strike = true;
             self.frame.push(pins);
         }
-        if pins < 10 {
-            self.spare = true;
-        }
+        
         Ok(())
     }
 
