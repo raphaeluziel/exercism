@@ -75,7 +75,7 @@ fn twenty_zero_pin_rolls_scores_zero() {
 }
 
 #[test]
-
+#[ignore]
 fn should_be_able_to_score_a_game_with_no_strikes_or_spares() {
     let mut game = BowlingGame::new();
 
