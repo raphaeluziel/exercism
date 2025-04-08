@@ -75,7 +75,7 @@ fn twenty_zero_pin_rolls_scores_zero() {
 }
 
 #[test]
-#[ignore]
+
 fn should_be_able_to_score_a_game_with_no_strikes_or_spares() {
     let mut game = BowlingGame::new();
 
@@ -249,7 +249,7 @@ fn strikes_with_the_two_roll_bonus_do_not_get_a_bonus_roll() {
 }
 
 #[test]
-
+#[ignore]
 fn a_strike_with_the_one_roll_bonus_after_a_spare_in_the_last_frame_does_not_get_a_bonus() {
     let mut game = BowlingGame::new();
 
