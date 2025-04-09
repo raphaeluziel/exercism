@@ -393,7 +393,7 @@ fn both_bonus_rolls_for_a_strike_in_the_last_frame_must_be_rolled_before_score_c
 }
 
 #[test]
-#[ignore]
+
 fn bonus_roll_for_a_spare_in_the_last_frame_must_be_rolled_before_score_can_be_calculated() {
     let mut game = BowlingGame::new();
 
