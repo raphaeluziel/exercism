@@ -8,8 +8,9 @@ pub struct BowlingGame {
     score: u16,
     bonus: u16,
     last_roll: u16,
-    rolls: u16,
+    frame_start: bool,
     frame: u16,
+    fill_balls: u16
 }
 
 impl BowlingGame {
@@ -18,16 +19,18 @@ impl BowlingGame {
             score: 0, 
             bonus: 0,
             last_roll: 0,
-            rolls: 0,
+            frame_start: true,
             frame: 0,
+            fill_balls: 0
         }
     }
 
     pub fn roll(&mut self, pins: u16) -> Result<(), Error> {
+        println!("FILL = {}", self.fill_balls);
         if pins > 10 {
             return Err(Error::NotEnoughPinsLeft); 
         }
-        if self.frame > 10 {
+        if self.frame > 10 || (self.frame == 10 && self.frame_start && self.fill_balls == 0) {
             return Err(Error::GameComplete);
         }
         if self.bonus > 0 && self.frame != 10 {
@@ -40,6 +43,7 @@ impl BowlingGame {
             self.bonus += 2;
             self.frame += 1;
             self.frame_start = true;
+            if self.frame == 10 { self.fill_balls = 2; }
         }
         else {
             if self.frame_start {
@@ -56,6 +60,7 @@ impl BowlingGame {
                 self.last_roll = 0;
                 self.frame += 1;
                 self.frame_start = true;
+                if self.frame == 10 { self.fill_balls = 1; }
             }
         }
         
@@ -63,7 +68,7 @@ impl BowlingGame {
     }
 
     pub fn score(&self) -> Option<u16> {
-        if self.frame < 10 {
+        if self.frame < 10 || (self.frame == 10 && self.fill_balls > 0 && !self.frame_start) {
             None 
         } 
         else {
