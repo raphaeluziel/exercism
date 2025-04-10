@@ -7,8 +7,8 @@ pub enum Error {
 pub struct BowlingGame {
     score: u16,
     bonus: u16,
-    last_roll: u16,
-    rolled: u16,
+    last: u16,
+    roll: u16,
     frame: u16,
 }
 
@@ -17,8 +17,8 @@ impl BowlingGame {
         BowlingGame { 
             score: 0,
             bonus: 0,
-            last_roll: 0,
-            rolled: 0,
+            last: 0,
+            roll: 0,
             frame: 0,
         }
     }
@@ -30,36 +30,62 @@ impl BowlingGame {
         if self.frame > 10 {
             return Err(Error::GameComplete);
         }
-        if self.bonus > 0 && self.frame != 10 {
+
+        self.roll += 1;
+        self.score += pins;
+        self.last = pins;
+
+        if self.roll == 1 {
+            if pins == 10 { 
+                self.bonus += 2;
+                if self.frame != 10 { 
+                    self.frame += 1; 
+                }
+            }
+        }
+        else if self.roll == 2 {
+            if pins + self.last > 10 { return Err(Error::NotEnoughPinsLeft); }
+            if pins + self.last == 10 { self.bonus += 1; }
+            if self.frame != 10 { 
+                self.frame += 1;
+                self.roll = 0;
+            }
+        }
+        else {
+            self.frame += 1;
+        }
+
+        if self.bonus > 0 {
             self.score += pins;
             self.bonus -= 1;
         }
-        if pins == 10 {
-            self.score += 10 + self.last_roll;
-            self.last_roll = 10;
-            self.bonus += 2;
-            self.frame += 1;
-            self.rolled = if self.frame != 10 { 0 } else { self.rolled + 1 }
-        }
-        else {
-            if self.rolled == 0 {
-                self.score += pins;
-                self.last_roll = pins;
-                self.rolled = 1;
-            }
-            else if self.rolled == 1 {
-                let frame_total = pins + self.last_roll;
-                if frame_total > 10 { return Err(Error::NotEnoughPinsLeft); }
-                if frame_total == 10 { self.bonus += 1; }
-                self.score += pins;
-                self.last_roll = 0;
-                self.frame += 1;
-                self.rolled = if self.frame != 10 { 0 } else { 2 }
-            }
-            else {
 
-            }
-        }
+        // if pins == 10 {
+        //     self.score += 10 + self.last;
+        //     self.last = 10;
+        //     self.bonus += 2;
+        //     self.frame += 1;
+        //     self.roll = if self.frame != 10 { 0 } else { self.roll + 1 }
+        // }
+        // else {
+        //     if self.roll == 0 {
+        //         self.score += pins;
+        //         self.last = pins;
+        //         self.roll = 1;
+        //     }
+        //     else if self.roll == 1 {
+        //         let frame_total = pins + self.last;
+        //         if frame_total > 10 { return Err(Error::NotEnoughPinsLeft); }
+        //         if frame_total == 10 { self.bonus += 1; }
+        //         self.score += pins;
+        //         self.last = 0;
+        //         self.frame += 1;
+        //         self.roll = if self.frame != 10 { 0 } else { 2 }
+        //     }
+        //     else {
+
+        //     }
+        // }
         
         Ok(())
     }
