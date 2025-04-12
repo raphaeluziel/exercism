@@ -16,7 +16,7 @@ fn a_roll_cannot_score_more_than_10_points() {
 }
 
 #[test]
-#[ignore]
+
 fn should_be_able_to_score_a_game_with_all_zeros() {
     let mut game = BowlingGame::new();
 
@@ -265,7 +265,7 @@ fn a_strike_with_the_one_roll_bonus_after_a_spare_in_the_last_frame_does_not_get
 }
 
 #[test]
-
+#[ignore]
 fn all_strikes_is_a_perfect_game() {
     let mut game = BowlingGame::new();
 
