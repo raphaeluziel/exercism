@@ -19,7 +19,7 @@ impl BowlingGame {
             bonus: 0,
             last: 0,
             roll: 0,
-            frame: 0,
+            frame: 1,
         }
     }
 
@@ -27,7 +27,7 @@ impl BowlingGame {
         if pins > 10 {
             return Err(Error::NotEnoughPinsLeft); 
         }
-        if self.frame > 10 {
+        if self.frame > 10 || (self.frame == 10 && self.bonus == 0 && self.roll > 1){
             return Err(Error::GameComplete);
         }
 
@@ -35,9 +35,15 @@ impl BowlingGame {
         self.score += pins;
         self.last = pins;
 
+        if pins == 10 { self.bonus += 2; }
+
+        if self.bonus > 0 {
+            self.score += pins;
+            self.bonus -= 1;
+        }
+
         if self.roll == 1 {
             if pins == 10 { 
-                self.bonus += 2;
                 if self.frame != 10 { 
                     self.frame += 1; 
                 }
@@ -55,45 +61,16 @@ impl BowlingGame {
             self.frame += 1;
         }
 
-        if self.bonus > 0 {
-            self.score += pins;
-            self.bonus -= 1;
-        }
-
-        // if pins == 10 {
-        //     self.score += 10 + self.last;
-        //     self.last = 10;
-        //     self.bonus += 2;
-        //     self.frame += 1;
-        //     self.roll = if self.frame != 10 { 0 } else { self.roll + 1 }
-        // }
-        // else {
-        //     if self.roll == 0 {
-        //         self.score += pins;
-        //         self.last = pins;
-        //         self.roll = 1;
-        //     }
-        //     else if self.roll == 1 {
-        //         let frame_total = pins + self.last;
-        //         if frame_total > 10 { return Err(Error::NotEnoughPinsLeft); }
-        //         if frame_total == 10 { self.bonus += 1; }
-        //         self.score += pins;
-        //         self.last = 0;
-        //         self.frame += 1;
-        //         self.roll = if self.frame != 10 { 0 } else { 2 }
-        //     }
-        //     else {
-
-        //     }
-        // }
-        
         Ok(())
     }
 
     pub fn score(&self) -> Option<u16> {
-        if self.frame < 10 {
-            None 
-        } 
+        if self.frame < 10 || 
+           (self.frame == 10 && self.roll < 2) || 
+           (self.frame == 10 && self.roll == 2 && self.bonus != 0)
+            {
+                None 
+            }
         else {
             Some(self.score) 
         }

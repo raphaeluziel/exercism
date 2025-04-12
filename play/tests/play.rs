@@ -265,7 +265,7 @@ fn a_strike_with_the_one_roll_bonus_after_a_spare_in_the_last_frame_does_not_get
 }
 
 #[test]
-#[ignore]
+
 fn all_strikes_is_a_perfect_game() {
     let mut game = BowlingGame::new();
 
@@ -393,7 +393,7 @@ fn both_bonus_rolls_for_a_strike_in_the_last_frame_must_be_rolled_before_score_c
 }
 
 #[test]
-
+#[ignore]
 fn bonus_roll_for_a_spare_in_the_last_frame_must_be_rolled_before_score_can_be_calculated() {
     let mut game = BowlingGame::new();
 
