@@ -1,16 +1,27 @@
 use play::*;
 
 fn main() {
-    println!("MAIN");
+    println!("MAIN\n");
     let mut game = BowlingGame::new();
-    let vvv = vec![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 7];
-    // println!("length = {}", vvv.len());
-    // println!("pins = {:?}", vvv);
-    for t in vvv {
-        match game.roll(t) {
-            Ok(()) => (),
-            Err(e) => println!("Raphi, the error is {:?}", e)
-        }
+
+    for _ in 0..12 {
+        let _ = game.roll(10);
     }
-    // println!("SCore = {:?}", game.score());
+
+    println!("SCORE = {}", game.score().unwrap());
+
+    // println!("Roll 1 {:?}", game.roll(10));
+    // println!("{:?}\n", game);
+
+    // println!("Roll 2 {:?}", game.roll(10));
+    // println!("{:?}\n", game);
+
+    // println!("Roll 3 {:?}", game.roll(10));
+    // println!("{:?}\n", game);
+
+    // println!("Roll 4 {:?}", game.roll(10));
+    // println!("{:?}\n", game);
+
+    // println!("Roll 5 {:?}", game.roll(8));
+    // println!("{:?}\n", game);
 }
