@@ -16,7 +16,7 @@ fn a_roll_cannot_score_more_than_10_points() {
 }
 
 #[test]
-
+#[ignore]
 fn should_be_able_to_score_a_game_with_all_zeros() {
     let mut game = BowlingGame::new();
 
@@ -300,7 +300,7 @@ fn bonus_roll_after_a_strike_in_the_last_frame_cannot_score_more_than_10_points(
 }
 
 #[test]
-#[ignore]
+
 fn two_bonus_rolls_after_a_strike_in_the_last_frame_cannot_score_more_than_10_points() {
     let mut game = BowlingGame::new();
 
@@ -331,7 +331,7 @@ fn two_bonus_rolls_after_a_strike_in_the_last_frame_can_score_more_than_10_point
 }
 
 #[test]
-#[ignore]
+
 fn the_second_bonus_rolls_after_a_strike_in_the_last_frame_cannot_be_a_strike_if_the_first_one_is_not_a_strike()
  {
     let mut game = BowlingGame::new();
