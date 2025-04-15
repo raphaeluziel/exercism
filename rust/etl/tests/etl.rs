@@ -1,9 +1,37 @@
-use play::*;
 use std::collections::BTreeMap;
 
-fn main() {
-    println!("MAIN\n");
+#[test]
+fn single_letter() {
+    let input = BTreeMap::from([(1, vec!['A'])]);
 
+    let expected = BTreeMap::from([('a', 1)]);
+
+    assert_eq!(expected, etl::transform(&input));
+}
+
+#[test]
+#[ignore]
+fn single_score_with_multiple_letters() {
+    let input = BTreeMap::from([(1, vec!['A', 'E', 'I', 'O', 'U'])]);
+
+    let expected = BTreeMap::from([('a', 1), ('e', 1), ('i', 1), ('o', 1), ('u', 1)]);
+
+    assert_eq!(expected, etl::transform(&input));
+}
+
+#[test]
+#[ignore]
+fn multiple_scores_with_multiple_letters() {
+    let input = BTreeMap::from([(1, vec!['A', 'E']), (2, vec!['D', 'G'])]);
+
+    let expected = BTreeMap::from([('a', 1), ('d', 2), ('e', 1), ('g', 2)]);
+
+    assert_eq!(expected, etl::transform(&input));
+}
+
+#[test]
+#[ignore]
+fn multiple_scores_with_differing_numbers_of_letters() {
     let input = BTreeMap::from([
         (1, vec!['A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T']),
         (2, vec!['D', 'G']),
@@ -43,10 +71,5 @@ fn main() {
         ('z', 10),
     ]);
 
-    transform(&input);
-
-    //println!("INPUT\n{:?}\n", input);
-    //println!("EXPECTED\n{:?}", expected);
-
-    //assert_eq!(expected, play::transform(&input));
+    assert_eq!(expected, etl::transform(&input));
 }

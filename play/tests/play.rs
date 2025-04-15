@@ -1,206 +1,76 @@
-use std::collections::HashMap;
-
-use play::graph::graph_items::edge::Edge;
-use play::graph::graph_items::node::Node;
-use play::graph::Graph;
+use std::collections::BTreeMap;
 
 #[test]
-fn empty_graph() {
-    let graph = Graph::new();
+#[ignore]
+fn single_letter() {
+    let input = BTreeMap::from([(1, vec!['A'])]);
 
-    assert!(graph.nodes.is_empty());
+    let expected = BTreeMap::from([('a', 1)]);
 
-    assert!(graph.edges.is_empty());
-
-    assert!(graph.attrs.is_empty());
+    assert_eq!(expected, play::transform(&input));
 }
 
 #[test]
 #[ignore]
-fn graph_with_one_node() {
-    let nodes = vec![Node::new("a")];
+fn single_score_with_multiple_letters() {
+    let input = BTreeMap::from([(1, vec!['A', 'E', 'I', 'O', 'U'])]);
 
-    let graph = Graph::new().with_nodes(&nodes);
+    let expected = BTreeMap::from([('a', 1), ('e', 1), ('i', 1), ('o', 1), ('u', 1)]);
 
-    assert!(graph.edges.is_empty());
-
-    assert!(graph.attrs.is_empty());
-
-    assert_eq!(graph.nodes, vec![Node::new("a")]);
+    assert_eq!(expected, play::transform(&input));
 }
 
 #[test]
 #[ignore]
-fn graph_with_one_node_with_keywords() {
-    let nodes = vec![Node::new("a").with_attrs(&[("color", "green")])];
+fn multiple_scores_with_multiple_letters() {
+    let input = BTreeMap::from([(1, vec!['A', 'E']), (2, vec!['D', 'G'])]);
 
-    let graph = Graph::new().with_nodes(&nodes);
+    let expected = BTreeMap::from([('a', 1), ('d', 2), ('e', 1), ('g', 2)]);
 
-    assert!(graph.edges.is_empty());
-
-    assert!(graph.attrs.is_empty());
-
-    assert_eq!(
-        graph.nodes,
-        vec![Node::new("a").with_attrs(&[("color", "green")])]
-    );
+    assert_eq!(expected, play::transform(&input));
 }
 
 #[test]
 #[ignore]
-fn graph_with_one_edge() {
-    let edges = vec![Edge::new("a", "b")];
-
-    let graph = Graph::new().with_edges(&edges);
-
-    assert!(graph.nodes.is_empty());
-
-    assert!(graph.attrs.is_empty());
-
-    assert_eq!(graph.edges, vec![Edge::new("a", "b")]);
-}
-
-#[test]
-#[ignore]
-fn graph_with_one_edge_with_keywords() {
-    let edges = vec![Edge::new("a", "b").with_attrs(&[("color", "blue")])];
-
-    let graph = Graph::new().with_edges(&edges);
-
-    assert!(graph.nodes.is_empty());
-
-    assert!(graph.attrs.is_empty());
-
-    assert_eq!(
-        graph.edges,
-        vec![Edge::new("a", "b").with_attrs(&[("color", "blue")])]
-    );
-}
-
-#[test]
-#[ignore]
-fn graph_with_one_attribute() {
-    let graph = Graph::new().with_attrs(&[("foo", "1")]);
-
-    #[allow(clippy::useless_conversion, reason = "allow String and &str")]
-    let expected_attrs = HashMap::from([("foo".into(), "1".into())]);
-
-    assert!(graph.nodes.is_empty());
-
-    assert!(graph.edges.is_empty());
-
-    assert_eq!(graph.attrs, expected_attrs);
-}
-
-#[test]
-#[ignore]
-fn graph_with_attributes() {
-    let nodes = vec![
-        Node::new("a").with_attrs(&[("color", "green")]),
-        Node::new("c"),
-        Node::new("b").with_attrs(&[("label", "Beta!")]),
-    ];
-
-    let edges = vec![
-        Edge::new("b", "c"),
-        Edge::new("a", "b").with_attrs(&[("color", "blue")]),
-    ];
-
-    let attrs = vec![("foo", "1"), ("title", "Testing Attrs"), ("bar", "true")];
-
-    #[allow(clippy::useless_conversion, reason = "allow String and &str")]
-    let expected_attrs = HashMap::from([
-        ("foo".into(), "1".into()),
-        ("title".into(), "Testing Attrs".into()),
-        ("bar".into(), "true".into()),
+fn multiple_scores_with_differing_numbers_of_letters() {
+    let input = BTreeMap::from([
+        (1, vec!['A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T']),
+        (2, vec!['D', 'G']),
+        (3, vec!['B', 'C', 'M', 'P']),
+        (4, vec!['F', 'H', 'V', 'W', 'Y']),
+        (5, vec!['K']),
+        (8, vec!['J', 'X']),
+        (10, vec!['Q', 'Z']),
     ]);
 
-    let graph = Graph::new()
-        .with_nodes(&nodes)
-        .with_edges(&edges)
-        .with_attrs(&attrs);
+    let expected = BTreeMap::from([
+        ('a', 1),
+        ('b', 3),
+        ('c', 3),
+        ('d', 2),
+        ('e', 1),
+        ('f', 4),
+        ('g', 2),
+        ('h', 4),
+        ('i', 1),
+        ('j', 8),
+        ('k', 5),
+        ('l', 1),
+        ('m', 3),
+        ('n', 1),
+        ('o', 1),
+        ('p', 3),
+        ('q', 10),
+        ('r', 1),
+        ('s', 1),
+        ('t', 1),
+        ('u', 1),
+        ('v', 4),
+        ('w', 4),
+        ('x', 8),
+        ('y', 4),
+        ('z', 10),
+    ]);
 
-    assert_eq!(
-        graph.nodes,
-        vec![
-            Node::new("a").with_attrs(&[("color", "green")]),
-            Node::new("c"),
-            Node::new("b").with_attrs(&[("label", "Beta!")]),
-        ]
-    );
-
-    assert_eq!(
-        graph.edges,
-        vec![
-            Edge::new("b", "c"),
-            Edge::new("a", "b").with_attrs(&[("color", "blue")]),
-        ]
-    );
-
-    assert_eq!(graph.attrs, expected_attrs);
-}
-
-#[test]
-#[ignore]
-fn edges_store_attributes() {
-    let nodes = vec![
-        Node::new("a").with_attrs(&[("color", "green")]),
-        Node::new("c"),
-        Node::new("b").with_attrs(&[("label", "Beta!")]),
-    ];
-
-    let edges = vec![
-        Edge::new("b", "c"),
-        Edge::new("a", "b").with_attrs(&[("color", "blue"), ("fill", "darkblue")]),
-    ];
-
-    let attrs = vec![("foo", "1"), ("title", "Testing Attrs"), ("bar", "true")];
-
-    let graph = Graph::new()
-        .with_nodes(&nodes)
-        .with_edges(&edges)
-        .with_attrs(&attrs);
-
-    assert_eq!(
-        graph.edges,
-        vec![
-            Edge::new("b", "c"),
-            Edge::new("a", "b").with_attrs(&[("color", "blue"), ("fill", "darkblue")]),
-        ]
-    );
-
-    assert_eq!(graph.edges[1].attr("color"), Some("blue"));
-    assert_eq!(graph.edges[1].attr("fill"), Some("darkblue"));
-    assert_eq!(graph.edges[1].attr("foo"), None);
-    assert_eq!(graph.edges[0].attr("color"), None);
-    assert_eq!(graph.edges[0].attr("fill"), None);
-    assert_eq!(graph.edges[0].attr("foo"), None);
-}
-
-#[test]
-#[ignore]
-fn graph_nodes_store_attributes() {
-    let attributes = [("foo", "bar"), ("bat", "baz"), ("bim", "bef")];
-    let graph = Graph::new().with_nodes(
-        &["a", "b", "c"]
-            .iter()
-            .zip(attributes.iter())
-            .map(|(name, &attr)| Node::new(name).with_attrs(&[attr]))
-            .collect::<Vec<_>>(),
-    );
-
-    let a = graph.node("a").expect("node a must be stored");
-    assert_eq!(a.attr("foo"), Some("bar"));
-    assert_eq!(a.attr("bat"), None);
-    assert_eq!(a.attr("bim"), None);
-
-    let b = graph.node("b").expect("node b must be stored");
-    assert_eq!(b.attr("foo"), None);
-    assert_eq!(b.attr("bat"), Some("baz"));
-    assert_eq!(b.attr("bim"), None);
-
-    let c = graph.node("c").expect("node c must be stored");
-    assert_eq!(c.attr("foo"), None);
-    assert_eq!(c.attr("bat"), None);
-    assert_eq!(c.attr("bim"), Some("bef"));
+    assert_eq!(expected, play::transform(&input));
 }
