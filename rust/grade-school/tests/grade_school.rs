@@ -1,4 +1,4 @@
-use play::*;
+use grade_school::*;
 
 #[test]
 fn grade_is_empty_if_no_students_in_the_roster() {
