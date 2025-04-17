@@ -1,6 +1,7 @@
 use play::*;
 
 #[test]
+#[ignore]
 fn grade_is_empty_if_no_students_in_the_roster() {
     let s = School::new();
     assert_eq!(s.grade(1), Vec::<String>::new())
@@ -86,7 +87,7 @@ fn grades_for_several_students_are_sorted() {
 }
 
 #[test]
-#[ignore]
+
 fn grades_when_several_students_have_the_same_grade() {
     let mut s = School::new();
     s.add(2, "Aimee");
