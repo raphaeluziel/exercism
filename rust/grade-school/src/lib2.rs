@@ -1,5 +1,6 @@
 use std::collections::BTreeMap;
 
+#[derive(Debug)]
 pub struct School<'a> {
     roster: BTreeMap<&'a str, u32>
 }
@@ -10,7 +11,9 @@ impl<'a> School<'a> {
     }
 
     pub fn add(&mut self, grade: u32, student: &'a str) {
-        self.roster.entry(student).or_insert(grade);
+        if !self.roster.contains_key(student) {
+            self.roster.insert(student, grade);
+        }
     }
 
     pub fn grades(&self) -> Vec<u32> {
@@ -25,8 +28,8 @@ impl<'a> School<'a> {
     // must be copied each time `grade` is called.
     pub fn grade(&self, grade: u32) -> Vec<String> {
         self.roster.iter()
-                   .filter(|&(_s, &grd)| grd == grade)
-                   .map(|(s, _g)| s.to_string())
-                   .collect()
+                    .filter(|&(_s, &grd)| grd == grade)
+                    .map(|(s, _g)| s.to_string())
+                    .collect()
     }
 }

@@ -1,4 +1,4 @@
-use play::*;
+use isbn_verifier::*;
 
 #[test]
 fn valid_isbn() {
