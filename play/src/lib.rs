@@ -1,14 +1,21 @@
 /// Determines whether the supplied string is a valid ISBN number
 pub fn is_valid_isbn(isbn: &str) -> bool {
 
-    
-    
+    if isbn.is_empty() ||
+        // !isbn.chars().all(|ch| ch.is_ascii_digit() || ch == 'X' || ch == '-') ||
+        isbn.chars().filter(|&ch| !ch.is_ascii_digit() || ch != 'X' || ch != '-').inspect(|x| println!("X = {:?}", x)).peekable().peek().is_none()
+
+        {
+            return false;
+        }
+
     isbn.chars().rev()
         .filter(|&ch| ch.is_ascii_digit() || ch == 'X')
         .enumerate()
-        .inspect(|x| println!("X = {:?}", x))
+        //.inspect(|x| println!("X = {:?}", x))
         .fold(0, |acc, (i, ch)| acc + 
                     (i as u32 + 1) * ch.to_digit(10)
                 .unwrap_or(10)) 
-        % 11 == 0  
+        % 11 == 0
+
 }
