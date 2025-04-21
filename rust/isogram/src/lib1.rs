@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 pub fn check(candidate: &str) -> bool {
     // Remove any '-' or whitespance
-    let candidate = candidate.replace(['-', ' '], "").to_lowercase();
+    let candidate = candidate.replace("-", "").replace(" ", "").to_lowercase();
 
     // The hashset will store all UNIQUE letters
     let mut letter: HashSet<char> = HashSet::new();

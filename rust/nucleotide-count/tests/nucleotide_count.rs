@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use play::*;
+use nucleotide_count::*;
 
 #[test]
 fn count_empty() {
