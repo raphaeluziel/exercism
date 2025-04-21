@@ -1,4 +1,4 @@
-use play::*;
+use isogram::*;
 
 #[test]
 fn empty_string() {
