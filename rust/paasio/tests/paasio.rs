@@ -3,12 +3,12 @@ use std::io::{Error, ErrorKind, Read, Result, Write};
 #[test]
 fn create_stats() {
     let mut data: Vec<u8> = Vec::new();
-    let _ = play::ReadStats::new(data.as_slice());
-    let _ = play::WriteStats::new(data.as_mut_slice());
+    let _ = paasio::ReadStats::new(data.as_slice());
+    let _ = paasio::WriteStats::new(data.as_mut_slice());
 }
 
 mod read_string {
-    use play::*;
+    use paasio::*;
     use std::io::{BufReader, Read};
 
     const CHUNK_SIZE: usize = 2;
@@ -79,7 +79,7 @@ mod read_string {
 }
 
 mod write_string {
-    use play::*;
+    use paasio::*;
     use std::io::{self, BufWriter, Write};
 
     const CHUNK_SIZE: usize = 2;
@@ -156,7 +156,7 @@ mod write_string {
 }
 
 mod read_byte_literal {
-    use play::*;
+    use paasio::*;
     use std::io::{BufReader, Read};
 
     const CHUNK_SIZE: usize = 2;
@@ -227,7 +227,7 @@ mod read_byte_literal {
 }
 
 mod write_byte_literal {
-    use play::*;
+    use paasio::*;
     use std::io::{self, BufWriter, Write};
 
     const CHUNK_SIZE: usize = 2;
@@ -306,7 +306,7 @@ mod write_byte_literal {
 }
 
 mod read_file {
-    use play::*;
+    use paasio::*;
     use std::io::{BufReader, Read};
 
     const CHUNK_SIZE: usize = 2;
@@ -377,7 +377,7 @@ mod read_file {
 #[test]
 #[ignore]
 fn read_stats_by_ref_returns_wrapped_reader() {
-    use play::ReadStats;
+    use paasio::ReadStats;
 
     let input =
         "Why, sometimes I've believed as many as six impossible things before breakfast".as_bytes();
@@ -418,7 +418,7 @@ impl Write for WriteFails {
 #[test]
 #[ignore]
 fn read_propagates_errors() {
-    use play::ReadStats;
+    use paasio::ReadStats;
 
     let mut reader = ReadStats::new(ReadFails);
     let mut buffer = Vec::new();
@@ -435,7 +435,7 @@ fn read_propagates_errors() {
 #[test]
 #[ignore]
 fn write_propagates_errors() {
-    use play::WriteStats;
+    use paasio::WriteStats;
 
     let mut writer = WriteStats::new(WriteFails);
     let buffer = "This text won't be written";
