@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use play::*;
 
 #[test]
+#[ignore]
 fn count_empty() {
     assert_eq!(count('A', ""), Ok(0));
 }
@@ -68,7 +69,7 @@ fn strand_with_repeated_nucleotide() {
 }
 
 #[test]
-#[ignore]
+
 fn strand_with_multiple_nucleotides() {
     let output =
         nucleotide_counts("AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC");
