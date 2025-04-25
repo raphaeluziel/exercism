@@ -1,7 +1,7 @@
 use std::io::{Error, ErrorKind, Read, Result, Write};
 
 #[test]
-#[ignore]
+
 fn create_stats() {
     let mut data: Vec<u8> = Vec::new();
     let _ = play::ReadStats::new(data.as_slice());

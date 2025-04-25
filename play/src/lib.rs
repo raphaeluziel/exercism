@@ -3,9 +3,9 @@ use std::io::{Read, Result, Write};
 // the PhantomData instances in this file are just to stop compiler complaints
 // about missing generics; feel free to remove them
 
-pub struct ReadStats<R> {
+pub struct ReadStats<R: Read> {
     read_data: R,
-    buffer: Vec<u8>
+    i: usize
 }
 
 impl<R: Read> ReadStats<R> {
@@ -13,7 +13,11 @@ impl<R: Read> ReadStats<R> {
     // can't be passed through format!(). For actual implementation you will likely
     // wish to remove the leading underscore so the variable is not ignored.
     pub fn new(wrapped: R) -> ReadStats<R> {
-        ReadStats { read_data: wrapped, buffer: Vec::new() }
+        //println!("JJJ {:?}", wrapped);
+        ReadStats { 
+            read_data: wrapped,
+            i: 0
+        }
     }
 
     pub fn get_ref(&self) -> &R {
@@ -31,10 +35,8 @@ impl<R: Read> ReadStats<R> {
 
 impl<R: Read> Read for ReadStats<R> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
-        self.buffer.clear();
-        self.buffer = buf.to_vec();
-        Ok(10)
-        //todo!("Collect statistics about this call reading {buf:?}")
+        println!("SELFIE\n{:?}", self);
+        Ok(126)
     }
 }
 
