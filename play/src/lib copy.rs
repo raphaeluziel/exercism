@@ -36,16 +36,22 @@ impl<R: Read> ReadStats<R> {
 
 impl<R: Read> Read for ReadStats<R> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
-        println!("BUF = {:?}", buf.len());
-        println!("SELFA = {:?}", self.readed);
-        println!("I = {}", self.i);
+        println!("BUF = {:?}", buf);
         self.i += 1;
-        let cc = self.wrap.read_exact(buf);
-        if cc.is_err() { println!("HERE"); return Ok(0); }
-        println!("HERE YALL");
-        self.readed += buf.len();
-        println!("SELFB = {:?}", self.readed);
-        Ok(buf.len())
+        
+        let mut gg = Vec::new();
+        self.readed = self.wrap.read_to_end(&mut gg)?;
+        println!("readed = {:?}", self.readed);
+        println!("gg = {:?}", gg);
+        if self.readed == 0 { println!("HERE"); return Ok(0); }
+        // for g in 0..gg.len() {
+        //     buf[g] = gg[g];
+        // }
+        for b in 0..buf.len() {
+            buf[b] = gg[b];
+        }
+        println!("buf = {:?}", buf);
+        Ok(99)
     }
 }
 
