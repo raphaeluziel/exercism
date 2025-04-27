@@ -1,451 +1,206 @@
-use std::io::{Error, ErrorKind, Read, Result, Write};
+use std::collections::HashMap;
+
+use play::graph::graph_items::edge::Edge;
+use play::graph::graph_items::node::Node;
+use play::graph::Graph;
 
 #[test]
-//#[ignore]
-fn create_stats() {
-    let mut data: Vec<u8> = Vec::new();
-    let _ = play::ReadStats::new(data.as_slice());
-    let _ = play::WriteStats::new(data.as_mut_slice());
+fn empty_graph() {
+    let graph = Graph::new();
+
+    assert!(graph.nodes.is_empty());
+
+    assert!(graph.edges.is_empty());
+
+    assert!(graph.attrs.is_empty());
 }
 
-mod read_string {
-    use play::*;
-    use std::io::{BufReader, Read};
+#[test]
+#[ignore]
+fn graph_with_one_node() {
+    let nodes = vec![Node::new("a")];
 
-    const CHUNK_SIZE: usize = 2;
+    let graph = Graph::new().with_nodes(&nodes);
 
-    static INPUT: &[u8] = b"Twas brillig, and the slithy toves/Did gyre and gimble in the wabe:/All mimsy were the borogoves,/And the mome raths outgrabe.";
+    assert!(graph.edges.is_empty());
 
-    #[test]
-    //#[ignore]
-    fn read_passthrough() {
-        let data = INPUT;
-        let size = data.len();
-        let mut reader = ReadStats::new(data);
+    assert!(graph.attrs.is_empty());
 
-        let mut buffer = Vec::with_capacity(size);
-        let qty_read = reader.read_to_end(&mut buffer);
-
-        assert!(qty_read.is_ok());
-        assert_eq!(size, qty_read.unwrap());
-        assert_eq!(size, buffer.len());
-        // 2: first to read all the data, second to check that
-        // there wasn't any more pending data which simply didn't
-        // fit into the existing buffer
-        assert_eq!(2, reader.reads());
-        assert_eq!(size, reader.bytes_through());
-    }
-
-    #[test]
-    //#[ignore]
-    fn read_chunks() {
-        let data = INPUT;
-        let size = data.len();
-        let mut reader = ReadStats::new(data);
-
-        let mut buffer = [0_u8; CHUNK_SIZE];
-        let mut chunks_read = 0;
-        while reader.read(&mut buffer[..]).unwrap() > 0 {
-            chunks_read += 1;
-        }
-
-        assert_eq!(size / CHUNK_SIZE + 1.min(size % CHUNK_SIZE), chunks_read);
-        // we read once more than the number of chunks, because the final
-        // read returns 0 new bytes
-        assert_eq!(1 + chunks_read, reader.reads());
-        assert_eq!(size, reader.bytes_through());
-    }
-
-    #[test]
-    //#[ignore]
-    fn read_buffered_chunks() {
-        let data = INPUT;
-        let size = data.len();
-        let mut reader = BufReader::new(ReadStats::new(data));
-
-        let mut buffer = [0_u8; CHUNK_SIZE];
-        let mut chunks_read = 0;
-        while reader.read(&mut buffer[..]).unwrap() > 0 {
-            chunks_read += 1;
-        }
-
-        assert_eq!(size / CHUNK_SIZE + 1.min(size % CHUNK_SIZE), chunks_read);
-        // the BufReader should smooth out the reads, collecting into
-        // a buffer and performing only two read operations:
-        // the first collects everything into the buffer,
-        // and the second ensures that no data remains
-        assert_eq!(2, reader.get_ref().reads());
-        assert_eq!(size, reader.get_ref().bytes_through());
-    }
+    assert_eq!(graph.nodes, vec![Node::new("a")]);
 }
 
-mod write_string {
-    use play::*;
-    use std::io::{self, BufWriter, Write};
+#[test]
+#[ignore]
+fn graph_with_one_node_with_keywords() {
+    let nodes = vec![Node::new("a").with_attrs(&[("color", "green")])];
 
-    const CHUNK_SIZE: usize = 2;
+    let graph = Graph::new().with_nodes(&nodes);
 
-    static INPUT: &[u8] = b"Beware the Jabberwock, my son!/The jaws that bite, the claws that catch!/Beware the Jubjub bird, and shun/The frumious Bandersnatch!";
+    assert!(graph.edges.is_empty());
 
-    #[test]
-    //#[ignore]
-    fn write_passthrough() {
-        let data = INPUT;
-        let size = data.len();
-        let mut writer = WriteStats::new(Vec::with_capacity(size));
-        let written = writer.write(data);
-        assert!(written.is_ok());
-        assert_eq!(size, written.unwrap());
-        assert_eq!(size, writer.bytes_through());
-        assert_eq!(1, writer.writes());
-        assert_eq!(data, writer.get_ref().as_slice());
-    }
+    assert!(graph.attrs.is_empty());
 
-    #[test]
-    //#[ignore]
-    fn sink_oneshot() {
-        let data = INPUT;
-        let size = data.len();
-        let mut writer = WriteStats::new(io::sink());
-        let written = writer.write(data);
-        assert!(written.is_ok());
-        assert_eq!(size, written.unwrap());
-        assert_eq!(size, writer.bytes_through());
-        assert_eq!(1, writer.writes());
-    }
-
-    #[test]
-    //#[ignore]
-    fn sink_windowed() {
-        let data = INPUT;
-        let size = data.len();
-        let mut writer = WriteStats::new(io::sink());
-
-        let mut chunk_count = 0;
-        for chunk in data.chunks(CHUNK_SIZE) {
-            chunk_count += 1;
-            let written = writer.write(chunk);
-            assert!(written.is_ok());
-            assert_eq!(CHUNK_SIZE, written.unwrap());
-        }
-        assert_eq!(size, writer.bytes_through());
-        assert_eq!(chunk_count, writer.writes());
-    }
-
-    #[test]
-    //#[ignore]
-    fn sink_buffered_windowed() {
-        let data = INPUT;
-        let size = data.len();
-        let mut writer = BufWriter::new(WriteStats::new(io::sink()));
-
-        for chunk in data.chunks(CHUNK_SIZE) {
-            let written = writer.write(chunk);
-            assert!(written.is_ok());
-            assert_eq!(CHUNK_SIZE, written.unwrap());
-        }
-        // at this point, nothing should have yet been passed through to
-        // our writer
-        assert_eq!(0, writer.get_ref().bytes_through());
-        assert_eq!(0, writer.get_ref().writes());
-
-        // after flushing, everything should pass through in one go
-        assert!(writer.flush().is_ok());
-        assert_eq!(size, writer.get_ref().bytes_through());
-        assert_eq!(1, writer.get_ref().writes());
-    }
+    assert_eq!(
+        graph.nodes,
+        vec![Node::new("a").with_attrs(&[("color", "green")])]
+    );
 }
 
-mod read_byte_literal {
-    use play::*;
-    use std::io::{BufReader, Read};
+#[test]
+#[ignore]
+fn graph_with_one_edge() {
+    let edges = vec![Edge::new("a", "b")];
 
-    const CHUNK_SIZE: usize = 2;
+    let graph = Graph::new().with_edges(&edges);
 
-    static INPUT: &[u8] = &[1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144];
+    assert!(graph.nodes.is_empty());
 
-    #[test]
-    //#[ignore]
-    fn read_passthrough() {
-        let data = INPUT;
-        let size = data.len();
-        let mut reader = ReadStats::new(data);
+    assert!(graph.attrs.is_empty());
 
-        let mut buffer = Vec::with_capacity(size);
-        let qty_read = reader.read_to_end(&mut buffer);
-
-        assert!(qty_read.is_ok());
-        assert_eq!(size, qty_read.unwrap());
-        assert_eq!(size, buffer.len());
-        // 2: first to read all the data, second to check that
-        // there wasn't any more pending data which simply didn't
-        // fit into the existing buffer
-        assert_eq!(2, reader.reads());
-        assert_eq!(size, reader.bytes_through());
-    }
-
-    #[test]
-    //#[ignore]
-    fn read_chunks() {
-        let data = INPUT;
-        let size = data.len();
-        let mut reader = ReadStats::new(data);
-
-        let mut buffer = [0_u8; CHUNK_SIZE];
-        let mut chunks_read = 0;
-        while reader.read(&mut buffer[..]).unwrap() > 0 {
-            chunks_read += 1;
-        }
-
-        assert_eq!(size / CHUNK_SIZE + 1.min(size % CHUNK_SIZE), chunks_read);
-        // we read once more than the number of chunks, because the final
-        // read returns 0 new bytes
-        assert_eq!(1 + chunks_read, reader.reads());
-        assert_eq!(size, reader.bytes_through());
-    }
-
-    #[test]
-    //#[ignore]
-    fn read_buffered_chunks() {
-        let data = INPUT;
-        let size = data.len();
-        let mut reader = BufReader::new(ReadStats::new(data));
-
-        let mut buffer = [0_u8; CHUNK_SIZE];
-        let mut chunks_read = 0;
-        while reader.read(&mut buffer[..]).unwrap() > 0 {
-            chunks_read += 1;
-        }
-
-        assert_eq!(size / CHUNK_SIZE + 1.min(size % CHUNK_SIZE), chunks_read);
-        // the BufReader should smooth out the reads, collecting into
-        // a buffer and performing only two read operations:
-        // the first collects everything into the buffer,
-        // and the second ensures that no data remains
-        assert_eq!(2, reader.get_ref().reads());
-        assert_eq!(size, reader.get_ref().bytes_through());
-    }
+    assert_eq!(graph.edges, vec![Edge::new("a", "b")]);
 }
 
-mod write_byte_literal {
-    use play::*;
-    use std::io::{self, BufWriter, Write};
+#[test]
+#[ignore]
+fn graph_with_one_edge_with_keywords() {
+    let edges = vec![Edge::new("a", "b").with_attrs(&[("color", "blue")])];
 
-    const CHUNK_SIZE: usize = 2;
+    let graph = Graph::new().with_edges(&edges);
 
-    static INPUT: &[u8] = &[
-        2_u8, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61,
+    assert!(graph.nodes.is_empty());
+
+    assert!(graph.attrs.is_empty());
+
+    assert_eq!(
+        graph.edges,
+        vec![Edge::new("a", "b").with_attrs(&[("color", "blue")])]
+    );
+}
+
+#[test]
+#[ignore]
+fn graph_with_one_attribute() {
+    let graph = Graph::new().with_attrs(&[("foo", "1")]);
+
+    #[allow(clippy::useless_conversion, reason = "allow String and &str")]
+    let expected_attrs = HashMap::from([("foo".into(), "1".into())]);
+
+    assert!(graph.nodes.is_empty());
+
+    assert!(graph.edges.is_empty());
+
+    assert_eq!(graph.attrs, expected_attrs);
+}
+
+#[test]
+#[ignore]
+fn graph_with_attributes() {
+    let nodes = vec![
+        Node::new("a").with_attrs(&[("color", "green")]),
+        Node::new("c"),
+        Node::new("b").with_attrs(&[("label", "Beta!")]),
     ];
 
-    #[test]
-    //#[ignore]
-    fn write_passthrough() {
-        let data = INPUT;
-        let size = data.len();
-        let mut writer = WriteStats::new(Vec::with_capacity(size));
-        let written = writer.write(data);
-        assert!(written.is_ok());
-        assert_eq!(size, written.unwrap());
-        assert_eq!(size, writer.bytes_through());
-        assert_eq!(1, writer.writes());
-        assert_eq!(data, writer.get_ref().as_slice());
-    }
+    let edges = vec![
+        Edge::new("b", "c"),
+        Edge::new("a", "b").with_attrs(&[("color", "blue")]),
+    ];
 
-    #[test]
-    #[ignore]
-    fn sink_oneshot() {
-        let data = INPUT;
-        let size = data.len();
-        let mut writer = WriteStats::new(io::sink());
-        let written = writer.write(data);
-        assert!(written.is_ok());
-        assert_eq!(size, written.unwrap());
-        assert_eq!(size, writer.bytes_through());
-        assert_eq!(1, writer.writes());
-    }
+    let attrs = vec![("foo", "1"), ("title", "Testing Attrs"), ("bar", "true")];
 
-    #[test]
-    #[ignore]
-    fn sink_windowed() {
-        let data = INPUT;
-        let size = data.len();
-        let mut writer = WriteStats::new(io::sink());
+    #[allow(clippy::useless_conversion, reason = "allow String and &str")]
+    let expected_attrs = HashMap::from([
+        ("foo".into(), "1".into()),
+        ("title".into(), "Testing Attrs".into()),
+        ("bar".into(), "true".into()),
+    ]);
 
-        let mut chunk_count = 0;
-        for chunk in data.chunks(CHUNK_SIZE) {
-            chunk_count += 1;
-            let written = writer.write(chunk);
-            assert!(written.is_ok());
-            assert_eq!(CHUNK_SIZE, written.unwrap());
-        }
-        assert_eq!(size, writer.bytes_through());
-        assert_eq!(chunk_count, writer.writes());
-    }
+    let graph = Graph::new()
+        .with_nodes(&nodes)
+        .with_edges(&edges)
+        .with_attrs(&attrs);
 
-    #[test]
-    #[ignore]
-    fn sink_buffered_windowed() {
-        let data = INPUT;
-        let size = data.len();
-        let mut writer = BufWriter::new(WriteStats::new(io::sink()));
+    assert_eq!(
+        graph.nodes,
+        vec![
+            Node::new("a").with_attrs(&[("color", "green")]),
+            Node::new("c"),
+            Node::new("b").with_attrs(&[("label", "Beta!")]),
+        ]
+    );
 
-        for chunk in data.chunks(CHUNK_SIZE) {
-            let written = writer.write(chunk);
-            assert!(written.is_ok());
-            assert_eq!(CHUNK_SIZE, written.unwrap());
-        }
-        // at this point, nothing should have yet been passed through to
-        // our writer
-        assert_eq!(0, writer.get_ref().bytes_through());
-        assert_eq!(0, writer.get_ref().writes());
+    assert_eq!(
+        graph.edges,
+        vec![
+            Edge::new("b", "c"),
+            Edge::new("a", "b").with_attrs(&[("color", "blue")]),
+        ]
+    );
 
-        // after flushing, everything should pass through in one go
-        assert!(writer.flush().is_ok());
-        assert_eq!(size, writer.get_ref().bytes_through());
-        assert_eq!(1, writer.get_ref().writes());
-    }
-}
-
-mod read_file {
-    use play::*;
-    use std::io::{BufReader, Read};
-
-    const CHUNK_SIZE: usize = 2;
-
-    #[test]
-    #[ignore]
-    fn read_passthrough() {
-        let data = std::fs::File::open("Cargo.toml").expect("Cargo.toml must be present");
-        let size = data.metadata().expect("metadata must be present").len() as usize;
-        let mut reader = ReadStats::new(data);
-
-        let mut buffer = Vec::with_capacity(size);
-        let qty_read = reader.read_to_end(&mut buffer);
-
-        assert!(qty_read.is_ok());
-        assert_eq!(size, qty_read.unwrap());
-        assert_eq!(size, buffer.len());
-        // 2: first to read all the data, second to check that
-        // there wasn't any more pending data which simply didn't
-        // fit into the existing buffer
-        assert_eq!(2, reader.reads());
-        assert_eq!(size, reader.bytes_through());
-    }
-
-    #[test]
-    #[ignore]
-    fn read_chunks() {
-        let data = std::fs::File::open("Cargo.toml").expect("Cargo.toml must be present");
-        let size = data.metadata().expect("metadata must be present").len() as usize;
-        let mut reader = ReadStats::new(data);
-
-        let mut buffer = [0_u8; CHUNK_SIZE];
-        let mut chunks_read = 0;
-        while reader.read(&mut buffer[..]).unwrap() > 0 {
-            chunks_read += 1;
-        }
-
-        assert_eq!(size / CHUNK_SIZE + 1.min(size % CHUNK_SIZE), chunks_read);
-        // we read once more than the number of chunks, because the final
-        // read returns 0 new bytes
-        assert_eq!(1 + chunks_read, reader.reads());
-        assert_eq!(size, reader.bytes_through());
-    }
-
-    #[test]
-    #[ignore]
-    fn read_buffered_chunks() {
-        let data = std::fs::File::open("Cargo.toml").expect("Cargo.toml must be present");
-        let size = data.metadata().expect("metadata must be present").len() as usize;
-        let mut reader = BufReader::new(ReadStats::new(data));
-
-        let mut buffer = [0_u8; CHUNK_SIZE];
-        let mut chunks_read = 0;
-        while reader.read(&mut buffer[..]).unwrap() > 0 {
-            chunks_read += 1;
-        }
-
-        assert_eq!(size / CHUNK_SIZE + 1.min(size % CHUNK_SIZE), chunks_read);
-        // the BufReader should smooth out the reads, collecting into
-        // a buffer and performing only two read operations:
-        // the first collects everything into the buffer,
-        // and the second ensures that no data remains
-        assert_eq!(2, reader.get_ref().reads());
-        assert_eq!(size, reader.get_ref().bytes_through());
-    }
+    assert_eq!(graph.attrs, expected_attrs);
 }
 
 #[test]
 #[ignore]
-fn read_stats_by_ref_returns_wrapped_reader() {
-    use play::ReadStats;
+fn edges_store_attributes() {
+    let nodes = vec![
+        Node::new("a").with_attrs(&[("color", "green")]),
+        Node::new("c"),
+        Node::new("b").with_attrs(&[("label", "Beta!")]),
+    ];
 
-    let input =
-        "Why, sometimes I've believed as many as six impossible things before breakfast".as_bytes();
-    let reader = ReadStats::new(input);
-    assert_eq!(reader.get_ref(), &input);
-}
+    let edges = vec![
+        Edge::new("b", "c"),
+        Edge::new("a", "b").with_attrs(&[("color", "blue"), ("fill", "darkblue")]),
+    ];
 
-/// a Read type that always errors
-struct ReadFails;
+    let attrs = vec![("foo", "1"), ("title", "Testing Attrs"), ("bar", "true")];
 
-impl ReadFails {
-    const MESSAGE: &'static str = "this reader always fails";
-}
+    let graph = Graph::new()
+        .with_nodes(&nodes)
+        .with_edges(&edges)
+        .with_attrs(&attrs);
 
-impl Read for ReadFails {
-    fn read(&mut self, _buf: &mut [u8]) -> Result<usize> {
-        Err(Error::other(Self::MESSAGE))
-    }
-}
+    assert_eq!(
+        graph.edges,
+        vec![
+            Edge::new("b", "c"),
+            Edge::new("a", "b").with_attrs(&[("color", "blue"), ("fill", "darkblue")]),
+        ]
+    );
 
-/// a Write type that always errors
-struct WriteFails;
-
-impl WriteFails {
-    const MESSAGE: &'static str = "this writer always fails";
-}
-
-impl Write for WriteFails {
-    fn write(&mut self, _buf: &[u8]) -> Result<usize> {
-        Err(Error::other(Self::MESSAGE))
-    }
-
-    fn flush(&mut self) -> Result<()> {
-        Err(Error::other(Self::MESSAGE))
-    }
+    assert_eq!(graph.edges[1].attr("color"), Some("blue"));
+    assert_eq!(graph.edges[1].attr("fill"), Some("darkblue"));
+    assert_eq!(graph.edges[1].attr("foo"), None);
+    assert_eq!(graph.edges[0].attr("color"), None);
+    assert_eq!(graph.edges[0].attr("fill"), None);
+    assert_eq!(graph.edges[0].attr("foo"), None);
 }
 
 #[test]
 #[ignore]
-fn read_propagates_errors() {
-    use play::ReadStats;
+fn graph_nodes_store_attributes() {
+    let attributes = [("foo", "bar"), ("bat", "baz"), ("bim", "bef")];
+    let graph = Graph::new().with_nodes(
+        &["a", "b", "c"]
+            .iter()
+            .zip(attributes.iter())
+            .map(|(name, &attr)| Node::new(name).with_attrs(&[attr]))
+            .collect::<Vec<_>>(),
+    );
 
-    let mut reader = ReadStats::new(ReadFails);
-    let mut buffer = Vec::new();
+    let a = graph.node("a").expect("node a must be stored");
+    assert_eq!(a.attr("foo"), Some("bar"));
+    assert_eq!(a.attr("bat"), None);
+    assert_eq!(a.attr("bim"), None);
 
-    let Err(e) = reader.read(&mut buffer) else {
-        panic!("read error not propagated")
-    };
+    let b = graph.node("b").expect("node b must be stored");
+    assert_eq!(b.attr("foo"), None);
+    assert_eq!(b.attr("bat"), Some("baz"));
+    assert_eq!(b.attr("bim"), None);
 
-    // check that the correct error was returned
-    assert_eq!(e.kind(), ErrorKind::Other);
-    assert_eq!(e.get_ref().unwrap().to_string(), ReadFails::MESSAGE);
-}
-
-#[test]
-#[ignore]
-fn write_propagates_errors() {
-    use play::WriteStats;
-
-    let mut writer = WriteStats::new(WriteFails);
-    let buffer = "This text won't be written";
-
-    let Err(e) = writer.write(buffer.as_bytes()) else {
-        panic!("write error not propagated")
-    };
-
-    // check that the correct error is returned
-    assert_eq!(e.kind(), ErrorKind::Other);
-    assert_eq!(e.get_ref().unwrap().to_string(), WriteFails::MESSAGE);
+    let c = graph.node("c").expect("node c must be stored");
+    assert_eq!(c.attr("foo"), None);
+    assert_eq!(c.attr("bat"), None);
+    assert_eq!(c.attr("bim"), Some("bef"));
 }
