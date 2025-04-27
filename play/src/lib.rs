@@ -1,21 +1,25 @@
 pub mod graph {
-    pub struct Graph {
-        pub nodes: String,
+    use graph_items::node::Node;
+
+    pub struct Graph<'a> {
+        pub nodes: Vec<Node<'a>>,
         pub edges: String,
         pub attrs: String
     }
 
-    impl Graph {
+    impl<'a> Graph<'a> {
         pub fn new() -> Self {
             Graph {
-                nodes: "".to_string(), 
+                nodes: Vec::new(), 
                 edges: "".to_string(),
                 attrs: "".to_string()
             }
         }
 
-        pub fn with_nodes(&self) -> Self {
-            Graph { nodes: "".to_string(), edges: "".to_string(), attrs: "".to_string() }
+        pub fn with_nodes(&mut self, v: &Vec<Node<'a>>) {
+            for nd in v {
+                &self.nodes.push(nd);
+            }
         }
     }
 
