@@ -2,13 +2,13 @@ pub mod graph {
     use std::collections::HashMap;
     use graph_items::{edge::Edge, node::Node};
 
-    pub struct Graph {
-        pub nodes: Vec<Node>,
-        pub edges: Vec<Edge>,
-        pub attrs: HashMap<String, String>
+    pub struct Graph<'a> {
+        pub nodes: Vec<Node<'a>>,
+        pub edges: Vec<Edge<'a>>,
+        pub attrs: HashMap<&'a str, &'a str>
     }
 
-    impl Graph {
+    impl<'a> Graph<'a> {
         pub fn new() -> Self {
             Graph {
                 nodes: Vec::new(),
@@ -17,22 +17,26 @@ pub mod graph {
             }
         }
 
-        pub fn with_nodes(mut self, v: &Vec<Node>) -> Self {
+        pub fn with_nodes(mut self, v: &Vec<Node<'a>>) -> Self {
             self.nodes.append(&mut v.clone());
             self
         }
 
-        pub fn with_edges(mut self, v: &Vec<Edge>) -> Self {
+        pub fn with_edges(mut self, v: &Vec<Edge<'a>>) -> Self {
             self.edges.append(&mut v.clone());
             self
         }
 
-        pub fn with_attrs(mut self, atts: &[(&str, &str)]) -> Self {
+        pub fn with_attrs(mut self, atts: &[(&'a str, &'a str)]) -> Self {
             for (trt, val) in atts {
-                self.attrs.insert(trt.to_string(), val.to_string());
+                self.attrs.insert(trt, val);
             }
             self
         }
+
+        // pub fn node(&self, n: &'a str) -> Option<&str> {
+        //     let nd = Node // HOW DO I FIND A STRUCT WITH THIS VALUE???
+        // }
     }
 
     pub mod graph_items {
@@ -41,26 +45,25 @@ pub mod graph {
             use std::collections::HashMap;
 
             #[derive(Debug, Clone, PartialEq)]
-            pub struct Edge {
-                pub edge: (String, String),
-                pub attrs: HashMap<String, String>
+            pub struct Edge<'a> {
+                pub edge: (&'a str, &'a str),
+                pub attrs: HashMap<&'a str, &'a str>
             }
     
-            impl Edge {
-                pub fn new(tr: &str, val: &str) -> Edge {
-                    Edge { edge: (tr.to_string(), val.to_string()), attrs: HashMap::new() }
+            impl<'a> Edge<'a> {
+                pub fn new(tr: &'a str, val: &'a str) -> Edge<'a> {
+                    Edge { edge: (tr, val), attrs: HashMap::new() }
                 }
     
-                pub fn with_attrs(mut self, atts: &[(&str, &str)]) -> Edge {
+                pub fn with_attrs(mut self, atts: &[(&'a str, &'a str)]) -> Edge<'a> {
                     for (trt, val) in atts {
-                        self.attrs.insert(trt.to_string(), val.to_string());
+                        self.attrs.insert(trt, val);
                     }
                     self
                 }
 
-                pub fn attr(self, att: &str) -> Option<&str> {
-                    //self.attrs.get(att)
-                    Some("Blue")
+                pub fn attr(&self, att: &'a str) -> Option<&'a str> {
+                    self.attrs.get(att).map(|v| &**v)
                 }
             }
     
@@ -70,19 +73,19 @@ pub mod graph {
             use std::collections::HashMap;
 
             #[derive(Debug, Clone, PartialEq)]
-            pub struct Node {
-                pub node: String,
-                pub attrs: HashMap<String, String>
+            pub struct Node<'a> {
+                pub node: &'a str,
+                pub attrs: HashMap<&'a str, &'a str>
             }
     
-            impl Node {
-                pub fn new(n: &str) -> Self {
-                    Node { node: n.to_string(), attrs: HashMap::new() }
+            impl<'a> Node<'a> {
+                pub fn new(n: &'a str) -> Self {
+                    Node { node: n, attrs: HashMap::new() }
                 }
     
-                pub fn with_attrs(mut self, atts: &[(&str, &str)]) -> Self {
+                pub fn with_attrs(mut self, atts: &[(&'a str, &'a str)]) -> Self {
                     for (trt, val) in atts {
-                        self.attrs.insert(trt.to_string(), val.to_string());
+                        self.attrs.insert(trt, val);
                     }
                     self
                 }
