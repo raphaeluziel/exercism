@@ -34,9 +34,17 @@ pub mod graph {
             self
         }
 
-        // pub fn node(&self, n: &'a str) -> Option<&str> {
-        //     let nd = Node // HOW DO I FIND A STRUCT WITH THIS VALUE???
-        // }
+        pub fn node(&self, n: &'a str) -> Option<&Node> {
+            match self.nodes.iter().filter(|x| x.node == n).last() {
+                Some(x) => Some(x),
+                None => None
+            }
+        }
+
+        pub fn attr(&self, n: &'a str) -> Option<&str> {
+            self.node(n).unwrap().attrs.get("foo").map(|v| &**v)
+            //self.node(n).unwrap().attrs.get("foo")
+        }
     }
 
     pub mod graph_items {
@@ -89,6 +97,11 @@ pub mod graph {
                     }
                     self
                 }
+
+                // pub fn attr(&self, k: &'a str) -> Option<&str> {
+                //     println!("HHHHHHH {:?}", self.attrs);
+                //     None
+                // }
     
             }
         
@@ -97,6 +110,3 @@ pub mod graph {
     }
 
 }
-
-
-// Check out https://users.rust-lang.org/t/vec-mut-t-and-vec-t-mismatch-in-builder-pattern/58151/4

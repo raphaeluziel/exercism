@@ -189,17 +189,17 @@ fn graph_nodes_store_attributes() {
             .collect::<Vec<_>>(),
     );
 
-    // let a = graph.node("a").expect("node a must be stored");
-    // assert_eq!(a.attr("foo"), Some("bar"));
+    let a = graph.node("a").expect("node a must be stored");
+    //assert_eq!(a.attr("foo"), Some("bar"));
     // assert_eq!(a.attr("bat"), None);
     // assert_eq!(a.attr("bim"), None);
 
-//     let b = graph.node("b").expect("node b must be stored");
+    let b = graph.node("b").expect("node b must be stored");
 //     assert_eq!(b.attr("foo"), None);
 //     assert_eq!(b.attr("bat"), Some("baz"));
 //     assert_eq!(b.attr("bim"), None);
 
-//     let c = graph.node("c").expect("node c must be stored");
+    let c = graph.node("c").expect("node c must be stored");
 //     assert_eq!(c.attr("foo"), None);
 //     assert_eq!(c.attr("bat"), None);
 //     assert_eq!(c.attr("bim"), Some("bef"));

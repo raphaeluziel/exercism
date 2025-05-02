@@ -1,9 +1,102 @@
 pub mod graph {
-    pub struct Graph;
+    use std::collections::HashMap;
+    use graph_items::{edge::Edge, node::Node};
 
-    impl Graph {
+    pub struct Graph<'a> {
+        pub nodes: Vec<Node<'a>>,
+        pub edges: Vec<Edge<'a>>,
+        pub attrs: HashMap<&'a str, &'a str>
+    }
+
+    impl<'a> Graph<'a> {
         pub fn new() -> Self {
-            todo!("Construct a new Graph struct.");
+            Graph {
+                nodes: Vec::new(),
+                edges: Vec::new(),
+                attrs: HashMap::new()
+            }
+        }
+
+        pub fn with_nodes(mut self, v: &Vec<Node<'a>>) -> Self {
+            self.nodes.append(&mut v.clone());
+            self
+        }
+
+        pub fn with_edges(mut self, v: &Vec<Edge<'a>>) -> Self {
+            self.edges.append(&mut v.clone());
+            self
+        }
+
+        pub fn with_attrs(mut self, atts: &[(&'a str, &'a str)]) -> Self {
+            for (trt, val) in atts {
+                self.attrs.insert(trt, val);
+            }
+            self
+        }
+
+        pub fn node(&self, n: &'a str) -> Option<&str> {
+            match self.nodes.iter().filter(|x| x.node == n).last() {
+                Some(x) => Some(x.node),
+                None => None
+            }
         }
     }
+
+    pub mod graph_items {
+
+        pub mod edge {
+            use std::collections::HashMap;
+
+            #[derive(Debug, Clone, PartialEq)]
+            pub struct Edge<'a> {
+                pub edge: (&'a str, &'a str),
+                pub attrs: HashMap<&'a str, &'a str>
+            }
+    
+            impl<'a> Edge<'a> {
+                pub fn new(tr: &'a str, val: &'a str) -> Edge<'a> {
+                    Edge { edge: (tr, val), attrs: HashMap::new() }
+                }
+    
+                pub fn with_attrs(mut self, atts: &[(&'a str, &'a str)]) -> Edge<'a> {
+                    for (trt, val) in atts {
+                        self.attrs.insert(trt, val);
+                    }
+                    self
+                }
+
+                pub fn attr(&self, att: &'a str) -> Option<&'a str> {
+                    self.attrs.get(att).map(|v| &**v)
+                }
+            }
+    
+        }
+    
+        pub mod node {
+            use std::collections::HashMap;
+
+            #[derive(Debug, Clone, PartialEq)]
+            pub struct Node<'a> {
+                pub node: &'a str,
+                pub attrs: HashMap<&'a str, &'a str>
+            }
+    
+            impl<'a> Node<'a> {
+                pub fn new(n: &'a str) -> Self {
+                    Node { node: n, attrs: HashMap::new() }
+                }
+    
+                pub fn with_attrs(mut self, atts: &[(&'a str, &'a str)]) -> Self {
+                    for (trt, val) in atts {
+                        self.attrs.insert(trt, val);
+                    }
+                    self
+                }
+    
+            }
+        
+        }
+    
+    }
+
 }
