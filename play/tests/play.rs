@@ -2,6 +2,7 @@ use play::*;
 use std::collections::HashSet;
 
 #[test]
+#[ignore]
 fn find_the_smallest_palindrome_from_single_digit_factors() {
     let output = palindrome_products(1, 9);
     assert!(output.is_some());
@@ -23,7 +24,7 @@ fn find_the_largest_palindrome_from_single_digit_factors() {
 }
 
 #[test]
-#[ignore]
+//#[ignore]
 fn find_the_smallest_palindrome_from_double_digit_factors() {
     let output = palindrome_products(10, 99);
     assert!(output.is_some());
