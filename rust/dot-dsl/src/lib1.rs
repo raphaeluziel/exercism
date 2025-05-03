@@ -41,10 +41,6 @@ pub mod graph {
             }
         }
 
-        pub fn attr(&self, n: &'a str) -> Option<&str> {
-            self.node(n).unwrap().attrs.get("foo").map(|v| &**v)
-            //self.node(n).unwrap().attrs.get("foo")
-        }
     }
 
     pub mod graph_items {
@@ -98,10 +94,9 @@ pub mod graph {
                     self
                 }
 
-                // pub fn attr(&self, k: &'a str) -> Option<&str> {
-                //     println!("HHHHHHH {:?}", self.attrs);
-                //     None
-                // }
+                pub fn attr(&self, att: &'a str) -> Option<&'a str> {
+                    self.attrs.get(att).map(|v| &**v)
+                }
     
             }
         

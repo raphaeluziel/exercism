@@ -17,13 +17,13 @@ pub mod graph {
             }
         }
 
-        pub fn with_nodes(mut self, v: &Vec<Node<'a>>) -> Self {
-            self.nodes.append(&mut v.clone());
+        pub fn with_nodes(mut self, v: &[Node<'a>]) -> Self {
+            self.nodes.append(&mut v.to_owned());
             self
         }
 
-        pub fn with_edges(mut self, v: &Vec<Edge<'a>>) -> Self {
-            self.edges.append(&mut v.clone());
+        pub fn with_edges(mut self, v: &[Edge<'a>]) -> Self {
+            self.edges.append(&mut v.to_owned());
             self
         }
 
@@ -34,12 +34,13 @@ pub mod graph {
             self
         }
 
-        pub fn node(&self, n: &'a str) -> Option<&str> {
+        pub fn node(&self, n: &'a str) -> Option<&Node> {
             match self.nodes.iter().filter(|x| x.node == n).last() {
-                Some(x) => Some(x.node),
+                Some(x) => Some(x),
                 None => None
             }
         }
+
     }
 
     pub mod graph_items {
@@ -91,6 +92,10 @@ pub mod graph {
                         self.attrs.insert(trt, val);
                     }
                     self
+                }
+
+                pub fn attr(&self, att: &'a str) -> Option<&'a str> {
+                    self.attrs.get(att).map(|v| &**v)
                 }
     
             }

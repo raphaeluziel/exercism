@@ -1,4 +1,4 @@
-use play::*;
+use palindrome_products::*;
 use std::collections::HashSet;
 
 #[test]
