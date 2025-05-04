@@ -1,4 +1,4 @@
-use std::collections::{BTreeSet, HashSet};
+use std::{collections::{BTreeSet, HashSet}, hash::Hash};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Palindrome {
@@ -8,46 +8,52 @@ pub struct Palindrome {
 
 impl Palindrome {
     pub fn value(&self) -> u64 {
-        todo!("return the value of the palindrome")
+        self.palindrome
     }
 
     pub fn into_factors(self) -> HashSet<(u64, u64)> {
         todo!("return the set of factors of the palindrome")
     }
+
+    fn eq(&self, other: &Palindrome) {
+        self.palindrome == other.palindrome &&
+        //self.factors
+    }
+}
+
+fn is_palindrome(n: u64) -> bool {
+    let s = n.to_string();
+    let s = s.as_bytes();
+    s.iter().zip(s.iter().rev()).all(|(fr, bk)| fr == bk)
 }
 
 pub fn palindrome_products(min: u64, max: u64) -> Option<(Palindrome, Palindrome)> {
-    println!("Min = {min}, Max = {max}");
-    let mut bts: BTreeSet<u64> = BTreeSet::new();
-    
+    if min > max { return None; }
+
+    let mut poss_prods: BTreeSet<u64> = BTreeSet::new();
+    let mut smallest_pal = Palindrome { palindrome: 0, factors: HashSet::new() };
+    let mut largest_pal = Palindrome { palindrome: 0, factors: HashSet::new() };
+    let mut min_found = false;
+
     for i in min..=max {
         for j in i..=max {
-            bts.insert(i * j);
+            let prod = i * j;
+            let inserted = poss_prods.insert(prod);
+            let a_palindrome = is_palindrome(prod);
+            if inserted && a_palindrome {
+                if !min_found {
+                    smallest_pal.palindrome = prod;
+                    min_found = true;
+                }
+                else {
+                    largest_pal.palindrome = prod;
+                }
+            }
+            //println!("S = {:?}, \nL = {:?}\n\n", smallest_pal, largest_pal);
         }
     }
 
-    for n in bts {
-        let smallest = bts;
-        let smallest;
-        //println!("{}", n.to_string());
-        let s = n.to_string();
-        let s = s.as_bytes();
-        //println!("s = {:?}", s);
-        let x = s.iter().zip(s.iter().rev()).any(|(f, b)| f != b);
-        let y:Vec<_> = s.iter().zip(s.iter().rev()).filter(|(f, b)| f == b).map(|x| x.0 - b'0').collect();
-        if !x { 
-            println!("{:?}", n);
-            
-        }
-        println!("y = {:?}", y);
-        //println!("x = {:?}", x);
-        //let ggg = s.zip(s.rev()).any(|(f, b)| f != b);
+    if smallest_pal.palindrome == 0 || largest_pal.palindrome == 0 { return  None; }
 
-        //println!("gg = {:?}", ggg);
-    }
-
-    //println!("H = {:?}", bts);
-    todo!(
-        "returns the minimum palindrome and maximum palindrome of the products of two factors in the range {min} to {max}"
-    );
+    Some((smallest_pal, largest_pal))
 }
