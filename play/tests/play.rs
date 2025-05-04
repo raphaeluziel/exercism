@@ -24,7 +24,7 @@ fn find_the_largest_palindrome_from_single_digit_factors() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn find_the_smallest_palindrome_from_double_digit_factors() {
     let output = palindrome_products(10, 99);
     assert!(output.is_some());
@@ -118,7 +118,7 @@ fn error_result_for_largest_if_min_is_more_than_max() {
 }
 
 #[test]
-#[ignore]
+//#[ignore]
 fn smallest_product_does_not_use_the_smallest_factor() {
     let output = palindrome_products(3215, 4000);
     assert!(output.is_some());

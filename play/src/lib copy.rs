@@ -25,45 +25,34 @@ fn is_palindrome(n: u64) -> bool {
 pub fn palindrome_products(min: u64, max: u64) -> Option<(Palindrome, Palindrome)> {
     if min > max { return None; }
 
-    println!("Min = {}, Max = {}", min, max);
-
+    let mut poss_prods: BTreeSet<u64> = BTreeSet::new();
     let mut smallest_pal = Palindrome { palindrome: 0, factors: HashSet::new() };
     let mut largest_pal = Palindrome { palindrome: 0, factors: HashSet::new() };
-
-    'outer: for i in min..=max {
-        for j in i..=max {
-            println!("{} x {} = {}", i, j, i*j);
-            // if i == 3297 { println!("{} x {} = {}", i, j, i*j); }
-            // if i * j == 10988901 { println!("Here = {}", i * j); }
-            if is_palindrome(i * j) {
-                smallest_pal.palindrome = i * j;
-                break 'outer;
-            } 
-        }
-    }
-
-    'outer: for i in (min..=max).rev() {
-        for j in (i..=max).rev() {
-            if is_palindrome(i * j) {
-                largest_pal.palindrome = i * j;
-                break 'outer;
-            } 
-        }
-    }
+    let mut min_found = false;
 
     for i in min..=max {
         for j in i..=max {
             let prod = i * j;
-            if prod == largest_pal.palindrome { largest_pal.factors.insert((i, j)); }
             if prod == smallest_pal.palindrome { smallest_pal.factors.insert((i, j)); }
+            else if prod == largest_pal.palindrome { largest_pal.factors.insert((i, j)); }
+            let inserted = poss_prods.insert(prod);
+            let a_palindrome = is_palindrome(prod);
+            if inserted && a_palindrome {
+                if !min_found {
+                    smallest_pal.palindrome = prod;
+                    smallest_pal.factors.insert((i, j));
+                    min_found = true;
+                }
+                else {
+                    largest_pal.palindrome = prod;
+                    largest_pal.factors.insert((i, j));
+                }
+            }
+            //println!("S = {:?}, \nL = {:?}\n\n", smallest_pal, largest_pal);
         }
     }
-    
-
-    println!("S = {:?}, \nL = {:?}\n\n", smallest_pal, largest_pal);
 
     if smallest_pal.palindrome == 0 || largest_pal.palindrome == 0 { return  None; }
 
-    //Some((smallest_pal, largest_pal))
-    todo!()
+    Some((smallest_pal, largest_pal))
 }
