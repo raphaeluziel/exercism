@@ -32,7 +32,7 @@ pub fn is_pangram(sentence: &str) -> bool {
         // Iterate through all the bytes
         .iter()
         // Remove anything that is not one of the 26 lowercase ASCII letters
-        .filter(|&&x| x >= b'a' && x <= b'z')
+        .filter(|&&x| (b'a'..=b'z').contains(&x))
         // Convert the byte representing the char to a binary with only a 
         // single 1 in the appropriate location
         .map(|x| 2u32.pow((x - b'a') as u32))
