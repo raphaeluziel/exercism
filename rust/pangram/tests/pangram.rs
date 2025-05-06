@@ -1,4 +1,4 @@
-use play::*;
+use pangram::*;
 
 #[test]
 fn empty_sentence() {
