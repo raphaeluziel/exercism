@@ -8,15 +8,13 @@ use std::collections::HashSet;
 const MAX_26_BITS: u32 = 67_108_863;
 
 pub fn is_pangram(sentence: &str) -> bool {
-    let hs:HashSet<_> = sentence
-        .to_ascii_lowercase()
-        .as_bytes()
-        .iter()
-        .filter(|&&x| x >= b'a' && x <= b'z')
-        .map(|x| 2u32.pow((x - b'a') as u32))
-        .collect();
-    
-    hs.iter().sum::<u32>() == MAX_26_BITS
+
+    sentence.to_ascii_lowercase()
+            .as_bytes()
+            .iter()
+            .filter(|&&x| x.is_ascii_lowercase())
+            .map(|x| 2u32.pow((x - b'a') as u32))
+            .fold(0, |acc, x| acc | x) == MAX_26_BITS
 }
 
 ////////////////////////////////////////////////////////////////////////////////
