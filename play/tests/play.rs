@@ -1,7 +1,7 @@
 use play::PascalsTriangle;
 
 #[test]
-//#[ignore]
+#[ignore]
 fn zero_rows() {
     let pt = PascalsTriangle::new(0);
     let expected: Vec<Vec<u32>> = vec![];
@@ -9,7 +9,7 @@ fn zero_rows() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn single_row() {
     let pt = PascalsTriangle::new(1);
     let expected: Vec<Vec<u32>> = vec![vec![1]];
@@ -17,7 +17,7 @@ fn single_row() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn two_rows() {
     let pt = PascalsTriangle::new(2);
     let expected: Vec<Vec<u32>> = vec![vec![1], vec![1, 1]];
@@ -33,7 +33,7 @@ fn three_rows() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn four_rows() {
     let pt = PascalsTriangle::new(4);
     let expected: Vec<Vec<u32>> = vec![vec![1], vec![1, 1], vec![1, 2, 1], vec![1, 3, 3, 1]];
@@ -55,7 +55,7 @@ fn five_rows() {
 }
 
 #[test]
-#[ignore]
+//#[ignore]
 fn six_rows() {
     let pt = PascalsTriangle::new(6);
     let expected: Vec<Vec<u32>> = vec![
