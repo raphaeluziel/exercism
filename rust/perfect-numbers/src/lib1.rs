@@ -1,6 +1,3 @@
-// Cut execution time in half by only checking numbers up to and including
-// half of the given number
-
 #[derive(Debug, PartialEq, Eq)]
 pub enum Classification {
     Abundant,
@@ -16,7 +13,7 @@ pub fn classify(num: u64) -> Option<Classification> {
     factors.push(1);
 
     let mut i = 2;
-    while i <= num / 2 {
+    while i < num {
         if num % i == 0 { 
             factors.push(i);
         }
