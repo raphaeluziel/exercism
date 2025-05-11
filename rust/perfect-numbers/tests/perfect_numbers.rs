@@ -1,7 +1,6 @@
-use play::*;
+use perfect_numbers::*;
 
 #[test]
-#[ignore]
 fn smallest_perfect_number_is_classified_correctly() {
     let input = 6;
     let output = classify(input);
