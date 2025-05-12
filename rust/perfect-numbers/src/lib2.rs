@@ -1,5 +1,5 @@
-// AFTER looking at the community solutions, I saw that if you start the iterator at 1,
-// which obviously gets included by the filter predicate, I don't have to sum += 1
+// Cut execution time in half by only checking numbers up to and including
+// half of the given number
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum Classification {
@@ -11,8 +11,19 @@ pub enum Classification {
 pub fn classify(num: u64) -> Option<Classification> {
     if num == 0 { return None; }
     if num == 1 { return Some(Classification::Deficient); }
+    
+    let mut factors: Vec<u64> = vec![];
+    factors.push(1);
 
-    let sum: u64 = (1..=(num / 2)).filter(|i| num % i == 0).collect::<Vec<u64>>().iter().sum();
+    let mut i = 2;
+    while i <= num / 2 {
+        if num % i == 0 { 
+            factors.push(i);
+        }
+        i += 1;
+    }
+
+    let sum: u64 = factors.iter().sum();
 
     match sum.cmp(&num) {
         std::cmp::Ordering::Equal => Some(Classification::Perfect),

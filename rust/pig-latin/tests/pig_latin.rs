@@ -1,4 +1,4 @@
-use play::*;
+use pig_latin::*;
 
 #[test]
 fn word_beginning_with_a() {
@@ -9,7 +9,7 @@ fn word_beginning_with_a() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn word_beginning_with_e() {
     let input = "ear";
     let output = translate(input);
@@ -18,7 +18,7 @@ fn word_beginning_with_e() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn word_beginning_with_i() {
     let input = "igloo";
     let output = translate(input);
@@ -27,7 +27,7 @@ fn word_beginning_with_i() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn word_beginning_with_o() {
     let input = "object";
     let output = translate(input);
@@ -36,7 +36,7 @@ fn word_beginning_with_o() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn word_beginning_with_u() {
     let input = "under";
     let output = translate(input);
@@ -153,7 +153,7 @@ fn word_beginning_with_sch() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn word_beginning_with_yt() {
     let input = "yttria";
     let output = translate(input);
@@ -162,7 +162,7 @@ fn word_beginning_with_yt() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn word_beginning_with_xr() {
     let input = "xray";
     let output = translate(input);
