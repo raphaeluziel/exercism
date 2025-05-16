@@ -11,15 +11,16 @@ pub fn translate(input: &str) -> String {
     if rule_1.iter().any(|&x| input.starts_with(x)) { 
         input += "ay";
     }
-    else if !rule_2.iter().any(|&x| input.starts_with(x))  && !input.contains("qu") {
-        let i = input.find(vowel).unwrap();
+    else if !rule_2.iter().any(|&x| input.starts_with(x)) && !input.starts_with("qu") {
+        println!("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+        let i = input.find(vowel).unwrap_or_default();
         input = input.get(i..).unwrap().to_owned() + input.get(0..i).unwrap() + "ay";
     }
     else if !rule_2.iter().any(|&x| input.starts_with(x)) && input.contains("qu") {
-        println!("HERE");
-        let i = input.find(vowel).unwrap();
-        let j = input.find("qu").unwrap();
-        input = input.get(i..j).unwrap().to_owned() + input.get(0..i).unwrap() + "quay";
+        let mut i = input.find(vowel).unwrap_or_default(); println!("I = {i}");
+        let j = input.find("qu").unwrap(); println!("J = {j}");
+        i = if i < j { i } else { 0 };
+        input = input.get((j+2)..).unwrap().to_owned() + input.get(i..j).unwrap() + input.get(0..i).unwrap() + "quay";
     }
 
     println!("CCC = {:?}", input);

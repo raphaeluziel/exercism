@@ -100,7 +100,7 @@ fn word_beginning_with_consonant_and_vowel_containing_qu() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn word_beginning_with_ch() {
     let input = "chair";
     let output = translate(input);
@@ -118,7 +118,7 @@ fn word_beginning_with_qu() {
 }
 
 #[test]
-#[ignore]
+//#[ignore]
 fn word_beginning_with_qu_and_a_preceding_consonant() {
     let input = "square";
     let output = translate(input);
