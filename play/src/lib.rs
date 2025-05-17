@@ -13,10 +13,10 @@ pub fn translate(input: &str) -> String {
             index = Some(0); 
     }
     else { 
-        index = input.find(vowels);
-        if index != None {
-
-        }
+        let ggg = input.as_bytes().windows(2).enumerate()
+                     .find(|(i, c)| (c[0] == b'q' && c[1] == b'u'));
+        if ggg != None { index = Some(ggg.unwrap().0 + 1); }
+        println!("ggg = {:?}", ggg.unwrap().0);
     }
 
     // let i = input.as_bytes()
