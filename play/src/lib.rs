@@ -1,45 +1,50 @@
 pub fn translate(input: &str) -> String {
+    let input = input.to_ascii_lowercase();
 
-    let words = input.to_ascii_lowercase();
-    let words = words.split(" ");
-    let mut s: String = String::new();
-
-    for word in words {
-        s += &convert(word);
-        s.push_str(" ");
-    }
-
-    s.trim().to_string()
+    input.split(' ')
+         .fold(String::new(), |s, word| s + &convert(word) + " ")
+         .trim()
+         .to_string()
 }
 
 fn convert(input: &str) -> String {
-    let vowels = ['a', 'e', 'i', 'o', 'u'];
-
     let index;
-
+    
     let qu = input.find("qu");
     let y = input.find('y');
-    let first_vowel = input.find(vowels);
+    let first_vowel = input.find(['a', 'e', 'i', 'o', 'u']);
 
-    if input.starts_with(vowels) 
-        || input.starts_with("xr") 
-        || input.starts_with("yt") {
-            index = Some(0); 
+    let fv = [b'a', b'e', b'i', b'o', b'u'];
+    let inp = "square";
+    let ccc = inp.as_bytes()
+                .windows(2).enumerate()
+                .position(|(i, x)| 
+                    fv.contains(&x[0]) && i == 0 || 
+                    x[0] == b'x' && x[1] == b'r' || 
+                    x[0] == b'y' && x[1] == b't' ||
+                    x[0] == b'q' && x[1] == b'u'
+                );
+    println!("ccc = {:?}", ccc);
+
+    if first_vowel == Some(0) || 
+        input.starts_with("xr") || 
+        input.starts_with("yt") {
+            index = 0; 
     }
-    else if qu != None && qu < first_vowel {
-        index = Some(qu.unwrap() + 2);
+    else if qu.is_some() && qu < first_vowel {
+        index = qu.unwrap() + 2;
     }
-    else if y != None && y != Some(0) && 
-        (first_vowel == None || first_vowel != None && y < first_vowel) {
-        index = y
+    else if (y < first_vowel || first_vowel.is_none()) && 
+        y > Some(0) && y.is_some() {
+        index = y.unwrap_or_default()
     }
     else {
-        index = first_vowel
+        index = first_vowel.unwrap_or_default()
     }
 
-    let mov = index.unwrap_or_default();
+    println!("ind = {:?}", index);
 
-    input.get(mov..).unwrap_or_default().to_owned() 
-        + input.get(0..mov).unwrap_or_default() 
-        + "ay"
+    input.get(index..).unwrap_or_default().to_owned() 
+        + input.get(0..index).unwrap_or_default() 
+        + "ay"; todo!()
 }

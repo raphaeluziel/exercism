@@ -1,8 +1,15 @@
 pub fn translate(input: &str) -> String {
+
     let words = input.to_ascii_lowercase();
     let words = words.split(' ');
+    let mut s: String = String::new();
 
-    words.fold(String::new(), |ac, x| ac + &convert(x) + " ").trim().to_string()
+    for word in words {
+        s += &convert(word);
+        s.push(' ');
+    }
+
+    s.trim().to_string()
 }
 
 fn convert(input: &str) -> String {
