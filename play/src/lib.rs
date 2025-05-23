@@ -18,11 +18,15 @@ fn convert(input: &str) -> String {
     let inp = "square";
     let ccc = inp.as_bytes()
                 .windows(2).enumerate()
-                .position(|(i, x)| 
-                    fv.contains(&x[0]) && i == 0 || 
-                    x[0] == b'x' && x[1] == b'r' || 
-                    x[0] == b'y' && x[1] == b't' ||
-                    x[0] == b'q' && x[1] == b'u'
+                .find(|&(i, ch)|
+                    // Rule 1 starts with vowel or 'xr' or 'yt'
+                    i == 0 && (fv.contains(&ch[0]) || 
+                               ch[0] == b'x' && ch[1] == b'r' || 
+                               ch[0] == b'y' && ch[1] == b't') ||
+                    // Rule 2 starts with consonant(s)
+                    fv.contains(&ch[0]) ||
+                    // Rule 3 "qu" with no previous vowels
+                    ch[0] == b'q' && ch[1] == b'u'
                 );
     println!("ccc = {:?}", ccc);
 
@@ -44,7 +48,9 @@ fn convert(input: &str) -> String {
 
     println!("ind = {:?}", index);
 
-    input.get(index..).unwrap_or_default().to_owned() 
-        + input.get(0..index).unwrap_or_default() 
-        + "ay"; todo!()
+    // input.get(index..).unwrap_or_default().to_owned() 
+    //     + input.get(0..index).unwrap_or_default() 
+    //     + "ay"; 
+    
+    todo!()
 }
