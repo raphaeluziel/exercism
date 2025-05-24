@@ -1,6 +1,7 @@
 pub fn translate(input: &str) -> String {
     let input = input.to_ascii_lowercase();
 
+    let input = "square";
     input.split(' ')
          .fold(String::new(), |s, word| s + &convert(word) + " ")
          .trim()
@@ -8,45 +9,29 @@ pub fn translate(input: &str) -> String {
 }
 
 fn convert(input: &str) -> String {
-    let index;
+
+    const vowels: [char; 5] = ['a', 'e', 'i', 'o', 'u'];
+
+    let mut fv = input.char_indices()
+                  .find(|x| vowels.contains(&x.1))
+                  .unwrap_or_default();
     
-    let qu = input.find("qu");
-    let y = input.find('y');
-    let first_vowel = input.find(['a', 'e', 'i', 'o', 'u']);
+    if fv.0 > 0 && 
+        !input.starts_with("xr") && 
+        !input.starts_with("yt") {
 
-    let fv = [b'a', b'e', b'i', b'o', b'u'];
-    let inp = "square";
-    let ccc = inp.as_bytes()
-                .windows(2).enumerate()
-                .find(|&(i, ch)|
-                    // Rule 1 starts with vowel or 'xr' or 'yt'
-                    i == 0 && (fv.contains(&ch[0]) || 
-                               ch[0] == b'x' && ch[1] == b'r' || 
-                               ch[0] == b'y' && ch[1] == b't') ||
-                    // Rule 2 starts with consonant(s)
-                    fv.contains(&ch[0]) ||
-                    // Rule 3 "qu" with no previous vowels
-                    ch[0] == b'q' && ch[1] == b'u'
-                );
-    println!("ccc = {:?}", ccc);
+            let prev = input.chars().nth(fv.0 - 1).unwrap_or_default();
+            let curr = input.chars().nth(fv.0).unwrap_or_default();
+            let next = input.chars().nth(fv.0 + 1).unwrap_or_default();
 
-    if first_vowel == Some(0) || 
-        input.starts_with("xr") || 
-        input.starts_with("yt") {
-            index = 0; 
-    }
-    else if qu.is_some() && qu < first_vowel {
-        index = qu.unwrap() + 2;
-    }
-    else if (y < first_vowel || first_vowel.is_none()) && 
-        y > Some(0) && y.is_some() {
-        index = y.unwrap_or_default()
-    }
-    else {
-        index = first_vowel.unwrap_or_default()
+            println!("zzz = {:?}, {:?}, {:?}", prev, curr, next);
+            
+            if curr == 'u' && prev == 'q' {  }
+            
+            
     }
 
-    println!("ind = {:?}", index);
+    println!("ind = {:?}", fv);
 
     // input.get(index..).unwrap_or_default().to_owned() 
     //     + input.get(0..index).unwrap_or_default() 
