@@ -1,4 +1,4 @@
-use play::{Dna, Rna};
+use rna_transcription::{Dna, Rna};
 
 #[test]
 fn empty_rna_sequence() {
