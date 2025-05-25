@@ -1,7 +1,7 @@
 pub fn translate(input: &str) -> String {
     let input = input.to_ascii_lowercase();
 
-    let input = "rhythaaam";
+    //let input = "myellow";
     input.split(' ')
          .fold(String::new(), |s, word| s + &convert(word) + " ")
          .trim()
@@ -10,34 +10,37 @@ pub fn translate(input: &str) -> String {
 
 fn convert(input: &str) -> String {
 
+    let mut i = 0;
+
     const VOWEL: [char; 5] = ['a', 'e', 'i', 'o', 'u'];
-    let first_vowel = input.char_indices()
-                           .find(|x| VOWEL.contains(&x.1))
-                           .unwrap_or_default();
+    const VOWEL_Y: [char; 6] = ['a', 'e', 'i', 'o', 'u', 'y'];
 
-    let mut i = first_vowel;
+    if input.starts_with('y') ||
+       !input.starts_with(VOWEL) &&
+       !input.starts_with("xr") &&
+       !input.starts_with("yt") {
 
-    if !input.starts_with(VOWEL) 
-        && !input.starts_with("xr") 
-        && !input.starts_with("yt") {
+            let first_vowel = input.char_indices()
+                                   .find(|x| VOWEL.contains(&x.1))
+                                   .unwrap_or_default();
 
-            let fv = [b'a', b'e', b'i', b'o', b'u'];
-    let inp = "rhythm";
-    let ccc = inp.as_bytes()
-                .windows(2).enumerate()
-                .find(|&(i, ch)|
-                    // Rule 1 starts with vowel or 'xr' or 'yt'
-                    i == 0 && (fv.contains(&ch[0]) || 
-                               ch[0] == b'x' && ch[1] == b'r' || 
-                               ch[0] == b'y' && ch[1] == b't') ||
-                    // Rule 2 starts with consonant(s)
-                    fv.contains(&ch[0]) ||
-                    // Rule 3 "qu" with no previous vowels
-                    ch[0] == b'q' && ch[1] == b'u' ||
-                    ch[0] == b'y' && i < first_vowel.0
-                );
-        println!("ccc = {:?}", ccc);
+            i = first_vowel.0;
 
+            //let prev = input.chars().nth(i - 1).unwrap_or_default();
+            //let curr = first_vowel.1;
+            //let next = input.chars().nth(i + 1).unwrap_or_default();
+
+            //println!("zzz = {:?}, {:?}, {:?}", prev, curr, next);
+
+            if first_vowel.1 == 'u' && 
+                input.chars()
+                     .nth(i - 1)
+                     .unwrap_or_default() == 'q' { i += 1; }
+
+            if first_vowel.1 == 'y' { println!("HERE, {i}"); }
+
+            println!("ccc = {:?}", i);
+            
     }
 
     
@@ -69,9 +72,10 @@ fn convert(input: &str) -> String {
 
     // println!("first vowel = {:?}, index = {:?}", fv, i);
 
-    // input.get(index..).unwrap_or_default().to_owned() 
-    //     + input.get(0..index).unwrap_or_default() 
-    //     + "ay"; 
+    let index = i;
+    input.get(index..).unwrap_or_default().to_owned() 
+        + input.get(0..index).unwrap_or_default() 
+        + "ay" 
     
-    todo!()
+    //todo!()
 }
