@@ -1,4 +1,4 @@
-use play as rle;
+use run_length_encoding as rle;
 
 #[test]
 fn encode_empty_string() {
@@ -27,7 +27,7 @@ fn encode_string_with_no_single_characters() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn encode_single_characters_mixed_with_repeated_characters() {
     let input = "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB";
     let output = rle::encode(input);

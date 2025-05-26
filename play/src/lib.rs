@@ -1,39 +1,29 @@
-#[derive(Debug, PartialEq, Eq)]
-pub struct Dna {
-    dna: String
-}
-
-#[derive(Debug, PartialEq, Eq)]
-pub struct Rna {
-    rna: String
-}
-
-impl Dna {
-    pub fn new(dna: &str) -> Result<Dna, usize> {
-        match dna.find(|ch| !['A', 'C', 'G', 'T'].contains(&ch)) {
-            Some(i) => Err(i),
-            None => Ok(Dna { dna: dna.to_string() })
+pub fn encode(source: &str) -> String {
+    let mut s: String = String::new();
+    let mut letters = source.chars();
+    //println!("letters = {:?}", letters);
+    let mut n: u64 = 0;
+    let mut curr = letters.next().unwrap_or_default();
+    // println!("curr = {:?}", curr);
+    // println!("letters = {:?}", letters);
+    for letter in letters {
+        //println!("letter = {:?}", letter);
+        n += 1;
+        if letter != curr {
+            //println!("HHHHHHHHHHHHHHHHHHHHHHHHHHHHH {n}");
+            if n > 1 { s.push_str(&n.to_string()) }
+            println!("pushing {:?} with n = {n}", curr);
+            s.push(curr);
+            curr = letter;
+            n = 0;
         }
     }
-
-    pub fn into_rna(self) -> Rna {
-        Rna { rna: self.dna.chars().map(|d| 
-            match d {
-                'G' => 'C',
-                'C' => 'G',
-                'T' => 'A',
-                'A' => 'U',
-                _ => '\0'
-            }
-        ).collect() }
-    }
+    println!("input  = {source}");
+    println!("output = {:?}", s);
+    s
+    //todo!("Return the run-length encoding of {source}.");
 }
 
-impl Rna {
-    pub fn new(rna: &str) -> Result<Rna, usize> {
-        match rna.find(|ch| !['A', 'C', 'G', 'U'].contains(&ch)) {
-            Some(i) => Err(i),
-            None => Ok(Rna { rna: rna.to_string() })
-        }
-    }
+pub fn decode(source: &str) -> String {
+    todo!("Return the run-length decoding of {source}.");
 }
