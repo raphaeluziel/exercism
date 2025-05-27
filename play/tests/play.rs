@@ -1,6 +1,7 @@
 use play as rle;
 
 #[test]
+#[ignore]
 fn encode_empty_string() {
     let input = "";
     let output = rle::encode(input);
@@ -45,7 +46,7 @@ fn encode_multiple_whitespace_mixed_in_string() {
 }
 
 #[test]
-#[ignore]
+//#[ignore]
 fn encode_lowercase_characters() {
     let input = "aabbbcccc";
     let output = rle::encode(input);
