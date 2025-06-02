@@ -28,7 +28,7 @@ fn encode_string_with_no_single_characters() {
 }
 
 #[test]
-#[ignore]
+//#[ignore]
 fn encode_single_characters_mixed_with_repeated_characters() {
     let input = "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB";
     let output = rle::encode(input);
@@ -82,7 +82,7 @@ fn decode_string_with_no_single_characters() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn decode_single_characters_with_repeated_characters() {
     let input = "12WB12W3B24WB";
     let output = rle::decode(input);

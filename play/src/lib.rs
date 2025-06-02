@@ -1,7 +1,7 @@
 pub fn encode(source: &str) -> String {
     let mut s: String = String::new();
     if source.is_empty() { return s; }
-    
+
     let mut letters = source.chars();
     let mut n: u64 = 0;
     let mut curr = letters.next().unwrap_or_default();
