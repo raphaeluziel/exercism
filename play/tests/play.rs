@@ -1,118 +1,90 @@
-use play as rle;
+use play::*;
 
 #[test]
-#[ignore]
-fn encode_empty_string() {
-    let input = "";
-    let output = rle::encode(input);
-    let expected = "";
+fn can_identify_single_saddle_point() {
+    let input = &[vec![9, 8, 7], vec![5, 3, 2], vec![6, 6, 7]];
+    let mut output = find_saddle_points(input);
+    output.sort_unstable();
+    let expected = &[(1, 0)];
     assert_eq!(output, expected);
 }
 
 #[test]
 #[ignore]
-fn encode_single_characters_only_are_encoded_without_count() {
-    let input = "XYZ";
-    let output = rle::encode(input);
-    let expected = "XYZ";
+fn can_identify_that_empty_matrix_has_no_saddle_points() {
+    let input = &[vec![]];
+    let mut output = find_saddle_points(input);
+    output.sort_unstable();
+    let expected = &[];
     assert_eq!(output, expected);
 }
 
 #[test]
 #[ignore]
-fn encode_string_with_no_single_characters() {
-    let input = "AABBBCCCC";
-    let output = rle::encode(input);
-    let expected = "2A3B4C";
+fn can_identify_lack_of_saddle_points_when_there_are_none() {
+    let input = &[vec![1, 2, 3], vec![3, 1, 2], vec![2, 3, 1]];
+    let mut output = find_saddle_points(input);
+    output.sort_unstable();
+    let expected = &[];
     assert_eq!(output, expected);
 }
 
 #[test]
 #[ignore]
-fn encode_single_characters_mixed_with_repeated_characters() {
-    let input = "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB";
-    let output = rle::encode(input);
-    let expected = "12WB12W3B24WB";
+fn can_identify_multiple_saddle_points_in_a_column() {
+    let input = &[vec![4, 5, 4], vec![3, 5, 5], vec![1, 5, 4]];
+    let mut output = find_saddle_points(input);
+    output.sort_unstable();
+    let expected = &[(0, 1), (1, 1), (2, 1)];
     assert_eq!(output, expected);
 }
 
 #[test]
 #[ignore]
-fn encode_multiple_whitespace_mixed_in_string() {
-    let input = "  hsqq qww  ";
-    let output = rle::encode(input);
-    let expected = "2 hs2q q2w2 ";
+fn can_identify_multiple_saddle_points_in_a_row() {
+    let input = &[vec![6, 7, 8], vec![5, 5, 5], vec![7, 5, 6]];
+    let mut output = find_saddle_points(input);
+    output.sort_unstable();
+    let expected = &[(1, 0), (1, 1), (1, 2)];
     assert_eq!(output, expected);
 }
 
 #[test]
 #[ignore]
-fn encode_lowercase_characters() {
-    let input = "aabbbcccc";
-    let output = rle::encode(input);
-    let expected = "2a3b4c";
+fn can_identify_saddle_point_in_bottom_right_corner() {
+    let input = &[vec![8, 7, 9], vec![6, 7, 6], vec![3, 2, 5]];
+    let mut output = find_saddle_points(input);
+    output.sort_unstable();
+    let expected = &[(2, 2)];
     assert_eq!(output, expected);
 }
 
 #[test]
 #[ignore]
-fn decode_empty_string() {
-    let input = "";
-    let output = rle::decode(input);
-    let expected = "";
+fn can_identify_saddle_points_in_a_non_square_matrix() {
+    let input = &[vec![3, 1, 3], vec![3, 2, 4]];
+    let mut output = find_saddle_points(input);
+    output.sort_unstable();
+    let expected = &[(0, 0), (0, 2)];
     assert_eq!(output, expected);
 }
 
 #[test]
 #[ignore]
-fn decode_single_characters_only() {
-    let input = "XYZ";
-    let output = rle::decode(input);
-    let expected = "XYZ";
+fn can_identify_that_saddle_points_in_a_single_column_matrix_are_those_with_the_minimum_value() {
+    let input = &[vec![2], vec![1], vec![4], vec![1]];
+    let mut output = find_saddle_points(input);
+    output.sort_unstable();
+    let expected = &[(1, 0), (3, 0)];
     assert_eq!(output, expected);
 }
 
 #[test]
 #[ignore]
-fn decode_string_with_no_single_characters() {
-    let input = "2A3B4C";
-    let output = rle::decode(input);
-    let expected = "AABBBCCCC";
-    assert_eq!(output, expected);
-}
-
-#[test]
-//#[ignore]
-fn decode_single_characters_with_repeated_characters() {
-    let input = "12WB12W3B24WB";
-    let output = rle::decode(input);
-    let expected = "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWB";
-    assert_eq!(output, expected);
-}
-
-#[test]
-#[ignore]
-fn decode_multiple_whitespace_mixed_in_string() {
-    let input = "2 hs2q q2w2 ";
-    let output = rle::decode(input);
-    let expected = "  hsqq qww  ";
-    assert_eq!(output, expected);
-}
-
-#[test]
-#[ignore]
-fn decode_lowercase_string() {
-    let input = "2a3b4c";
-    let output = rle::decode(input);
-    let expected = "aabbbcccc";
-    assert_eq!(output, expected);
-}
-
-#[test]
-#[ignore]
-fn consistency_encode_followed_by_decode_gives_original_string() {
-    let input = "zzz ZZ  zZ";
-    let output = rle::decode(&rle::encode(input));
-    let expected = "zzz ZZ  zZ";
+fn can_identify_that_saddle_points_in_a_single_row_matrix_are_those_with_the_maximum_value() {
+    let input = &[vec![2, 5, 3, 5]];
+    let mut output = find_saddle_points(input);
+    output.sort_unstable();
+    let expected = &[(0, 1), (0, 3)];
     assert_eq!(output, expected);
 }
