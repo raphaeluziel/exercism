@@ -1,44 +1,35 @@
 pub fn find_saddle_points(input: &[Vec<u64>]) -> Vec<(usize, usize)> {
 
-    let input = &[vec![9, 8, 7, 8, 9, 8], vec![5, 3, 5, 1, 5, 2], vec![6, 6, 7, 1, 1, 1]];
+    let mut saddle_points: Vec<(usize, usize)> = Vec::new();
+
+    if input[0].is_empty() { return saddle_points; }
 
     let num_rows = input.len();
     let num_cols = input[0].len();
 
-    println!("{num_rows} rows, {num_cols} columns");
-
+    let mut mins: Vec<u64> = Vec::new();
+    let ccc: Vec<_> = (0..num_cols).collect();
+    println!("ccc = {:?}", ccc);
+    
     for j in 0..num_cols {
-        for i in 0..num_rows {
-            println!("({i}, {j}) -> {:?}", input[i][j]);
-        }
-        println!();
+         mins.push(*(0..num_rows).enumerate()
+                                 .map(|x| input[x.0][j])
+                                 .collect::<Vec<_>>()
+                                 .iter().min()
+                                 .unwrap());
     }
 
-    //let columns: Vec<Vec<u64>> = Vec::with_capacity(input.len());
+    for (index, row) in input.iter().enumerate() {
+        let max = row.iter().max().unwrap();
 
-    // for row in input {
-    //     columns.push();
-    // }
+        let it = row.iter().enumerate()
+                    .filter(|&x| x.1 == max && x.1 == &mins[x.0])
+                    .map(|x| x.0);
 
-    // for row in input {
-    //     let max = row.iter().max().unwrap();
-
-    //     println!("row = {:?}, max = {:?}", row, max);
-
-    //     let mut columns: Vec<usize> = Vec::new();
-
-    //     let ggg: Vec<_> = row.iter().enumerate()
-    //                          .filter(|&x| x.1 == max).map(|x| x.0)
-    //                          .collect();
-
-    //     println!("ggg = {:?}", ggg);
-
-        
-    //     for col in row.iter().enumerate().filter(|x| x.1 == max).map(|x| x.0) {
-    //         println!("col = {:?}", col);
-
-    //     }
-    // }
-    
-    todo!("find the saddle points of the following matrix: {input:?}")
+        for col in it {
+            saddle_points.push((index, col));
+        }
+    }
+    todo!()
+    //saddle_points
 }
