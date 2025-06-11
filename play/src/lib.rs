@@ -1,35 +1,58 @@
-pub fn find_saddle_points(input: &[Vec<u64>]) -> Vec<(usize, usize)> {
+const DIGITS: [&str; 10] = [
+    "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+];
 
-    let mut saddle_points: Vec<(usize, usize)> = Vec::new();
+const TENS: [&str; 10] = [
+    "", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety",
+];
 
-    if input[0].is_empty() { return saddle_points; }
+const TEENS: [&str; 10] = [
+    "ten",
+    "eleven",
+    "twelve",
+    "thirteen",
+    "fourteen",
+    "fifteen",
+    "sixteen",
+    "seventeen",
+    "eighteen",
+    "nineteen",
+];
 
-    let num_rows = input.len();
-    let num_cols = input[0].len();
+const BREAKERS: [&str; 7] = [
+    "hundred",
+    "thousand",
+    "million",
+    "trillion",
+    "quadrillion",
+    "quintillion",
+    "sextillion",
+];
 
-    let mut mins: Vec<u64> = Vec::new();
-    let ccc: Vec<_> = (0..num_cols).collect();
-    println!("ccc = {:?}", ccc);
-    
-    for j in 0..num_cols {
-         mins.push(*(0..num_rows).enumerate()
-                                 .map(|x| input[x.0][j])
-                                 .collect::<Vec<_>>()
-                                 .iter().min()
-                                 .unwrap());
+pub fn encode(n: u64) -> String {
+    let mut s = String::new();
+    // let mut n = 18_123_198_090_708_541_630;
+    //let n = 1;
+    let mut num = n;
+
+    if num < 10 { return DIGITS[num as usize].to_string(); }
+    if num < 20 { return TEENS[(num % 10) as usize].to_string(); }
+
+    let mut threes: Vec<u64> = Vec::new();
+
+    while num > 0 {
+        threes.push(num % 1000);
+        num /= 1000;
     }
 
-    for (index, row) in input.iter().enumerate() {
-        let max = row.iter().max().unwrap();
+    threes.reverse();
 
-        let it = row.iter().enumerate()
-                    .filter(|&x| x.1 == max && x.1 == &mins[x.0])
-                    .map(|x| x.0);
+    //println!("Digits = {:?}", threes);
 
-        for col in it {
-            saddle_points.push((index, col));
-        }
-    }
-    todo!()
-    //saddle_points
+    let ddd = 427;
+    println!("ddd = {}, {}, {}", ddd/100, ddd/10, ddd%10);
+
+
+
+    todo!("Say {n} in English.");
 }

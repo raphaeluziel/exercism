@@ -1,7 +1,6 @@
-use play::*;
+use say::*;
 
 #[test]
-#[ignore]
 fn zero() {
     let input = 0;
     let output = encode(input);
@@ -37,7 +36,7 @@ fn twenty() {
 }
 
 #[test]
-//#[ignore]
+#[ignore]
 fn twenty_two() {
     let input = 22;
     let output = encode(input);
