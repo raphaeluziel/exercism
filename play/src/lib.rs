@@ -1,3 +1,5 @@
+use std::string;
+
 const DIGITS: [&str; 10] = [
     "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
 ];
@@ -20,23 +22,33 @@ const TEENS: [&str; 10] = [
 ];
 
 const BREAKERS: [&str; 7] = [
-    "hundred",
+    "",
     "thousand",
     "million",
+    "billion",
     "trillion",
     "quadrillion",
     "quintillion",
-    "sextillion",
 ];
 
-pub fn encode(n: u64) -> String {
-    let mut s = String::new();
-    // let mut n = 18_123_198_090_708_541_630;
-    //let n = 1;
-    let mut num = n;
+fn say_triple(n: usize) -> String {
+    if n > 99 { DIGITS[n / 100].to_string() + " hundred " + &say_double(n % 100) }
+    else { say_double(n) }
+}
 
-    if num < 10 { return DIGITS[num as usize].to_string(); }
-    if num < 20 { return TEENS[(num % 10) as usize].to_string(); }
+fn say_double(n: usize) -> String {
+    match n {
+        0..10 => DIGITS[n].to_string(),
+        10..20 => TEENS[n - 10].to_string(),
+        x if x % 10 == 0 => TENS[n / 10].to_string(),
+        _ => TENS[n / 10].to_string() + "-" + DIGITS[n % 10]
+    }
+}
+
+pub fn encode(n: u64) -> String {
+    println!("YOYO = {}", say_double(0));
+    let mut s = String::new();
+    let mut num = n;
 
     let mut threes: Vec<u64> = Vec::new();
 
@@ -47,12 +59,13 @@ pub fn encode(n: u64) -> String {
 
     threes.reverse();
 
-    //println!("Digits = {:?}", threes);
+    let mut breaker = threes.len();
 
-    let ddd = 427;
-    println!("ddd = {}, {}, {}", ddd/100, ddd/10, ddd%10);
+    for triple in &threes {
+        breaker -= 1;
+        s += &(say_triple(*triple as usize) + " " + BREAKERS[breaker] + "");
+    }
 
-
-
-    todo!("Say {n} in English.");
+    //s.trim().to_string()
+    todo!()
 }
