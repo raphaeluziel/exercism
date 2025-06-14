@@ -1,27 +1,9 @@
 const DIGITS: [&str; 10] = [
-    "",
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-    "seven",
-    "eight",
-    "nine"
+    "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
 ];
 
 const TENS: [&str; 10] = [
-    "",
-    "",
-    "twenty",
-    "thirty",
-    "forty",
-    "fifty",
-    "sixty",
-    "seventy",
-    "eighty",
-    "ninety"
+    "", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety",
 ];
 
 const TEENS: [&str; 10] = [
@@ -85,12 +67,8 @@ pub fn encode(n: u64) -> String {
 
     for triple in &threes {
         breaker -= 1;
-        
         if *triple != 0 {
-            s += &(say_triple(*triple as usize) 
-                    + " " 
-                    + BREAKERS[breaker] 
-                    + " ")
+            s += &(say_triple(*triple as usize) + " " + BREAKERS[breaker] + " ")
         }
     }
 

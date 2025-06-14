@@ -1,4 +1,4 @@
-use play::*;
+use sieve::*;
 
 #[test]
 fn no_primes_under_two() {
