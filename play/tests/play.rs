@@ -1,6 +1,7 @@
 use play::*;
 
 #[test]
+#[ignore]
 fn no_primes_under_two() {
     let input = 1;
     let output = primes_up_to(input);
@@ -9,7 +10,7 @@ fn no_primes_under_two() {
 }
 
 #[test]
-#[ignore]
+//#[ignore]
 fn find_first_prime() {
     let input = 2;
     let output = primes_up_to(input);
