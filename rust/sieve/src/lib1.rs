@@ -13,5 +13,9 @@ pub fn primes_up_to(upper_bound: u64) -> Vec<u64> {
         n = p * p;
     }
 
-    marked.iter().enumerate().filter(|&(i, v)| i > 1 && *v).map(|(i, _)| i as u64).collect()
+    marked.iter()
+    .enumerate()
+          .filter(|&(i, v)| i > 1 && *v)
+          .map(|(i, _)| i as u64)
+          .collect()
 }
