@@ -1,11 +1,10 @@
-pub struct SimpleLinkedList<'a, T> {
-    data: T,
-    next: &'a T
+pub struct SimpleLinkedList<T> {
+    data: Vec<(T, *const T)>,
 }
 
-impl<'a, T> SimpleLinkedList<'a, T> {
+impl<T> SimpleLinkedList<T> {
     pub fn new() -> Self {
-        todo!()
+        Self { data: Vec::new() }
     }
 
     // You may be wondering why it's necessary to have is_empty()
@@ -14,18 +13,26 @@ impl<'a, T> SimpleLinkedList<'a, T> {
     // whereas is_empty() is almost always cheap.
     // (Also ask yourself whether len() is expensive for SimpleLinkedList)
     pub fn is_empty(&self) -> bool {
-        todo!()
+        self.data.is_empty()
     }
 
     pub fn len(&self) -> usize {
-        todo!()
+        self.data.len()
     }
 
     pub fn push(&mut self, _element: T) {
-        todo!()
+        let next = if self.is_empty() {
+            std::ptr::null()
+        } else {
+            std::ptr::from_ref(self.data.last().unwrap())
+        };
+        //self.next.push(std::ptr::from_ref(self.data.last().unwrap()));
+        self.data.push((_element, ));
     }
 
     pub fn pop(&mut self) -> Option<T> {
+
+        //self.data.pop()
         todo!()
     }
 
@@ -58,6 +65,6 @@ impl<T> FromIterator<T> for SimpleLinkedList<T> {
 
 impl<T> From<SimpleLinkedList<T>> for Vec<T> {
     fn from(mut _linked_list: SimpleLinkedList<T>) -> Vec<T> {
-        todo!()
+        _linked_list.data
     }
 }
