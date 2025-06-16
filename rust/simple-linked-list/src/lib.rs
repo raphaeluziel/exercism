@@ -1,9 +1,10 @@
-pub struct SimpleLinkedList<'a, T> {
-    data: T,
-    next: &'a T
+pub struct SimpleLinkedList<T> {
+    // Delete this field
+    // dummy is needed to avoid unused parameter error during compilation
+    dummy: ::std::marker::PhantomData<T>,
 }
 
-impl<'a, T> SimpleLinkedList<'a, T> {
+impl<T> SimpleLinkedList<T> {
     pub fn new() -> Self {
         todo!()
     }

@@ -1,4 +1,4 @@
-use play::*;
+use simple_linked_list::SimpleLinkedList;
 
 #[test]
 fn new_list_is_empty() {
