@@ -24,16 +24,14 @@ impl<T> SimpleLinkedList<T> {
         let next = if self.is_empty() {
             std::ptr::null()
         } else {
-            std::ptr::from_ref(self.data.last().unwrap())
+            std::ptr::from_ref(&self.data.last().unwrap().0)
         };
-        //self.next.push(std::ptr::from_ref(self.data.last().unwrap()));
-        self.data.push((_element, ));
+        self.data.push((_element, next));
     }
 
     pub fn pop(&mut self) -> Option<T> {
-
-        //self.data.pop()
-        todo!()
+        if self.is_empty() { return None; }
+        Some(self.data.pop().unwrap().0)
     }
 
     pub fn peek(&self) -> Option<&T> {
@@ -65,6 +63,6 @@ impl<T> FromIterator<T> for SimpleLinkedList<T> {
 
 impl<T> From<SimpleLinkedList<T>> for Vec<T> {
     fn from(mut _linked_list: SimpleLinkedList<T>) -> Vec<T> {
-        _linked_list.data
+        todo!()
     }
 }

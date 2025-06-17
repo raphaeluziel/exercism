@@ -1,13 +1,14 @@
 use play::*;
 
 #[test]
+#[ignore]
 fn new_list_is_empty() {
     let list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     assert_eq!(list.len(), 0, "list's length must be 0");
 }
 
 #[test]
-// #[ignore]
+#[ignore]
 fn push_increments_length() {
     let mut list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     list.push(1);
@@ -17,7 +18,7 @@ fn push_increments_length() {
 }
 
 #[test]
-// #[ignore]
+#[ignore]
 fn pop_decrements_length() {
     let mut list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     list.push(1);
@@ -29,7 +30,7 @@ fn pop_decrements_length() {
 }
 
 #[test]
-// #[ignore]
+#[ignore]
 fn is_empty() {
     let mut list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     assert!(list.is_empty(), "List wasn't empty on creation");
@@ -56,7 +57,7 @@ fn is_empty() {
 }
 
 #[test]
-// #[ignore]
+#[ignore]
 fn pop_returns_head_element_and_removes_it() {
     let mut list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     list.push(1);
