@@ -70,12 +70,11 @@ impl<T> SimpleLinkedList<T> {
 
 impl<T> FromIterator<T> for SimpleLinkedList<T> {
     fn from_iter<I: IntoIterator<Item = T>>(_iter: I) -> Self {
-        _iter.into_iter()
-        // let mut sll = SimpleLinkedList::new();
-        // for i in _iter {
-        //     sll.data.push((i, ));
-        // }
-        // sll
+        let mut sll: SimpleLinkedList<T> = SimpleLinkedList::new();
+        for i in _iter {
+            sll.push(i);
+        }
+        sll
     }
 }
 
