@@ -16,23 +16,47 @@ impl<T> SimpleLinkedList<T> {
     }
 
     pub fn push(&mut self, _element: T) {
-        if let Some(last) = self.data.last_mut() {
-            unsafe {
-                *last.1 = std::ptr::null() as *const T;   
-            }
+        // Set the last pointer, currently null to point to the next element
+        // that will be pushed into the SimpleLinkedList
+        if !self.is_empty() {
+            self.data.last_mut().unwrap().1 = std::ptr::from_ref(&_element);
         }
+
+        // Push the element into the SimpleLinkedList, setting the pointer to
+        // null since this will be the last link
         self.data.push((_element, std::ptr::null()));
     }
 
     pub fn pop(&mut self) -> Option<T> {
-        let ccc = self.data.pop();
-        todo!()
+        // If the SimpleLinkedList is empty, there's nothing to pop out
+        if self.is_empty() {
+            None
+        } 
+        else {
+            // Pop out the last element, and save it to return
+            let popped = self.data.pop().unwrap().0;
+
+            // If after popping out the last element, the SimpleLinkedList
+            // is still not empty, then set the now last element's pointer
+            // to null
+            if !self.is_empty() {
+                self.data.last_mut().unwrap().1 = std::ptr::null();
+            }
+
+            // Return the previously popped element
+            Some(popped)
+        }
     }
 
     pub fn peek(&self) -> Option<&T> {
-        // if self.data.is_empty() { None }
-        // else { Some(&self.data[self.index - 1]) }
-        None
+        // If the SimpleLinkedList is empty, there's nothing to peek
+        if self.data.is_empty() {
+            None
+        }
+        // Otherwise, return the last element, so it can be peeked
+        else {
+            Some(&self.data.last().unwrap().0)
+        }
     }
 
     #[must_use]
@@ -46,19 +70,17 @@ impl<T> SimpleLinkedList<T> {
 
 impl<T> FromIterator<T> for SimpleLinkedList<T> {
     fn from_iter<I: IntoIterator<Item = T>>(_iter: I) -> Self {
+        _iter.into_iter()
         // let mut sll = SimpleLinkedList::new();
         // for i in _iter {
-        //     sll.data.push(i);
-        //     sll.index += 1;
+        //     sll.data.push((i, ));
         // }
         // sll
-        todo!()
     }
 }
 
 impl<T> From<SimpleLinkedList<T>> for Vec<T> {
     fn from(mut _linked_list: SimpleLinkedList<T>) -> Vec<T> {
-        // _linked_list.data
-        todo!()
+        _linked_list.data.into_iter().map(|(element, _pointer)| element).collect()
     }
 }
