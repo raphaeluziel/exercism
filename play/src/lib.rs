@@ -22,7 +22,7 @@ impl<T> SimpleLinkedList<T> {
     // whereas is_empty() is almost always cheap.
     // (Also ask yourself whether len() is expensive for SimpleLinkedList)
     pub fn is_empty(&self) -> bool {
-        self.head.is_none()
+        self.count == 0
     }
 
     pub fn len(&self) -> usize {
@@ -40,8 +40,8 @@ impl<T> SimpleLinkedList<T> {
     }
 
     pub fn pop(&mut self) -> Option<T> {
-        if self.count > 0 {
-            self.count -= 1;
+        self.count -= 1;
+        if self.head.is_some() {
             Some((self.head.take().unwrap()).data)
         }
         else {
