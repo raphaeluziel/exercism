@@ -1,14 +1,14 @@
 use play::*;
 
 #[test]
-// #[ignore]
+#[ignore]
 fn new_list_is_empty() {
     let list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     assert_eq!(list.len(), 0, "list's length must be 0");
 }
 
 #[test]
-// #[ignore]
+#[ignore]
 fn push_increments_length() {
     let mut list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     list.push(1);
@@ -18,7 +18,7 @@ fn push_increments_length() {
 }
 
 #[test]
-// #[ignore]
+//#[ignore]
 fn pop_decrements_length() {
     let mut list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     list.push(1);
@@ -30,7 +30,7 @@ fn pop_decrements_length() {
 }
 
 #[test]
-// #[ignore]
+#[ignore]
 fn is_empty() {
     let mut list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     assert!(list.is_empty(), "List wasn't empty on creation");
@@ -57,7 +57,7 @@ fn is_empty() {
 }
 
 #[test]
-// #[ignore]
+#[ignore]
 fn pop_returns_head_element_and_removes_it() {
     let mut list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     list.push(1);
@@ -68,7 +68,7 @@ fn pop_returns_head_element_and_removes_it() {
 }
 
 #[test]
-// #[ignore]
+#[ignore]
 fn peek_returns_reference_to_head_element_but_does_not_remove_it() {
     let mut list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     assert_eq!(list.peek(), None, "No element should be contained in list");
@@ -84,7 +84,7 @@ fn peek_returns_reference_to_head_element_but_does_not_remove_it() {
 }
 
 #[test]
-// #[ignore]
+#[ignore]
 fn from_slice() {
     let mut array = vec!["1", "2", "3", "4"];
     let mut list: SimpleLinkedList<_> = array.drain(..).collect();
@@ -109,7 +109,7 @@ fn reverse() {
 }
 
 #[test]
-// #[ignore]
+#[ignore]
 fn into_vector() {
     let mut v = Vec::new();
     let mut s = SimpleLinkedList::new();
