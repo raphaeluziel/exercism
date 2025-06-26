@@ -1,19 +1,19 @@
-pub struct SimpleLinkedList<T> {
-    head: Option<Box<Node<T>>>,
-    count: usize,
+// https://rust-unofficial.github.io/too-many-lists
+
+type Link = Option<Box<Node>>;
+
+pub struct SimpleLinkedList {
+    head: Link
 }
 
-struct Node<T> {
-    data: T,
-    next: Option<Box<Node<T>>>,
+struct Node {
+    data: u8,
+    next: Link,
 }
 
-impl<T> SimpleLinkedList<T> {
+impl SimpleLinkedList {
     pub fn new() -> Self {
-        Self {
-            head: None,
-            count: 0,
-        }
+        Self { head: None }
     }
 
     // You may be wondering why it's necessary to have is_empty()
@@ -22,62 +22,51 @@ impl<T> SimpleLinkedList<T> {
     // whereas is_empty() is almost always cheap.
     // (Also ask yourself whether len() is expensive for SimpleLinkedList)
     pub fn is_empty(&self) -> bool {
-        self.count == 0
+        todo!()
     }
 
     pub fn len(&self) -> usize {
-        self.count
+        todo!()
     }
 
-    pub fn push(&mut self, _element: T) {
-        let mut new_node = Node {
-            data: _element,
-            next: None,
-        };
-        new_node.next = self.head.take();
-        self.head = Some(Box::new(new_node));
-        self.count += 1;
+    pub fn push(&mut self, element: u8) {
+        let new_node = Box::new(Node { data: element, next: self.head.take() });
+        self.head = Some(new_node);
     }
 
-    pub fn pop(&mut self) -> Option<T> {
-        self.count -= 1;
-        if self.head.is_some() {
-            Some((self.head.take().unwrap()).data)
-        }
-        else {
-            None
-        }
+    pub fn pop(&mut self) -> Option<u8> {
+        self.head.take().map(|node| { self.head = node.next; node.data })
     }
 
-    pub fn peek(&self) -> Option<&T> {
+    pub fn peek(&self) -> Option<&u8> {
         todo!()
     }
 
     #[must_use]
-    pub fn rev(self) -> SimpleLinkedList<T> {
+    pub fn rev(self) -> SimpleLinkedList {
         todo!()
     }
 }
 
-impl<T> FromIterator<T> for SimpleLinkedList<T> {
-    fn from_iter<I: IntoIterator<Item = T>>(_iter: I) -> Self {
+impl FromIterator<u8> for SimpleLinkedList {
+    fn from_iter<I: IntoIterator<Item = u8>>(_iter: I) -> Self {
         todo!()
     }
 }
 
-// In general, it would be preferable to implement IntoIterator for SimpleLinkedList<T>
+// In general, it would be preferable to implement IntoIterator for SimpleLinkedList
 // instead of implementing an explicit conversion to a vector. This is because, together,
 // FromIterator and IntoIterator enable conversion between arbitrary collections.
 //
-// The reason this exercise's API includes an explicit conversion to Vec<T> instead
+// The reason this exercise's API includes an explicit conversion to Vec instead
 // of IntoIterator is that implementing that interface is fairly complicated, and
 // demands more of the student than we expect at this point in the track.
 //
 // Please note that the "front" of the linked list should correspond to the "back"
 // of the vector as far as the tests are concerned.
 
-impl<T> From<SimpleLinkedList<T>> for Vec<T> {
-    fn from(mut _linked_list: SimpleLinkedList<T>) -> Vec<T> {
+impl From<SimpleLinkedList> for Vec<u8> {
+    fn from(mut _linked_list: SimpleLinkedList) -> Vec<u8> {
         todo!()
     }
 }

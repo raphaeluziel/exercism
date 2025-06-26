@@ -57,7 +57,7 @@ fn is_empty() {
 }
 
 #[test]
-#[ignore]
+//#[ignore]
 fn pop_returns_head_element_and_removes_it() {
     let mut list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     list.push(1);
