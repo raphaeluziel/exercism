@@ -68,7 +68,7 @@ fn pop_returns_head_element_and_removes_it() {
 }
 
 #[test]
-#[ignore]
+//#[ignore]
 fn peek_returns_reference_to_head_element_but_does_not_remove_it() {
     let mut list: SimpleLinkedList<u32> = SimpleLinkedList::new();
     assert_eq!(list.peek(), None, "No element should be contained in list");
@@ -84,7 +84,7 @@ fn peek_returns_reference_to_head_element_but_does_not_remove_it() {
 }
 
 #[test]
-#[ignore]
+//#[ignore]
 fn from_slice() {
     let mut array = vec!["1", "2", "3", "4"];
     let mut list: SimpleLinkedList<_> = array.drain(..).collect();
@@ -109,7 +109,7 @@ fn reverse() {
 }
 
 #[test]
-#[ignore]
+//#[ignore]
 fn into_vector() {
     let mut v = Vec::new();
     let mut s = SimpleLinkedList::new();

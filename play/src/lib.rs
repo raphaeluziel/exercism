@@ -1,19 +1,29 @@
+// Followed the following tutorial to help (that's an understatement!)
 // https://rust-unofficial.github.io/too-many-lists
 
-type Link = Option<Box<Node>>;
+// Also relied on the Hints.md file!!!
 
-pub struct SimpleLinkedList {
-    head: Link
+// This just makes it easier so you don't have to type out Option<Box<Node<T>>>
+type Link<T> = Option<Box<Node<T>>>;
+
+// The SimpleLinkedList will hold the length of the list along with head, which
+// is a pointer to the first Node in the list.  Note that it doesn't hold the
+// actual list, since each element in the list will point to the next Node. 
+pub struct SimpleLinkedList<T> {
+    head: Link<T>,
+    length: usize
 }
 
-struct Node {
-    data: u8,
-    next: Link,
+// Each element in the list is a Node, which holds the actual data of the element
+// along with a pointer to the next Node, which is just a Link
+struct Node<T> {
+    data: T,
+    next: Link<T>,
 }
 
-impl SimpleLinkedList {
+impl<T> SimpleLinkedList<T> {
     pub fn new() -> Self {
-        Self { head: None }
+        Self { head: None, length: 0 }
     }
 
     // You may be wondering why it's necessary to have is_empty()
@@ -22,35 +32,53 @@ impl SimpleLinkedList {
     // whereas is_empty() is almost always cheap.
     // (Also ask yourself whether len() is expensive for SimpleLinkedList)
     pub fn is_empty(&self) -> bool {
-        todo!()
+        self.head.is_none()
     }
 
+    // Not sure if this is the best, but since I opted to keep a count of the Nodes
+    // in the list, this operation is cheap.  I guess I could have opted to iterate
+    // through the list, counting as I go, but that seemed much worse.
     pub fn len(&self) -> usize {
-        todo!()
+        self.length
     }
 
-    pub fn push(&mut self, element: u8) {
+    pub fn push(&mut self, element: T) {
+        // Increase the size of the list, since we are adding a Node to it
+        self.length += 1;
+
+        // Create a new Node with the data, and set the next field to the 
+        // current Node.  Note that the take() method takes the value from
+        // self.head, places in next, and leaves None in its place.
         let new_node = Box::new(Node { data: element, next: self.head.take() });
+
+        // Well, the previous line set self.head to None by the take() method
         self.head = Some(new_node);
     }
 
-    pub fn pop(&mut self) -> Option<u8> {
+    pub fn pop(&mut self) -> Option<T> {
+        if self.head.is_some() { self.length -= 1 }
         self.head.take().map(|node| { self.head = node.next; node.data })
     }
 
-    pub fn peek(&self) -> Option<&u8> {
-        todo!()
+    pub fn peek(&self) -> Option<&T> {
+        self.head.as_ref().map(|x| &x.data)
     }
 
     #[must_use]
-    pub fn rev(self) -> SimpleLinkedList {
-        todo!()
+    pub fn rev(self) -> SimpleLinkedList<T> {
+        let mut v = Vec::from(self);
+        v.reverse();
+        v.drain(..).collect()
     }
 }
 
-impl FromIterator<u8> for SimpleLinkedList {
-    fn from_iter<I: IntoIterator<Item = u8>>(_iter: I) -> Self {
-        todo!()
+impl<T> FromIterator<T> for SimpleLinkedList<T> {
+    fn from_iter<I: IntoIterator<Item = T>>(_iter: I) -> Self {
+        let mut sll = SimpleLinkedList::new();
+        for element in _iter {
+            sll.push(element);
+        }
+        sll
     }
 }
 
@@ -65,8 +93,13 @@ impl FromIterator<u8> for SimpleLinkedList {
 // Please note that the "front" of the linked list should correspond to the "back"
 // of the vector as far as the tests are concerned.
 
-impl From<SimpleLinkedList> for Vec<u8> {
-    fn from(mut _linked_list: SimpleLinkedList) -> Vec<u8> {
-        todo!()
+impl<T> From<SimpleLinkedList<T>> for Vec<T> {
+    fn from(mut _linked_list: SimpleLinkedList<T>) -> Vec<T> {
+        let mut v = Vec::new();
+        while _linked_list.head.is_some() {
+            v.push(_linked_list.pop().unwrap());
+        }
+        v.reverse();
+        v
     }
 }
