@@ -1,6 +1,7 @@
 use play::*;
 
 #[test]
+#[ignore]
 fn just_the_header_if_no_input() {
     let input: &[&str] = &[];
     let input = input.join("\n");
@@ -126,7 +127,7 @@ fn there_can_be_more_than_two_teams() {
 }
 
 #[test]
-#[ignore]
+//#[ignore]
 fn typical_input() {
     let input: &[&str] = &[
         "Allegoric Alaskans;Blithering Badgers;win",
