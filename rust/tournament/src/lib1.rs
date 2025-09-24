@@ -1,6 +1,8 @@
 use std::collections::BTreeMap;
 
-struct Points {
+#[derive(Debug)]
+struct Team<'a> {
+    name: &'a str,
     matches: usize,
     wins: usize,
     draws: usize,
@@ -14,7 +16,7 @@ pub fn tally(match_results: &str) -> String {
     
     if match_results.is_empty() { return ss.trim().to_string() }
 
-    let mut points: BTreeMap<&str, Points> = BTreeMap::new();
+    let mut teams: BTreeMap<&str, Team> = BTreeMap::new();
 
     for game in match_results.split('\n') {
         let s: Vec<&str> = game.split(';').collect();
@@ -25,14 +27,15 @@ pub fn tally(match_results: &str) -> String {
             _ => ((0, 1, 0), (0, 1, 0)),
         };
 
-        points
+        teams
             .entry(s[0])
             .and_modify(|x| {
                 x.wins += a_win;
                 x.draws += a_draw;
                 x.losses += a_loss
             })
-            .or_insert(Points {
+            .or_insert(Team {
+                name: s[0],
                 matches: 0,
                 wins: a_win,
                 draws: a_draw,
@@ -40,14 +43,15 @@ pub fn tally(match_results: &str) -> String {
                 points: 0,
             });
 
-        points
+        teams
             .entry(s[1])
             .and_modify(|x| {
                 x.wins += b_win;
                 x.draws += b_draw;
                 x.losses += b_loss
             })
-            .or_insert(Points {
+            .or_insert(Team {
+                name: s[0],
                 matches: 0,
                 wins: b_win,
                 draws: b_draw,
@@ -58,10 +62,10 @@ pub fn tally(match_results: &str) -> String {
 
     let mut v:Vec<(&str, usize, usize, usize, usize, usize)> = Vec::new();
 
-    for p in points.iter_mut() {
-        p.1.matches = p.1.wins + p.1.draws + p.1.losses;
-        p.1.points = p.1.wins * 3 + p.1.draws;
-        v.push((p.0, p.1.matches, p.1.wins, p.1.draws, p.1.losses, p.1.points));
+    for team in teams.iter_mut() {
+        team.1.matches = team.1.wins + team.1.draws + team.1.losses;
+        team.1.points = team.1.wins * 3 + team.1.draws;
+        v.push((team.0, team.1.matches, team.1.wins, team.1.draws, team.1.losses, team.1.points));
     }
 
     v.sort_by(|a, b| (b.5.cmp(&a.5)));
